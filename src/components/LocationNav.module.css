@@ -1,0 +1,27 @@
+/**
+ * LocationNav.module.css
+ * Layout and visual styles for the LocationNav two-panel hierarchy navigator.
+ */
+
+/**
+ * Individual panel wrapper — provides a subtle bordered background and padding
+ * to visually separate the two navigation panels.
+ */
+.panel {
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-sm);
+  background-color: var(--mantine-color-body);
+  padding: var(--mantine-spacing-xs);
+}
+
+/**
+ * Panel heading label — uppercase, small, dimmed.
+ * Rendered above the ScrollArea in each panel.
+ */
+.panelLabel {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--mantine-color-dimmed);
+  padding-bottom: var(--mantine-spacing-xs);
+}

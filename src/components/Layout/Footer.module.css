@@ -1,0 +1,31 @@
+/**
+ * Footer.module.css
+ * Styles for the UKCP shared footer component.
+ *
+ * Sprint 6: background changed from dark + banner image to light green.
+ * No background image. Text colour updated to dark green for legibility.
+ */
+
+/**
+ * Footer bar — light green background, full width and height of footerZone.
+ * Provides a clear visual separation from mid pane content without using
+ * the page background image.
+ */
+.footer {
+  background-color: var(--mantine-color-green-1);
+  width: 100%;
+  height: 100%;
+  border-top: 1px solid var(--mantine-color-green-3);
+}
+
+/**
+ * Inner content wrapper — constrains footer content to 95% width, centred.
+ */
+.footerInner {
+  max-width: 95%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

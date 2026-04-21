@@ -1,0 +1,36 @@
+/**
+ * PageBackground.module.css
+ * Styles for the fixed full-viewport background canvas.
+ */
+
+/**
+ * Default canvas — CSS gradient placeholder until UKBanner.png is available.
+ * Gradient direction is top-to-bottom: dark green → mid green.
+ */
+.canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background: linear-gradient(180deg, #1a3a2a 0%, #2e7d32 100%);
+}
+
+/**
+ * Image canvas — used when a backgroundUrl prop is provided.
+ * Caller must set --bg-url CSS custom property via the style prop.
+ * background-size and background-position are defined here; only the
+ * URL is dynamic.
+ */
+.canvasImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

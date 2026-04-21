@@ -1,0 +1,247 @@
+UKCP
+UK Citizens Portal
+Sprint 4 — Task Specification
+Version
+1.0 — Status: Active
+Date
+3 April 2026
+Authored by
+Ali (Cowork) in collaboration with Phil Spraglack
+Spec file
+Definitions/UKCP-Sprint4-Task-Spec-v1.0.docx
+
+1. Purpose
+This document is the authoritative task specification for UKCP Sprint 4. It defines, in order of execution, every task that Claude Code (Dex) must deliver. Each task includes the files to be created or modified, the technical requirements, and the acceptance conditions that must be met before the task is considered complete.
+
+Nothing in this document is implemented until Phil has confirmed scope. Nothing is accepted until Phil has tested it. Ali owns this document and updates it as the sprint progresses.
+
+2. Sprint Goal
+Sprint 4 resolves two issues discovered during Sprint 3 runtime review:
+
+First, the visual structure requires polish. The header, body columns, and footer need a constrained content width (95%, centred) and subtle row separators so each structural section is visually distinct. The backgrounds remain full-width; only the content zones shrink.
+
+Second, the hierarchy navigation is completely broken. The Sprint 3 design deprecated the two-panel HeaderNavigation component and replaced it with a stepper walker in Row 3 — but the stepper only handles back-navigation. Forward navigation (selecting region, county, area, constituency) has no UI. The panel1, panel2, and select values from useNavigation are destructured in Locations.jsx but never passed to any component. Sprint 4 restores forward navigation by creating a LocationNav component that lives in the mid pane. The mid pane splits into two vertical sections: LocationNav on top (always visible when walker is open), PlacesCard below (appears only once constituency is reached, which is the common key between the hierarchy dataset and the places dataset).
+
+At sprint end, the header must be visually polished at 95% content width, hierarchy navigation must work end-to-end in the mid pane, and PlacesCard must appear filtered by county once the user navigates to constituency level.
+
+3. Execution Sequence
+Task
+Title
+Dependency
+T1
+Visual Polish — Content Width & Row Distinction
+None — first delivery
+T2
+Mid Pane Navigation — LocationNav + PlacesCard Gate
+T1 build passing
+
+4. Baseline State
+Sprint 3 delivered the four-row header scaffold with a clean build (0 errors, 0 warnings, 6874 modules). The following issues were identified at runtime review:
+
+Issue
+Description
+Header full-width
+Row content extends to screen edges. Should be 95% width, centred. Row backgrounds stay full-width.
+No row distinction
+Header rows with identical backgrounds run together visually. Thin separator needed between each row.
+No section gaps
+Body columns butt directly against the header bottom and footer top. A small gap improves legibility.
+Footer full-width
+Footer content should match the constrained header width.
+Navigation broken
+panel1, panel2, and select from useNavigation are unused. HeaderNavigation was deprecated but no forward navigation was provided. The walker stepper (Row 3) handles back-nav only. The mid pane shows PlacesCard but it can never load because county is never reachable via the UI.
+
+4.1 Current Mid Pane Wiring
+Locations.jsx calls useNavigation and receives { path, panel1, panel2, select, goTo, reset }. Only path, goTo, and reset are currently used. panel1, panel2, and select are destructured but discarded.
+
+4.2 usePlacesFilter Behaviour
+usePlacesFilter(places, path) derives county = path.find(p => p.level === 'county')?.value. countyActive is true when county is not null. filterPlaces filters place.csv rows by matching place.County to the county in the path. Because the user cannot navigate to county level (no forward nav UI), countyActive is always false at runtime.
+
+4.3 Constituency as Common Key
+The hierarchy dataset (newplace.csv) and the places dataset (place.csv) share constituency as the common key. The places filter is based on county (the parent of constituency in the path), meaning PlacesCard shows all places in the county containing the selected constituency. PlacesCard should not appear until the user has navigated to constituency level — that is the semantic point at which both datasets are in scope.
+
+5. Task Specifications
+T1 — Visual Polish: Content Width & Row Distinction
+Goal
+Constrain header row content to 95% width centred. Add thin bottom borders between header rows. Add a gap between the header zone and the body columns. Constrain footer content to 95% width.
+Deliverables
+All files listed, complete and JSDoc-compliant. No snippets.
+
+Files to Modify
+File
+Change
+src/components/Header/SiteHeaderRow1.module.css
+Add .rowInner class: max-width 95%; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between. Add .row border-bottom: 1px solid var(--mantine-color-dark-3).
+src/components/Header/SiteHeaderRow1.jsx
+Wrap the existing Group content in a Box with className={classes.rowInner}. Add className={classes.row} to the outer Box.
+src/components/Header/SiteHeaderRow2.module.css
+Add .rowInner class (same spec as Row 1). Add .row border-bottom rule.
+src/components/Header/SiteHeaderRow2.jsx
+Wrap content in .rowInner Box. Outer Box gets .row class.
+src/components/Header/SiteHeaderRow3.module.css
+Add .rowInner class. Add .row border-bottom rule.
+src/components/Header/SiteHeaderRow3.jsx
+Wrap content in .rowInner Box. Outer Box gets .row class.
+src/components/Header/SiteHeaderRow4.module.css
+Add .rowInner class. No bottom border on Row 4 (it is the base of the header).
+src/components/Header/SiteHeaderRow4.jsx
+Wrap content in .rowInner Box.
+src/components/PageLayout.module.css
+Add padding or margin to .appShellMain top (8px gap between header base and body columns). This supplements or adjusts Mantine's default AppShell.Main offset.
+src/components/Layout/Footer.module.css
+Add .footerInner class: max-width: 95%; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: center.
+src/components/Layout/Footer.jsx
+Wrap footer text content in .footerInner Box.
+
+T1 Acceptance Conditions
+AC
+Acceptance Condition
+AC-1
+npm run build completes without errors or warnings.
+AC-2
+Row 1 content (UKCP wordmark + icon clusters) is inset from screen edges. Row 1 background remains full width.
+AC-3
+A visible bottom border separates Row 1 from Row 2, Row 2 from Row 3, and Row 3 from Row 4.
+AC-4
+A small gap (8px) is visible between the header base (Row 4 bottom) and the top of the body columns.
+AC-5
+Footer content is centred and inset to match the body column width. Footer background remains full width.
+AC-6
+At 1400px viewport: row content inset approximately 36px each side (95% of 1400 = 1330px). No horizontal scroll.
+AC-7
+All Sprint 1–3 regression passes. No layout regressions on any row or column.
+
+T2 — Mid Pane Navigation: LocationNav + PlacesCard Gate
+Goal
+Create a LocationNav component that renders the two-panel hierarchy navigator (regions + dynamic children) in the mid pane. Wire panel1, panel2, and select from useNavigation. Gate PlacesCard visibility on constituency level (constituencyActive). Both sections coexist in the mid pane once constituency is reached, delivering simultaneous browsing of the hierarchy and physical places.
+Dependency
+T1 build passing.
+Deliverables
+All files listed, complete and JSDoc-compliant. No snippets.
+
+Files to Create
+File
+Purpose
+src/components/LocationNav.jsx
+Two-panel hierarchy navigator. Panel 1: regions list. Panel 2: children at current depth with dynamic label. Calls select() on click. See requirements below.
+src/components/LocationNav.module.css
+CSS module for LocationNav layout and panel styling.
+
+Files to Modify
+File
+Change
+src/pages/Locations.jsx
+Import LocationNav. Derive constituencyActive = path.some(p => p.level === 'constituency'). Build midPane as a Stack: LocationNav (visible when walkerOpen), PlacesCard (pass constituencyActive as countyActive prop). Pass panel1, panel2, path, select to LocationNav.
+src/components/PlacesCard.jsx
+Update the countyActive=false prompt text from "Navigate to a county to see places." to "Navigate to a constituency to see places." No other changes.
+
+LocationNav Requirements
+Props: { panel1, panel2, path, select }. No hook calls. All state via props.
+
+Panel 1 — Regions. Always rendered. Label: "Regions". Renders a Mantine ScrollArea containing a NavLink for each item in panel1. Active item: path[0]?.value. On click: calls select('region', value).
+
+Panel 2 — Dynamic children. Renders when panel1 has entries. Label and nextLevel driven by DEPTH_CONFIG (inline constant, do not import from deprecated HeaderNavigation.jsx). DEPTH_CONFIG maps path.length (capped at 4) to { label, nextLevel }:
+
+path.length
+label
+nextLevel
+Notes
+0
+(dimmed prompt)
+—
+No region selected. Panel 2 shows dimmed "Select a region" prompt. No items.
+1
+Counties
+county
+Region selected. Panel 2 lists counties.
+2
+Areas
+area
+County selected. Panel 2 lists areas.
+3
+Constituencies
+constituency
+Area selected. Panel 2 lists constituencies.
+4
+Localities
+locale
+Constituency selected. Panel 2 lists localities (wards).
+
+Panel 2 active item: path[path.length]?.value (the most recent selection at that depth). On click: calls select(config.nextLevel, value).
+
+Layout: Mantine Group with grow, align="flex-start", gap="md". Each panel is a Box containing a Text label and a ScrollArea (h=280) with NavLink items. No inline styles. No sx prop. CSS module for panel border, background, and spacing.
+
+Locations.jsx Mid Pane Structure
+The midPane prop passed to PageLayout becomes:
+
+Condition
+Mid Pane Content
+walkerOpen = false, constituencyActive = false
+PlacesCard only (countyActive=false — shows prompt).
+walkerOpen = true, constituencyActive = false
+LocationNav only. No PlacesCard yet.
+walkerOpen = true, constituencyActive = true
+Stack: LocationNav on top, horizontal divider, PlacesCard below. Both scrollable independently.
+walkerOpen = false, constituencyActive = true
+PlacesCard only (countyActive=true — shows places).
+
+Note: constituencyActive = path.some(p => p.level === 'constituency'). The countyActive value returned by usePlacesFilter is NOT used as the PlacesCard gate — constituencyActive replaces it. The grouped data from usePlacesFilter is still used (it correctly derives county from the path and filters place.csv by county).
+
+T2 Acceptance Conditions
+AC
+Acceptance Condition
+AC-1
+npm run build completes without errors or warnings.
+AC-2
+Clicking the Places icon shows the walker (Row 3) and renders LocationNav in the mid pane. Panel 1 lists English regions.
+AC-3
+Clicking a region in Panel 1 calls select('region', value). Path advances. Row 3 stepper updates active step. Panel 2 shows counties for that region.
+AC-4
+Navigating through region → county → area → constituency advances the stepper and updates Panel 2 label (Counties → Areas → Constituencies).
+AC-5
+Once constituency is selected (constituencyActive = true): PlacesCard appears below LocationNav in the mid pane, showing places filtered by county.
+AC-6
+PlacesCard does not appear until constituency depth is reached. Before that, only LocationNav is shown in the mid pane.
+AC-7
+Clicking a completed step in Row 3 navigates back correctly. Path truncates. LocationNav updates. If path retreats above constituency, PlacesCard disappears.
+AC-8
+PlacesCard prompt text reads "Navigate to a constituency to see places." (not "county").
+AC-9
+Closing the walker (clicking Places icon again): LocationNav hides. PlacesCard remains if constituencyActive.
+AC-10
+All Sprint 1–3 regression passes.
+
+6. Standards (applies to all tasks)
+These are binding. Any file that fails these standards is rejected without further review.
+
+Standard
+Requirement
+JSDoc
+Every file has a file-level JSDoc block. Every exported function has @param and @returns.
+No inline styles
+No style={} props. Mantine className with CSS module, or Mantine layout props only.
+No sx prop
+Mantine v7: sx is deprecated. Do not use.
+No TypeScript
+All files are .js or .jsx only.
+Props only
+No component calls useNavigation, useSelectionState, or usePlacesFilter directly. State comes via props from Locations.jsx.
+Complete files
+Dex delivers complete files only. No snippets, no partial updates.
+Mantine only
+All layout uses Mantine components. No other layout libraries.
+HEADER_ROWS constants
+Row height references use named constants from HEADER_ROWS.js. No numeric literals for row heights.
+
+7. Out of Scope for Sprint 4
+Scotland, Wales, Northern Ireland hierarchy (deferred — panel1 English regions only, TODO marker in place).
+
+UKBanner.png background image for Row 2 (gradient placeholder correct until a future sprint).
+
+Scroll-based Row 4 visibility trigger (Row 4 always visible in Sprint 4).
+
+Profile, Help, Settings, Home, and MyVote icon functionality (stubs only).
+
+Left and right pane content (future sprints).
+
+Constituency-level filtering of PlacesCard (current filter is by county, which is the parent level. A future sprint will refine to constituency once the data join is confirmed).

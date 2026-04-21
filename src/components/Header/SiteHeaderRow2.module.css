@@ -1,0 +1,50 @@
+/**
+ * SiteHeaderRow2.module.css
+ * Layout and visual styles for Row 2 — the UKCP location context banner.
+ */
+
+/**
+ * Outer row wrapper. Full width, fixed height set via Mantine h prop.
+ * Banner image background.
+ */
+.row2 {
+  background-image: url(../../assets/UKBanner.png);
+  background-size: 100% 100%;
+  background-position: center center;
+  width: 100%;
+  overflow: hidden;
+}
+
+/**
+ * Shared row border — thin bottom separator between header rows.
+ */
+.row {
+  border-bottom: 1px solid var(--mantine-color-dark-3);
+}
+
+/**
+ * Inner content wrapper — full width, centres label both horizontally
+ * and vertically.
+ */
+.rowInner {
+  width: 98%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/**
+ * Context label — black, bold, centred. Text-shadow for legibility
+ * against the banner image.
+ */
+.contextLabel {
+  color: #111111;
+  font-weight: 700;
+  text-align: center;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.8),
+    0 0 12px rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.01em;
+}

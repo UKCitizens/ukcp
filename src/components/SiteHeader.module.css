@@ -1,0 +1,13 @@
+/**
+ * SiteHeader.module.css
+ * Structural styles for the SiteHeader four-row container.
+ */
+
+/**
+ * Applied to scaffold placeholder Box elements for Rows 2, 3, and 4 in T1.
+ * Replaced by row-specific components in T2, T3, and T4 respectively.
+ */
+.placeholder {
+  overflow: hidden;
+  width: 100%;
+}

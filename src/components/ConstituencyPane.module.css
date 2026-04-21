@@ -1,0 +1,166 @@
+/**
+ * ConstituencyPane.module.css
+ * Right-pane constituency browser — Option A two-panel layout.
+ * Mirrors PlacesCard visual language.
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 8px;
+}
+
+/* ── Pane title ──────────────────────────────────────────────────────────── */
+
+.paneTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mantine-color-dark-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--mantine-color-gray-3);
+  flex-shrink: 0;
+}
+
+/* ── Alpha strip ─────────────────────────────────────────────────────────── */
+
+.alphaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.alphaBtn {
+  font-size: 10px;
+  font-weight: 600;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  border: none;
+  background: none;
+  color: var(--mantine-color-dark-2);
+  cursor: pointer;
+}
+
+.alphaBtn:hover {
+  background-color: var(--mantine-color-violet-0);
+  color: var(--mantine-color-violet-7);
+}
+
+.alphaBtnActive {
+  background-color: var(--mantine-color-violet-6);
+  color: #fff;
+}
+
+/* ── List area — contains constituency list + ward section together ──────── */
+
+.listArea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Constituency list ───────────────────────────────────────────────────── */
+
+.constList {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+/* Cap list height when ward section is visible */
+.constListSplit {
+  flex: 0 0 55%;
+  max-height: 55%;
+}
+
+.constBtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+  padding: 3px 2px;
+  background: none;
+  border: none;
+  color: var(--mantine-color-violet-7);
+  cursor: pointer;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.constBtn:hover {
+  color: var(--mantine-color-violet-9);
+  text-decoration: underline;
+}
+
+.constBtnActive {
+  font-weight: 700;
+  color: var(--mantine-color-violet-9);
+  background-color: var(--mantine-color-violet-0);
+}
+
+/* ── Ward section ────────────────────────────────────────────────────────── */
+
+.wardSection {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  max-height: 40%;
+  min-height: 0;
+  border-top: 2px solid var(--mantine-color-violet-3);
+  margin-top: 4px;
+}
+
+.wardHeader {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--mantine-color-violet-7);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 2px 4px;
+  flex-shrink: 0;
+}
+
+.wardList {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.wardBtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+  padding: 2px 8px;
+  background: none;
+  border: none;
+  color: var(--mantine-color-blue-6);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.wardBtn:hover {
+  color: var(--mantine-color-blue-9);
+  text-decoration: underline;
+}
+
+.wardBtnActive {
+  font-weight: 600;
+  color: var(--mantine-color-blue-9);
+}
+
+.empty {
+  font-size: 11px;
+  color: var(--mantine-color-dark-4);
+  padding: 8px 0;
+}

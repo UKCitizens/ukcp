@@ -1,0 +1,41 @@
+/**
+ * SiteHeaderRow1.module.css
+ * Layout and visual styles for Row 1 — the permanent UKCP nav bar.
+ */
+
+/**
+ * Outer row wrapper. Full width, fixed height is set via Mantine h prop.
+ * Background matches AppShell.Header to give a solid, unified bar.
+ */
+.row1 {
+  background-color: var(--mantine-color-body);
+  width: 100%;
+}
+
+/**
+ * Shared row border — thin bottom separator between header rows.
+ * Applied to all rows except Row 4 (base of the header).
+ */
+.row {
+  border-bottom: 1px solid var(--mantine-color-dark-3);
+}
+
+/**
+ * Logo + wordmark group — acts as a clickable link to site home.
+ */
+.logoLink {
+  cursor: pointer;
+}
+
+/**
+ * Inner content wrapper — constrains content to 95% width, centred.
+ * Handles the flex layout previously owned by the outer Group.
+ */
+.rowInner {
+  max-width: 98%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

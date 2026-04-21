@@ -1,0 +1,40 @@
+/**
+ * SiteHeaderRow4.module.css
+ * Layout and visual styles for Row 4 — the UKCP ticker / label nav bar.
+ */
+
+/**
+ * Outer row wrapper. Full width, fixed height set via Mantine h prop.
+ * Dark background anchors the base of the header visually.
+ * No bottom border — Row 4 is the base of the header zone.
+ */
+.row4 {
+  background-color: var(--mantine-color-dark-8);
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/**
+ * Inner content wrapper — constrains ticker text to 95% width, centred.
+ */
+.rowInner {
+  max-width: 98%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/**
+ * Static ticker text — small white centred label.
+ */
+.tickerText {
+  font-size: var(--mantine-font-size-xs);
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

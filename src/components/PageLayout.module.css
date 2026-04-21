@@ -1,0 +1,217 @@
+/**
+ * PageLayout.module.css
+ * UKCP application shell layout — Sprint 6 layout remediation.
+ * Plain CSS flex replaces Mantine AppShell.
+ */
+
+/**
+ * Outer wrapper — fills the full browser viewport, clips overflow.
+ * position: relative creates a stacking context so PageBackground (z-index: 0)
+ * renders behind pageFrame (z-index: 1).
+ * overflow: hidden prevents page-level scroll — all scrolling is within midZone.
+ */
+.pageOuter {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/**
+ * Inner frame — 95% wide, centred, flex column.
+ *
+ * width: 95% + margin: 0 auto exposes 2.5% of PageBackground on each side.
+ * padding: 8px 0 exposes 8px of PageBackground above the header and below
+ * the footer.
+ * gap: 8px exposes 8px of PageBackground between header and midZone, and
+ * between midZone and footer.
+ *
+ * height: 100% + flex layout ensures the frame fills the full viewport height
+ * without relying on any calculated pixel offsets.
+ *
+ * position: relative + z-index: 1 lifts all content above the PageBackground
+ * canvas (z-index: 0 via the Box in PageBackground.jsx).
+ */
+.pageFrame {
+  position: relative;
+  z-index: 1;
+  width: 98%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+/**
+ * Header zone — static flex child, always at top of frame.
+ *
+ * flex-shrink: 0 prevents the header from compressing when the frame is short.
+ * overflow: visible allows Row 3 option panels and dropdowns to extend
+ * visually below the header boundary without clipping.
+ * z-index: 200 ensures header overlays mid pane content when nav panels are open.
+ * position: relative is required for z-index to take effect on a non-positioned
+ * flex child.
+ * max-height + transition: used by .mapExpand to collapse header out of view
+ * when Map tab is active. 400px ceiling safely accommodates the tallest header.
+ */
+.headerZone {
+  flex-shrink: 0;
+  overflow: visible;
+  position: relative;
+  z-index: 200;
+}
+
+/**
+ * Mid zone — scrollable, fills all remaining frame height.
+ *
+ * flex: 1 allows midZone to grow and fill the space between header and footer.
+ * min-height: 0 is required for overflow-y: auto to function correctly inside
+ * a flex child — without it, the flex child expands to fit content rather than
+ * honouring the available height.
+ * overflow-y: auto adds a scrollbar only when column content exceeds the zone
+ * height; the header and footer remain stationary.
+ * overflow-x: hidden prevents horizontal bleed from wide content.
+ * display: flex + gap lays out the three columns side by side.
+ * align-items: stretch makes all three columns fill the full midZone height,
+ * regardless of their content height.
+ */
+.midZone {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  gap: var(--mantine-spacing-md, 16px);
+  align-items: stretch;
+}
+
+/**
+ * Left column — 2/12 of the 95% frame width.
+ * flex-shrink: 0 prevents it compressing when mid column grows.
+ * Responsive: hidden below 1200px via media query.
+ */
+.leftCol {
+  width: 21.667%;
+  flex-shrink: 0;
+}
+
+/**
+ * Mid column — fills remaining width after left and right columns.
+ * min-width: 0 prevents flex blowout from wide content inside.
+ */
+.midCol {
+  flex: 1;
+  min-width: 0;
+}
+
+/**
+ * Right column — 2/12 of the 95% frame width.
+ * flex-shrink: 0 prevents it compressing when mid column grows.
+ * Responsive: hidden below 768px via media query.
+ */
+.rightCol {
+  width: 21.667%;
+  flex-shrink: 0;
+}
+
+/**
+ * Column Paper wrapper — fills full column height.
+ * height: 100% stretches Paper to fill the column div (which stretches via
+ * align-items: stretch on midZone).
+ * overflow: hidden prevents column content from escaping its bounds.
+ * Content requiring internal scroll should use Mantine ScrollArea.
+ */
+.column {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/**
+ * Footer zone — static flex child, always at bottom of frame.
+ * flex-shrink: 0 keeps the footer at a fixed height.
+ * height: 48px matches the existing Footer component's designed height.
+ * max-height + transition: used by .mapExpand to collapse footer out of view.
+ */
+.footerZone {
+  flex-shrink: 0;
+  height: 48px;
+  max-height: 80px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+/* ── Map expand mode ────────────────────────────────────────────────────── */
+
+/**
+ * .mapExpand — applied to pageFrame when the Map tab is active.
+ * Collapses header and footer out of view so midZone fills the full frame.
+ * gap and padding are zeroed so no dead space remains.
+ * Transitions on headerZone and footerZone are defined on those selectors above.
+ */
+.mapExpand {
+  gap: 0;
+  padding: 0;
+}
+
+/* Prevent flex from collapsing headerZone below Row 1's height (60px) */
+.mapExpand .headerZone {
+  min-height: 60px;
+}
+
+.mapExpand .footerZone {
+  max-height: 0;
+}
+
+/* ── Responsive breakpoints ─────────────────────────────────────────────── */
+
+/**
+ * Narrow tablet / large phone (768px–899px) — hide left column only.
+ * Covers phones in landscape and small tablets in portrait.
+ * Standard tablet landscape (iPad 1024px+) shows all three columns.
+ */
+@media (max-width: 899px) {
+  .leftCol {
+    display: none;
+  }
+}
+
+/**
+ * Mobile (<768px) — stack all three columns vertically.
+ * midZone becomes a scrollable vertical column.
+ * Each column goes full width with auto height.
+ * Mid column gets a fixed height so MidPaneMap (absolute-positioned) renders.
+ */
+@media (max-width: 767px) {
+  .midZone {
+    flex-direction: column;
+    align-items: stretch;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .leftCol,
+  .midCol,
+  .rightCol {
+    width: 100%;
+    flex-shrink: 0;
+  }
+  .leftCol,
+  .rightCol {
+    display: block;
+    height: auto;
+  }
+  .leftCol .column,
+  .rightCol .column {
+    height: auto;
+    min-height: 0;
+    overflow-y: visible;
+  }
+  .midCol {
+    height: 60vw;
+    min-height: 280px;
+    max-height: 420px;
+  }
+}

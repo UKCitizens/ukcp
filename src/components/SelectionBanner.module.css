@@ -1,0 +1,13 @@
+.banner {
+  border-left: 4px solid #2E7D32;
+  background-color: #f1f8f1;
+  width: 100%;
+}
+
+.confirmButton {
+  background-color: #2E7D32;
+}
+
+.confirmButton:hover {
+  background-color: #1b5e20;
+}

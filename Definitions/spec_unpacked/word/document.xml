@@ -1,0 +1,5434 @@
+<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" mc:Ignorable="w14 w15 wp14">
+  <w:body>
+    <w:p>
+      <w:pPr>
+        <w:spacing w:after="80"/>
+        <w:jc w:val="center"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+          <w:bCs/>
+          <w:color w:val="2E7D32"/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+        </w:rPr>
+        <w:t xml:space="preserve">UKCP</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:spacing w:after="80"/>
+        <w:jc w:val="center"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:color w:val="1A3A2A"/>
+          <w:sz w:val="26"/>
+          <w:szCs w:val="26"/>
+        </w:rPr>
+        <w:t xml:space="preserve">UK Citizens Portal</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:spacing w:after="320"/>
+        <w:jc w:val="center"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+          <w:bCs/>
+          <w:color w:val="1A3A2A"/>
+          <w:sz w:val="28"/>
+          <w:szCs w:val="28"/>
+        </w:rPr>
+        <w:t xml:space="preserve">Sprint 4 — Task Specification</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="2500"/>
+        <w:gridCol w:w="6860"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Version</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">1.0 — Status: Active</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Date</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">3 April 2026</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Authored by</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Ali (Cowork) in collaboration with Phil Spraglack</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Spec file</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Definitions/UKCP-Sprint4-Task-Spec-v1.0.docx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">1. Purpose</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">This document is the authoritative task specification for UKCP Sprint 4. It defines, in order of execution, every task that Claude Code (Dex) must deliver. Each task includes the files to be created or modified, the technical requirements, and the acceptance conditions that must be met before the task is considered complete.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Nothing in this document is implemented until Phil has confirmed scope. Nothing is accepted until Phil has tested it. Ali owns this document and updates it as the sprint progresses.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">2. Sprint Goal</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Sprint 4 resolves two issues discovered during Sprint 3 runtime review:</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">First, the visual structure requires polish. The header, body columns, and footer need a constrained content width (95%, centred) and subtle row separators so each structural section is visually distinct. The backgrounds remain full-width; only the content zones shrink.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Second, the hierarchy navigation is completely broken. The Sprint 3 design deprecated the two-panel HeaderNavigation component and replaced it with a stepper walker in Row 3 — but the stepper only handles back-navigation. Forward navigation (selecting region, county, area, constituency) has no UI. The panel1, panel2, and select values from useNavigation are destructured in Locations.jsx but never passed to any component. Sprint 4 restores forward navigation by creating a LocationNav component that lives in the mid pane. The mid pane splits into two vertical sections: LocationNav on top (always visible when walker is open), PlacesCard below (appears only once constituency is reached, which is the common key between the hierarchy dataset and the places dataset).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">At sprint end, the header must be visually polished at 95% content width, hierarchy navigation must work end-to-end in the mid pane, and PlacesCard must appear filtered by county once the user navigates to constituency level.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">3. Execution Sequence</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="1200"/>
+        <w:gridCol w:w="4560"/>
+        <w:gridCol w:w="3600"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="1A3A2A" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Task</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4560"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="1A3A2A" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Title</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="1A3A2A" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Dependency</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">T1</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4560"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Visual Polish — Content Width &amp; Row Distinction</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">None — first delivery</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">T2</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4560"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Mid Pane Navigation — LocationNav + PlacesCard Gate</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">T1 build passing</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">4. Baseline State</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Sprint 3 delivered the four-row header scaffold with a clean build (0 errors, 0 warnings, 6874 modules). The following issues were identified at runtime review:</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="2500"/>
+        <w:gridCol w:w="6860"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Issue</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Description</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Header full-width</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Row content extends to screen edges. Should be 95% width, centred. Row backgrounds stay full-width.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No row distinction</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Header rows with identical backgrounds run together visually. Thin separator needed between each row.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No section gaps</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Body columns butt directly against the header bottom and footer top. A small gap improves legibility.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Footer full-width</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Footer content should match the constrained header width.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Navigation broken</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">panel1, panel2, and select from useNavigation are unused. HeaderNavigation was deprecated but no forward navigation was provided. The walker stepper (Row 3) handles back-nav only. The mid pane shows PlacesCard but it can never load because county is never reachable via the UI.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+          <w:bCs/>
+        </w:rPr>
+        <w:t xml:space="preserve">4.1 Current Mid Pane Wiring</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Locations.jsx calls useNavigation and receives { path, panel1, panel2, select, goTo, reset }. Only path, goTo, and reset are currently used. panel1, panel2, and select are destructured but discarded.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+          <w:bCs/>
+        </w:rPr>
+        <w:t xml:space="preserve">4.2 usePlacesFilter Behaviour</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">usePlacesFilter(places, path) derives county = path.find(p =&gt; p.level === 'county')?.value. countyActive is true when county is not null. filterPlaces filters place.csv rows by matching place.County to the county in the path. Because the user cannot navigate to county level (no forward nav UI), countyActive is always false at runtime.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+          <w:bCs/>
+        </w:rPr>
+        <w:t xml:space="preserve">4.3 Constituency as Common Key</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">The hierarchy dataset (newplace.csv) and the places dataset (place.csv) share constituency as the common key. The places filter is based on county (the parent of constituency in the path), meaning PlacesCard shows all places in the county containing the selected constituency. PlacesCard should not appear until the user has navigated to constituency level — that is the semantic point at which both datasets are in scope.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">5. Task Specifications</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading2"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">T1 — Visual Polish: Content Width &amp; Row Distinction</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="2500"/>
+        <w:gridCol w:w="6860"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Goal</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Constrain header row content to 95% width centred. Add thin bottom borders between header rows. Add a gap between the header zone and the body columns. Constrain footer content to 95% width.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Deliverables</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">All files listed, complete and JSDoc-compliant. No snippets.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">Files to Modify</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="3600"/>
+        <w:gridCol w:w="5760"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">File</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Change</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow1.module.css</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Add .rowInner class: max-width 95%; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between. Add .row border-bottom: 1px solid var(--mantine-color-dark-3).</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow1.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Wrap the existing Group content in a Box with className={classes.rowInner}. Add className={classes.row} to the outer Box.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow2.module.css</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Add .rowInner class (same spec as Row 1). Add .row border-bottom rule.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow2.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Wrap content in .rowInner Box. Outer Box gets .row class.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow3.module.css</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Add .rowInner class. Add .row border-bottom rule.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow3.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Wrap content in .rowInner Box. Outer Box gets .row class.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow4.module.css</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Add .rowInner class. No bottom border on Row 4 (it is the base of the header).</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Header/SiteHeaderRow4.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Wrap content in .rowInner Box.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/PageLayout.module.css</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Add padding or margin to .appShellMain top (8px gap between header base and body columns). This supplements or adjusts Mantine's default AppShell.Main offset.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Layout/Footer.module.css</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Add .footerInner class: max-width: 95%; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: center.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/Layout/Footer.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Wrap footer text content in .footerInner Box.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">T1 Acceptance Conditions</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="1200"/>
+        <w:gridCol w:w="8160"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Acceptance Condition</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-1</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">npm run build completes without errors or warnings.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-2</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Row 1 content (UKCP wordmark + icon clusters) is inset from screen edges. Row 1 background remains full width.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-3</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">A visible bottom border separates Row 1 from Row 2, Row 2 from Row 3, and Row 3 from Row 4.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-4</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">A small gap (8px) is visible between the header base (Row 4 bottom) and the top of the body columns.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-5</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Footer content is centred and inset to match the body column width. Footer background remains full width.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-6</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">At 1400px viewport: row content inset approximately 36px each side (95% of 1400 = 1330px). No horizontal scroll.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-7</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">All Sprint 1–3 regression passes. No layout regressions on any row or column.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading2"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">T2 — Mid Pane Navigation: LocationNav + PlacesCard Gate</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="2500"/>
+        <w:gridCol w:w="6860"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Goal</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Create a LocationNav component that renders the two-panel hierarchy navigator (regions + dynamic children) in the mid pane. Wire panel1, panel2, and select from useNavigation. Gate PlacesCard visibility on constituency level (constituencyActive). Both sections coexist in the mid pane once constituency is reached, delivering simultaneous browsing of the hierarchy and physical places.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Dependency</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">T1 build passing.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Deliverables</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">All files listed, complete and JSDoc-compliant. No snippets.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">Files to Create</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="3600"/>
+        <w:gridCol w:w="5760"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">File</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Purpose</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/LocationNav.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Two-panel hierarchy navigator. Panel 1: regions list. Panel 2: children at current depth with dynamic label. Calls select() on click. See requirements below.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/LocationNav.module.css</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">CSS module for LocationNav layout and panel styling.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">Files to Modify</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="3600"/>
+        <w:gridCol w:w="5760"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">File</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Change</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/pages/Locations.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Import LocationNav. Derive constituencyActive = path.some(p =&gt; p.level === 'constituency'). Build midPane as a Stack: LocationNav (visible when walkerOpen), PlacesCard (pass constituencyActive as countyActive prop). Pass panel1, panel2, path, select to LocationNav.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="3600"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">src/components/PlacesCard.jsx</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="5760"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Update the countyActive=false prompt text from &quot;Navigate to a county to see places.&quot; to &quot;Navigate to a constituency to see places.&quot; No other changes.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">LocationNav Requirements</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Props: { panel1, panel2, path, select }. No hook calls. All state via props.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Panel 1 — Regions. Always rendered. Label: &quot;Regions&quot;. Renders a Mantine ScrollArea containing a NavLink for each item in panel1. Active item: path[0]?.value. On click: calls select('region', value).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Panel 2 — Dynamic children. Renders when panel1 has entries. Label and nextLevel driven by DEPTH_CONFIG (inline constant, do not import from deprecated HeaderNavigation.jsx). DEPTH_CONFIG maps path.length (capped at 4) to { label, nextLevel }:</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="1500"/>
+        <w:gridCol w:w="1500"/>
+        <w:gridCol w:w="2160"/>
+        <w:gridCol w:w="4200"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">path.length</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">label</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">nextLevel</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Notes</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">0</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">(dimmed prompt)</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">—</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No region selected. Panel 2 shows dimmed &quot;Select a region&quot; prompt. No items.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">1</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Counties</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">county</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Region selected. Panel 2 lists counties.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">2</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Areas</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">area</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">County selected. Panel 2 lists areas.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">3</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Constituencies</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">constituency</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Area selected. Panel 2 lists constituencies.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">4</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Localities</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">locale</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="4200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Constituency selected. Panel 2 lists localities (wards).</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Panel 2 active item: path[path.length]?.value (the most recent selection at that depth). On click: calls select(config.nextLevel, value).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Layout: Mantine Group with grow, align=&quot;flex-start&quot;, gap=&quot;md&quot;. Each panel is a Box containing a Text label and a ScrollArea (h=280) with NavLink items. No inline styles. No sx prop. CSS module for panel border, background, and spacing.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">Locations.jsx Mid Pane Structure</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">The midPane prop passed to PageLayout becomes:</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="2500"/>
+        <w:gridCol w:w="6860"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Condition</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Mid Pane Content</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">walkerOpen = false, constituencyActive = false</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">PlacesCard only (countyActive=false — shows prompt).</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">walkerOpen = true, constituencyActive = false</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">LocationNav only. No PlacesCard yet.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">walkerOpen = true, constituencyActive = true</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Stack: LocationNav on top, horizontal divider, PlacesCard below. Both scrollable independently.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">walkerOpen = false, constituencyActive = true</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">PlacesCard only (countyActive=true — shows places).</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Note: constituencyActive = path.some(p =&gt; p.level === 'constituency'). The countyActive value returned by usePlacesFilter is NOT used as the PlacesCard gate — constituencyActive replaces it. The grouped data from usePlacesFilter is still used (it correctly derives county from the path and filters place.csv by county).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">T2 Acceptance Conditions</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="1200"/>
+        <w:gridCol w:w="8160"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Acceptance Condition</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-1</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">npm run build completes without errors or warnings.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-2</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Clicking the Places icon shows the walker (Row 3) and renders LocationNav in the mid pane. Panel 1 lists English regions.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-3</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Clicking a region in Panel 1 calls select('region', value). Path advances. Row 3 stepper updates active step. Panel 2 shows counties for that region.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-4</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Navigating through region → county → area → constituency advances the stepper and updates Panel 2 label (Counties → Areas → Constituencies).</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-5</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Once constituency is selected (constituencyActive = true): PlacesCard appears below LocationNav in the mid pane, showing places filtered by county.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-6</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">PlacesCard does not appear until constituency depth is reached. Before that, only LocationNav is shown in the mid pane.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-7</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Clicking a completed step in Row 3 navigates back correctly. Path truncates. LocationNav updates. If path retreats above constituency, PlacesCard disappears.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-8</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">PlacesCard prompt text reads &quot;Navigate to a constituency to see places.&quot; (not &quot;county&quot;).</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-9</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Closing the walker (clicking Places icon again): LocationNav hides. PlacesCard remains if constituencyActive.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="1200"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">AC-10</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="8160"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">All Sprint 1–3 regression passes.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">6. Standards (applies to all tasks)</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">These are binding. Any file that fails these standards is rejected without further review.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:type="dxa" w:w="9360"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:color="auto" w:sz="4"/>
+          <w:left w:val="single" w:color="auto" w:sz="4"/>
+          <w:bottom w:val="single" w:color="auto" w:sz="4"/>
+          <w:right w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideH w:val="single" w:color="auto" w:sz="4"/>
+          <w:insideV w:val="single" w:color="auto" w:sz="4"/>
+        </w:tblBorders>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="2500"/>
+        <w:gridCol w:w="6860"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Standard</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:shd w:fill="E8F0E8" w:val="clear"/>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:bCs/>
+              </w:rPr>
+              <w:t xml:space="preserve">Requirement</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">JSDoc</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Every file has a file-level JSDoc block. Every exported function has @param and @returns.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No inline styles</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No style={} props. Mantine className with CSS module, or Mantine layout props only.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No sx prop</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Mantine v7: sx is deprecated. Do not use.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No TypeScript</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">All files are .js or .jsx only.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Props only</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">No component calls useNavigation, useSelectionState, or usePlacesFilter directly. State comes via props from Locations.jsx.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Complete files</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Dex delivers complete files only. No snippets, no partial updates.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Mantine only</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">All layout uses Mantine components. No other layout libraries.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:trPr>
+          <w:tblHeader w:val="false"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="2500"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">HEADER_ROWS constants</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:type="dxa" w:w="6860"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:left w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:bottom w:val="single" w:color="CCCCCC" w:sz="1"/>
+              <w:right w:val="single" w:color="CCCCCC" w:sz="1"/>
+            </w:tcBorders>
+            <w:tcMar>
+              <w:top w:type="dxa" w:w="80"/>
+              <w:left w:type="dxa" w:w="120"/>
+              <w:bottom w:type="dxa" w:w="80"/>
+              <w:right w:type="dxa" w:w="120"/>
+            </w:tcMar>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:b w:val="false"/>
+                <w:bCs w:val="false"/>
+              </w:rPr>
+              <w:t xml:space="preserve">Row height references use named constants from HEADER_ROWS.js. No numeric literals for row heights.</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">7. Out of Scope for Sprint 4</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Scotland, Wales, Northern Ireland hierarchy (deferred — panel1 English regions only, TODO marker in place).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">UKBanner.png background image for Row 2 (gradient placeholder correct until a future sprint).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Scroll-based Row 4 visibility trigger (Row 4 always visible in Sprint 4).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Profile, Help, Settings, Home, and MyVote icon functionality (stubs only).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Left and right pane content (future sprints).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Constituency-level filtering of PlacesCard (current filter is by county, which is the parent level. A future sprint will refine to constituency once the data join is confirmed).</w:t>
+      </w:r>
+    </w:p>
+    <w:sectPr>
+      <w:headerReference w:type="default" r:id="rId6"/>
+      <w:footerReference w:type="default" r:id="rId7"/>
+      <w:pgSz w:w="12240" w:h="15840" w:orient="portrait"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/>
+      <w:pgNumType/>
+      <w:docGrid w:linePitch="360"/>
+    </w:sectPr>
+  </w:body>
+</w:document>

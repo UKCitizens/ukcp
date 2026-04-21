@@ -1,0 +1,131 @@
+/**
+ * PlacesCard.module.css
+ * Styles for the left-pane places browser — type selector, alpha strip, list.
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 8px;
+}
+
+/* ── Pane title ──────────────────────────────────────────────────────────── */
+
+.paneTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mantine-color-dark-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--mantine-color-gray-3);
+  flex-shrink: 0;
+}
+
+/* ── Type selector row ───────────────────────────────────────────────────── */
+
+.typeRow {
+  display: flex;
+  gap: 3px;
+  flex-wrap: nowrap;
+}
+
+.typeBtn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid var(--mantine-color-dark-4);
+  background: none;
+  color: var(--mantine-color-dark-2);
+  cursor: pointer;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.typeBtn:hover:not(.typeBtnDisabled) {
+  border-color: var(--mantine-color-green-6);
+  color: var(--mantine-color-green-6);
+}
+
+.typeBtnActive {
+  background-color: var(--mantine-color-green-7);
+  border-color: var(--mantine-color-green-7);
+  color: #fff;
+}
+
+.typeBtnDisabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ── Alpha strip ─────────────────────────────────────────────────────────── */
+
+.alphaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.alphaBtn {
+  font-size: 10px;
+  font-weight: 600;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  border: none;
+  background: none;
+  color: var(--mantine-color-dark-2);
+  cursor: pointer;
+}
+
+.alphaBtn:hover {
+  background-color: var(--mantine-color-green-0);
+  color: var(--mantine-color-green-7);
+}
+
+.alphaBtnActive {
+  background-color: var(--mantine-color-green-6);
+  color: #fff;
+}
+
+/* ── Place list ──────────────────────────────────────────────────────────── */
+
+.listWrap {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.placeBtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+  padding: 2px 0;
+  background: none;
+  border: none;
+  color: var(--mantine-color-green-7);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.placeBtn:hover {
+  color: var(--mantine-color-green-9);
+  text-decoration: underline;
+}
+
+.placeBtnFocus {
+  color: #e67700;
+  font-weight: 700;
+}
+
+.empty {
+  font-size: 11px;
+  color: var(--mantine-color-dark-4);
+  padding: 8px 0;
+}

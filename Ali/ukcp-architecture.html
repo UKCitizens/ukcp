@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>UKCP Architecture</title>
+<style>
+  body { margin: 0; background: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; }
+</style>
+</head>
+<body>
+<svg width="1200" height="860" viewBox="0 0 1200 860" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f0fe;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d2e3fc;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="clientGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a73e8;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#1557b0;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="serverGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1F4E79;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#13314e;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="l0Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#34a853"/>
+      <stop offset="100%" style="stop-color:#1e7e34"/>
+    </linearGradient>
+    <linearGradient id="l1Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbc04"/>
+      <stop offset="100%" style="stop-color:#d6960a"/>
+    </linearGradient>
+    <linearGradient id="l2Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ea4335"/>
+      <stop offset="100%" style="stop-color:#b3261e"/>
+    </linearGradient>
+    <linearGradient id="extGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6c757d"/>
+      <stop offset="100%" style="stop-color:#495057"/>
+    </linearGradient>
+    <linearGradient id="gitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f05033"/>
+      <stop offset="100%" style="stop-color:#c0392b"/>
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7030A0"/>
+      <stop offset="100%" style="stop-color:#4a1d6e"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#00000033"/>
+    </filter>
+    <filter id="shadowSm" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#00000022"/>
+    </filter>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#1a73e8"/>
+    </marker>
+    <marker id="arrowGrey" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6c757d"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34a853"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ea4335"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7030A0"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f05033"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="860" fill="#f0f4f8" rx="0"/>
+
+  <!-- Title -->
+  <text x="600" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#1F4E79" font-family="Arial">UKCP — Application Architecture &amp; Data Store Model</text>
+  <text x="600" y="58" text-anchor="middle" font-size="12" fill="#6c757d" font-family="Arial">Cache layers L0 → L1 → L2 → Mongo (local-first) → External APIs · Static source pipeline</text>
+
+  <!-- CLOUD BOX -->
+  <rect x="90" y="88" width="1020" height="580" rx="24" ry="24"
+        fill="url(#cloudGrad)" stroke="#4285f4" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="90" y="88" width="180" height="30" rx="12" ry="0" fill="#4285f4"/>
+  <text x="180" y="108" text-anchor="middle" font-size="13" font-weight="bold" fill="white" font-family="Arial">☁  Cloud Host (Agnostic)</text>
+
+  <!-- CLIENT SECTION -->
+  <rect x="115" y="132" width="440" height="510" rx="14"
+        fill="white" stroke="#1a73e8" stroke-width="1.5" filter="url(#shadowSm)" opacity="0.95"/>
+  <rect x="115" y="132" width="440" height="36" rx="14" fill="url(#clientGrad)"/>
+  <rect x="115" y="150" width="440" height="18" fill="url(#clientGrad)"/>
+  <text x="335" y="156" text-anchor="middle" font-size="14" font-weight="bold" fill="white" font-family="Arial">CLIENT — Browser</text>
+
+  <!-- React App box -->
+  <rect x="135" y="182" width="400" height="70" rx="10"
+        fill="#e8f0fe" stroke="#1a73e8" stroke-width="1" filter="url(#shadowSm)"/>
+  <text x="335" y="206" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a73e8" font-family="Arial">React 18 + Vite 5 + Mantine v7</text>
+  <text x="335" y="224" text-anchor="middle" font-size="11" fill="#444" font-family="Arial">Locations · MyHome · MyVote · Groups · Committees</text>
+  <text x="335" y="240" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">Leaflet.js map · OSM tiles · React Router · useNavigation</text>
+
+  <!-- L0 box -->
+  <rect x="135" y="268" width="400" height="100" rx="10"
+        fill="#e6f4ea" stroke="#34a853" stroke-width="1.5" filter="url(#shadowSm)"/>
+  <rect x="135" y="268" width="400" height="28" rx="10" fill="url(#l0Grad)"/>
+  <rect x="135" y="285" width="400" height="11" fill="url(#l0Grad)"/>
+  <text x="245" y="287" text-anchor="middle" font-size="12" font-weight="bold" fill="white" font-family="Arial">L0 — Static Bundle</text>
+  <rect x="148" y="303" width="82" height="50" rx="6" fill="white" stroke="#34a853" stroke-width="1"/>
+  <text x="189" y="321" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e7e34" font-family="Arial">geo-content</text>
+  <text x="189" y="334" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">.json</text>
+  <text x="189" y="346" text-anchor="middle" font-size="8" fill="#888" font-family="Arial">115 entries</text>
+  <rect x="241" y="303" width="82" height="50" rx="6" fill="white" stroke="#34a853" stroke-width="1"/>
+  <text x="282" y="321" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e7e34" font-family="Arial">place.csv</text>
+  <text x="282" y="334" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">LOC rows</text>
+  <text x="282" y="346" text-anchor="middle" font-size="8" fill="#888" font-family="Arial">c/t/v/h + lat/lng</text>
+  <rect x="334" y="303" width="82" height="50" rx="6" fill="white" stroke="#34a853" stroke-width="1"/>
+  <text x="375" y="321" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e7e34" font-family="Arial">navConfig.js</text>
+  <text x="375" y="334" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">containment</text>
+  <text x="375" y="346" text-anchor="middle" font-size="8" fill="#888" font-family="Arial">.json · wards.csv</text>
+  <rect x="427" y="303" width="93" height="50" rx="6" fill="white" stroke="#34a853" stroke-width="1"/>
+  <text x="473" y="321" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e7e34" font-family="Arial">flags + assets</text>
+  <text x="473" y="334" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">/public/assets</text>
+  <text x="473" y="346" text-anchor="middle" font-size="8" fill="#888" font-family="Arial">static images</text>
+
+  <!-- L1 box -->
+  <rect x="135" y="382" width="400" height="90" rx="10"
+        fill="#fffde7" stroke="#fbbc04" stroke-width="1.5" filter="url(#shadowSm)"/>
+  <rect x="135" y="382" width="400" height="28" rx="10" fill="url(#l1Grad)"/>
+  <rect x="135" y="399" width="400" height="11" fill="url(#l1Grad)"/>
+  <text x="245" y="401" text-anchor="middle" font-size="12" font-weight="bold" fill="white" font-family="Arial">L1 — localStorage (Client Cache)</text>
+  <text x="335" y="428" text-anchor="middle" font-size="11" fill="#555" font-family="Arial">keyed  content:v3:{type}:{slug}</text>
+  <text x="335" y="446" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">7-day TTL · checked before L2 · written on successful fetch</text>
+  <text x="335" y="462" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">No null stubs written · version key busts stale data</text>
+
+  <!-- useLocationContent hook -->
+  <rect x="135" y="486" width="400" height="60" rx="10"
+        fill="#fce4ec" stroke="#e91e63" stroke-width="1" filter="url(#shadowSm)"/>
+  <text x="335" y="508" text-anchor="middle" font-size="12" font-weight="bold" fill="#880e4f" font-family="Arial">useLocationContent( type, id )</text>
+  <text x="335" y="526" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">L0 → L1 → L2 (Mongo local-first → Wiki fallback) → write L1</text>
+  <text x="335" y="541" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">Returns: extract · summary · thumbnail · population · geoData</text>
+
+  <!-- User preferences note -->
+  <rect x="135" y="560" width="400" height="62" rx="10"
+        fill="#f3e5f5" stroke="#7030A0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="335" y="580" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a148c" font-family="Arial">User Preferences (future)</text>
+  <text x="335" y="597" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">News source prefs · layer toggles · location defaults</text>
+  <text x="335" y="612" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">localStorage interim → MongoDB when DB layer active</text>
+
+  <!-- SERVER SECTION -->
+  <rect x="645" y="132" width="440" height="510" rx="14"
+        fill="white" stroke="#1F4E79" stroke-width="1.5" filter="url(#shadowSm)" opacity="0.95"/>
+  <rect x="645" y="132" width="440" height="36" rx="14" fill="url(#serverGrad)"/>
+  <rect x="645" y="150" width="440" height="18" fill="url(#serverGrad)"/>
+  <text x="865" y="156" text-anchor="middle" font-size="14" font-weight="bold" fill="white" font-family="Arial">SERVER — Express / Node.js</text>
+
+  <!-- Server app box -->
+  <rect x="665" y="182" width="400" height="70" rx="10"
+        fill="#e8eaf6" stroke="#1F4E79" stroke-width="1" filter="url(#shadowSm)"/>
+  <text x="865" y="203" text-anchor="middle" font-size="13" font-weight="bold" fill="#1F4E79" font-family="Arial">Express 4 + server.js</text>
+  <text x="865" y="220" text-anchor="middle" font-size="11" fill="#444" font-family="Arial">Static serve · API proxy · Content endpoint · Admin endpoints</text>
+  <text x="865" y="236" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">GET /api/content/:type/:slug · PATCH /api/admin/geo-content-mongo/:type/:slug</text>
+
+  <!-- L2 box -->
+  <rect x="665" y="268" width="400" height="155" rx="10"
+        fill="#fce8e6" stroke="#ea4335" stroke-width="1.5" filter="url(#shadowSm)"/>
+  <rect x="665" y="268" width="400" height="28" rx="10" fill="url(#l2Grad)"/>
+  <rect x="665" y="285" width="400" height="11" fill="url(#l2Grad)"/>
+  <text x="775" y="287" text-anchor="middle" font-size="12" font-weight="bold" fill="white" font-family="Arial">L2 — In-Memory Cache (Server)</text>
+  <text x="865" y="316" text-anchor="middle" font-size="11" fill="#555" font-family="Arial">JavaScript Map · LRU eviction · max ~5,000 entries</text>
+  <!-- TTL table -->
+  <rect x="678" y="326" width="374" height="56" rx="6" fill="white" stroke="#ea4335" stroke-width="0.5"/>
+  <text x="865" y="342" text-anchor="middle" font-size="10" font-weight="bold" fill="#333" font-family="Arial">TTL by content type</text>
+  <line x1="678" y1="346" x2="1052" y2="346" stroke="#ea4335" stroke-width="0.5"/>
+  <text x="730" y="358" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">Country / Region</text>
+  <text x="825" y="358" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">County</text>
+  <text x="910" y="358" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">City / Town / Place</text>
+  <text x="1005" y="358" text-anchor="middle" font-size="9" fill="#555" font-family="Arial">Constituency</text>
+  <text x="730" y="373" text-anchor="middle" font-size="10" font-weight="bold" fill="#ea4335" font-family="Arial">90 days</text>
+  <text x="825" y="373" text-anchor="middle" font-size="10" font-weight="bold" fill="#ea4335" font-family="Arial">30 days</text>
+  <text x="910" y="373" text-anchor="middle" font-size="10" font-weight="bold" fill="#ea4335" font-family="Arial">14 days</text>
+  <text x="1005" y="373" text-anchor="middle" font-size="10" font-weight="bold" fill="#ea4335" font-family="Arial">7 days</text>
+  <!-- Mongo local-first note -->
+  <rect x="678" y="388" width="374" height="26" rx="4" fill="#f3e5f5" stroke="#7030A0" stroke-width="0.8"/>
+  <text x="865" y="400" text-anchor="middle" font-size="9" font-weight="bold" fill="#4a148c" font-family="Arial">L2 miss → Mongo local-first check (geo_content)</text>
+  <text x="865" y="412" text-anchor="middle" font-size="9" fill="#6a1b9a" font-family="Arial">summary/extract present → return · absent → call Wikipedia · upsert result to Mongo</text>
+
+  <!-- Wikipedia source -->
+  <rect x="665" y="437" width="190" height="75" rx="10"
+        fill="#e8f5e9" stroke="#34a853" stroke-width="1.2" filter="url(#shadowSm)"/>
+  <text x="760" y="459" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e7e34" font-family="Arial">Wikipedia REST</text>
+  <text x="760" y="475" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">/api/rest_v1/page/</text>
+  <text x="760" y="489" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">summary/{title}</text>
+  <text x="760" y="503" text-anchor="middle" font-size="9" fill="#888" font-family="Arial">extract + thumbnail</text>
+
+  <!-- Parliament source -->
+  <rect x="875" y="437" width="190" height="75" rx="10"
+        fill="#e3f2fd" stroke="#1a73e8" stroke-width="1.2" filter="url(#shadowSm)"/>
+  <text x="970" y="459" text-anchor="middle" font-size="11" font-weight="bold" fill="#1557b0" font-family="Arial">Parliament API</text>
+  <text x="970" y="475" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">Location/Constituency</text>
+  <text x="970" y="489" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">/Search endpoint</text>
+  <text x="970" y="503" text-anchor="middle" font-size="9" fill="#888" font-family="Arial">MP name · party · portrait</text>
+
+  <!-- Future APIs dashed -->
+  <rect x="665" y="525" width="400" height="97" rx="10"
+        fill="#f3e5f5" stroke="#7030A0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="865" y="547" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a148c" font-family="Arial">Future External Sources</text>
+  <text x="740" y="566" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">News / RSS feeds</text>
+  <text x="865" y="566" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">TheyWorkForYou</text>
+  <text x="988" y="566" text-anchor="middle" font-size="10" fill="#555" font-family="Arial">mySociety / MapIt</text>
+  <text x="740" y="583" text-anchor="middle" font-size="9" fill="#888" font-family="Arial">BBC / Guardian RSS</text>
+  <text x="865" y="583" text-anchor="middle" font-size="9" fill="#888" font-family="Arial">MP voting record</text>
+  <text x="988" y="583" text-anchor="middle" font-size="9" fill="#888" font-family="Arial">Councillor data</text>
+  <text x="865" y="606" text-anchor="middle" font-size="10" fill="#7030A0" font-family="Arial" font-style="italic">All routed via L2 proxy — client unchanged when added</text>
+
+  <!-- ARROW: Client ↔ Server (L1 miss → L2) -->
+  <line x1="555" y1="430" x2="645" y2="430" stroke="#e91e63" stroke-width="2"
+        marker-end="url(#arrowRed)" stroke-dasharray="6,3"/>
+  <text x="600" y="422" text-anchor="middle" font-size="9" fill="#880e4f" font-family="Arial" font-weight="bold">L1 miss</text>
+  <line x1="645" y1="445" x2="555" y2="445" stroke="#34a853" stroke-width="2"
+        marker-end="url(#arrowGreen)"/>
+  <text x="600" y="460" text-anchor="middle" font-size="9" fill="#1e7e34" font-family="Arial" font-weight="bold">response</text>
+
+  <!-- GIT REPO (bottom left) -->
+  <rect x="90" y="692" width="310" height="100" rx="14"
+        fill="white" stroke="#f05033" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="90" y="692" width="310" height="32" rx="14" fill="url(#gitGrad)"/>
+  <rect x="90" y="710" width="310" height="14" fill="url(#gitGrad)"/>
+  <text x="245" y="713" text-anchor="middle" font-size="13" font-weight="bold" fill="white" font-family="Arial">⑂  Git Repository</text>
+  <text x="245" y="738" text-anchor="middle" font-size="11" fill="#555" font-family="Arial">Source of all L0 static data files</text>
+  <text x="245" y="754" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">geo-content.json · place.csv · navConfig.js</text>
+  <text x="245" y="769" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">containment.json · wards.csv · seed scripts</text>
+  <text x="245" y="783" text-anchor="middle" font-size="9" fill="#f05033" font-family="Arial" font-style="italic">build scripts run at deploy — atomic write, sidecar pattern</text>
+
+  <!-- Arrow: Git → Cloud -->
+  <line x1="310" y1="692" x2="310" y2="675" stroke="#f05033" stroke-width="2"
+        marker-end="url(#arrowOrange)"/>
+  <text x="350" y="686" text-anchor="middle" font-size="9" fill="#f05033" font-family="Arial" font-weight="bold">deploy / build</text>
+
+  <!-- MONGODB — LIVE -->
+  <rect x="760" y="688" width="370" height="130" rx="14"
+        fill="white" stroke="#7030A0" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="760" y="688" width="370" height="32" rx="14" fill="url(#dbGrad)"/>
+  <rect x="760" y="706" width="370" height="14" fill="url(#dbGrad)"/>
+  <text x="945" y="709" text-anchor="middle" font-size="13" font-weight="bold" fill="white" font-family="Arial">🗄  MongoDB — geo_content  ● LIVE</text>
+  <!-- live badge -->
+  <rect x="1082" y="691" width="38" height="16" rx="8" fill="#34a853"/>
+  <text x="1101" y="703" text-anchor="middle" font-size="9" font-weight="bold" fill="white" font-family="Arial">LIVE</text>
+
+  <text x="945" y="733" text-anchor="middle" font-size="11" fill="#555" font-family="Arial">localhost:27017 → ukcp.geo_content</text>
+  <text x="945" y="749" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">Fields: type · slug · name · extract · summary · thumbnail · wikiUrl · population · updatedAt</text>
+  <text x="945" y="764" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">Write paths: (1) Wikipedia upsert on fetch  (2) PlaceCorrector summary save</text>
+  <text x="945" y="779" text-anchor="middle" font-size="10" fill="#888" font-family="Arial">Read path: L2 local-first · summary overrides extract if present</text>
+  <text x="945" y="795" text-anchor="middle" font-size="9" fill="#7030A0" font-family="Arial" font-style="italic">Seed: scripts/seed-geo-content.js · Index: { type, slug } unique</text>
+  <text x="945" y="810" text-anchor="middle" font-size="9" fill="#888" font-family="Arial">Atlas migration target when GitHub/Railway infra is stood up</text>
+
+  <!-- Arrow: MongoDB ↔ Server (live, solid) -->
+  <line x1="865" y1="688" x2="865" y2="670" stroke="#7030A0" stroke-width="2"
+        marker-end="url(#arrowPurple)"/>
+  <line x1="880" y1="670" x2="880" y2="688" stroke="#7030A0" stroke-width="2"
+        marker-end="url(#arrowPurple)"/>
+  <text x="940" y="665" text-anchor="middle" font-size="9" fill="#7030A0" font-family="Arial" font-weight="bold">local-first read / upsert write</text>
+
+  <!-- LEGEND -->
+  <rect x="415" y="712" width="330" height="96" rx="10" fill="white" stroke="#ccc" stroke-width="1" filter="url(#shadowSm)"/>
+  <text x="580" y="730" text-anchor="middle" font-size="11" font-weight="bold" fill="#333" font-family="Arial">Cache Layer Key</text>
+  <rect x="433" y="739" width="14" height="14" rx="3" fill="#34a853"/>
+  <text x="453" y="751" font-size="10" fill="#333" font-family="Arial">L0 — Static bundle (deploy-time)</text>
+  <rect x="433" y="759" width="14" height="14" rx="3" fill="#fbbc04"/>
+  <text x="453" y="771" font-size="10" fill="#333" font-family="Arial">L1 — Browser localStorage (7d TTL)</text>
+  <rect x="433" y="779" width="14" height="14" rx="3" fill="#ea4335"/>
+  <text x="453" y="791" font-size="10" fill="#333" font-family="Arial">L2 — Server in-memory (type TTL)</text>
+  <rect x="607" y="739" width="14" height="14" rx="3" fill="#7030A0"/>
+  <text x="627" y="751" font-size="10" fill="#333" font-family="Arial">DB — MongoDB (live · local-first)</text>
+  <line x1="607" y1="766" x2="621" y2="766" stroke="#7030A0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="627" y="770" font-size="9" fill="#7030A0" font-family="Arial">= deferred / future</text>
+  <rect x="607" y="779" width="14" height="14" rx="3" fill="#4a148c" opacity="0.4"/>
+  <text x="627" y="791" font-size="10" fill="#333" font-family="Arial">Atlas — migration target</text>
+
+</svg>
+</body>
+</html>
