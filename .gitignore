@@ -6,7 +6,6 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
-public/data/newplace.csv
 public/data/place-corrections.json
 data-build/sources/GBPN.csv
 dex-instructions/data-build/sources/GBPN.csv
