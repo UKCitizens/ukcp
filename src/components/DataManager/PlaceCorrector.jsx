@@ -14,6 +14,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react'
+import API_BASE from '../../config.js'
 import {
   TextInput, Textarea, Select, Button, Badge, Stack, Group,
   Text, ScrollArea, Divider, ActionIcon, Loader, Alert, Pagination,
@@ -71,7 +72,7 @@ export default function PlaceCorrector() {
 
   // ── Load corrections overlay on mount ───────────────────────────────────
   useEffect(() => {
-    fetch('/api/admin/places/corrections')
+    fetch(`${API_BASE}/api/admin/places/corrections`)
       .then(r => r.ok ? r.json() : {})
       .then(setCorrections)
       .catch(() => setCorrections({}))
@@ -93,7 +94,7 @@ export default function PlaceCorrector() {
     if (typeFilter)      params.set('type',     typeFilter)
     if (missingFilter)   params.set('missing',  missingFilter)
 
-    fetch(`/api/admin/places?${params}`)
+    fetch(`${API_BASE}/api/admin/places?${params}`)
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json() })
       .then(data => { setResults(data.results); setTotal(data.total); setPage(pg) })
       .catch(e => setSearchError(e.message))
@@ -126,7 +127,7 @@ export default function PlaceCorrector() {
     setSaving(true)
     setSaveStatus(null)
     try {
-      const res = await fetch(`/api/admin/places/${encodeURIComponent(selectedId)}`, {
+      const res = await fetch(`${API_BASE}/api/admin/places/${encodeURIComponent(selectedId)}`, {
         method:  'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(form),
@@ -140,7 +141,7 @@ export default function PlaceCorrector() {
       if (form.summary !== undefined && selectedPlace) {
         const type = (selectedPlace.place_type ?? 'place').toLowerCase()
         const slug = (selectedPlace.name ?? '').replace(/ /g, '_')
-        fetch(`/api/admin/geo-content-mongo/${encodeURIComponent(type)}/${encodeURIComponent(slug)}`, {
+        fetch(`${API_BASE}/api/admin/geo-content-mongo/${encodeURIComponent(type)}/${encodeURIComponent(slug)}`, {
           method:  'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({ summary: form.summary }),

@@ -13,6 +13,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react'
+import API_BASE from '../../config.js'
 import {
   TextInput, Textarea, Button, Badge, Stack, Group, Text, Title,
   ScrollArea, Divider, ActionIcon, Loader, Alert, Tabs,
@@ -127,7 +128,7 @@ export default function DataManager() {
     setSaving(true)
     setSaveStatus(null)
     try {
-      const res = await fetch(`/api/admin/geo-content/${encodeURIComponent(selectedKey)}`, {
+      const res = await fetch(`${API_BASE}/api/admin/geo-content/${encodeURIComponent(selectedKey)}`, {
         method:  'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(form),

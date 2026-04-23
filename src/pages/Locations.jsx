@@ -353,6 +353,8 @@ export default function Locations() {
           onTabChange={handleTabChange}
           viewMode={viewMode}
           onToggleExpand={handleToggleExpand}
+          onPlaceSelect={handlePlaceSelect}
+          onGeoSelect={handleSelect}
           mapPane={
             <MidPaneMap
               places={places}

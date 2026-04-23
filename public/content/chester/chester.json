@@ -1,0 +1,153 @@
+{
+  "id": "chester",
+  "name": "Chester",
+  "type": "City",
+  "region": "North West",
+  "county": "Cheshire",
+  "country": "England",
+  "cityStatusYear": 1541,
+  "coordinates": { "lat": 53.1906, "lng": -2.8947 },
+  "population": {
+    "figure": 92760,
+    "year": 2021,
+    "areaPopulation": 371652,
+    "areaName": "Cheshire West and Chester",
+    "note": "Most populous settlement in the borough of Cheshire West and Chester"
+  },
+  "summary": "Chester is England's most intact walled medieval city, sitting on the River Dee near the Wales border. A Roman fortress founded in 79 AD, it became a Norman stronghold and medieval trading port, then reinvented itself as a Victorian leisure destination. Today it's a thriving city blending 2,000 years of heritage with modern retail, tourism, and public services.",
+  "history": {
+    "roman": "Chester was founded in 79 AD as Deva Victrix, a major Roman army camp under Emperor Vespasian. It housed one of the main military garrisons in Britain and featured a civilian amphitheatre capable of seating 8,000-10,000 people — the largest military amphitheatre in Britain.",
+    "medieval": "After the Romans left, Chester became part of the Anglo-Saxon Kingdom of Mercia. King Æthelred founded the Minster Church in 689, which later became the cathedral. The Normans built Chester Castle after 1071 to secure the Wales border. During the Middle Ages, Chester flourished as a wealthy trading port, and the iconic Chester Rows — unique multi-level shopping galleries — were built during this period.",
+    "georgian": "As centuries passed, the harbour silted up and by Georgian times the port had effectively died. Chester shifted from trade to tourism.",
+    "victorian": "The Victorian era brought civic pride and investment. The magnificent Gothic-style Town Hall was built and the Eastgate Clock was erected in 1899 to honour Queen Victoria's Diamond Jubilee. The clock has become one of the most photographed in England, second only to Big Ben.",
+    "modern": "Chester became a major Victorian leisure destination and remains today a prime retail and tourism hub. City status was granted in 1541."
+  },
+  "keyFacts": [
+    "Founded as Roman fortress Deva Victrix in 79 AD",
+    "Has the most complete circuit of Roman-Medieval town walls in Britain — nearly 2 miles",
+    "Chester Rows are unique in the world — medieval two-storey half-timbered buildings with covered galleries dating to the 13th century",
+    "Eastgate Clock is the second most photographed clock in England after Big Ben",
+    "Home to the UK's largest Roman military amphitheatre",
+    "Chester Zoo is the UK's largest zoo",
+    "First recorded horse race held at Roodee Fields in 1540 — one of the oldest in England",
+    "The Dee Bridge disaster of 1847 killed five people and became a defining moment in city history"
+  ],
+  "geography": {
+    "position": "River Dee, North West England near the Wales border",
+    "distanceFromLiverpool": "21 miles south",
+    "distanceFromManchester": "37 miles south",
+    "distanceFromWales": "Adjacent to Wales border",
+    "note": "Major transport hub with M53 and M56 motorway access"
+  },
+  "economy": {
+    "overview": "Chester's economy centres on tourism, retail, public administration, and financial services.",
+    "employmentRate": "82.1%",
+    "unemploymentRate": "3.6%",
+    "visitorEconomicImpact": "£2.48 billion (2024)",
+    "visitorNumbers": "30.6 million annual visitors in 2024, including 1.7 million staying visitors",
+    "majorEmployers": [
+      "Bank of America",
+      "NFU Mutual",
+      "University of Chester",
+      "Retail and wholesale trade",
+      "Public administration"
+    ]
+  },
+  "demographics": {
+    "whitebritish": "90%+",
+    "asian": "2%",
+    "other": "Smaller percentages of Irish, Mixed Race, and other ethnicities",
+    "religion": {
+      "christian": "75%+",
+      "muslim": "Present",
+      "other": "Sikh, Jewish, Buddhist communities"
+    },
+    "ageProfile": "Older than England average — 21.6% over 65 years old"
+  },
+  "landmarks": [
+    {
+      "name": "Chester City Walls",
+      "description": "The most complete circuit of Roman-Medieval town walls in Britain, nearly 2 miles long. Built over two millennia, with Roman origins visible beneath medieval stonework. Walkable throughout.",
+      "image": "city-walls.jpg"
+    },
+    {
+      "name": "Chester Rows",
+      "description": "Unique medieval two-storey shopping galleries dating from the 13th century. Half-timbered buildings with covered walkways on the upper floor. Found nowhere else in the world. House Chester's main shopping district.",
+      "image": "chester-rows.jpg"
+    },
+    {
+      "name": "Eastgate Clock",
+      "description": "Ornate Victorian clock mounted on the city walls, erected 1899 to honour Queen Victoria's Diamond Jubilee. One of England's most photographed timepieces, second only to Big Ben.",
+      "image": "eastgate-clock.jpg"
+    },
+    {
+      "name": "Chester Cathedral",
+      "description": "Grade I listed cathedral built on the site of the Minster Church founded by King Æthelred in 689. Features Romanesque and Victorian architecture.",
+      "image": null
+    },
+    {
+      "name": "Chester Castle",
+      "description": "Norman castle built after 1071 to control the Welsh border. The Agricola Tower, built 1054–1093, is one of the oldest stone towers in England.",
+      "image": null
+    },
+    {
+      "name": "Roman Amphitheatre",
+      "description": "The largest Roman military amphitheatre in Britain. Excavated and partially restored, it remains a powerful testament to Chester's Roman heritage.",
+      "image": null
+    },
+    {
+      "name": "Chester Zoo",
+      "description": "The UK's largest zoo, located on the outskirts of the city centre. A major family attraction and visitor draw.",
+      "image": null
+    },
+    {
+      "name": "River Dee",
+      "description": "Forms the western boundary of Chester and the Wales border. Used for boating, fishing, and recreation. Part of the city's character since Roman times.",
+      "image": null
+    }
+  ],
+  "notablePeople": [
+    {
+      "name": "Daniel Craig",
+      "dates": "born 1968",
+      "note": "Actor, famous for playing James Bond in multiple films."
+    },
+    {
+      "name": "Michael Owen",
+      "dates": "born 1979",
+      "note": "Former England footballer, striker, 1999 European Footballer of the Year."
+    },
+    {
+      "name": "Tom Heaton",
+      "dates": "born 1986",
+      "note": "Professional footballer, goalkeeper for Aston Villa and England."
+    },
+    {
+      "name": "Martin Tyler",
+      "dates": "born 1945",
+      "note": "Legendary football commentator, voice of the Premier League and UEFA Champions League for Sky Sports."
+    },
+    {
+      "name": "Beatrice Tinsley",
+      "dates": "1941–1981",
+      "note": "Astrophysicist known for her work on galaxy evolution."
+    }
+  ],
+  "transport": {
+    "rail": "Chester railway station serves major rail operators. Direct connections to London, Manchester, Liverpool, and North Wales.",
+    "motorways": ["M53", "M56"],
+    "air": "Liverpool John Lennon Airport, 24 miles away",
+    "river": "River Dee navigable for boating and recreation"
+  },
+  "images": [
+    { "file": "city-walls.jpg", "caption": "Chester city walls — 2,000 years of history", "credit": "CC BY-SA, via Wikimedia Commons" },
+    { "file": "chester-rows.jpg", "caption": "Chester Rows — unique medieval shopping galleries", "credit": "CC BY-SA, via Wikimedia Commons" },
+    { "file": "eastgate-clock.jpg", "caption": "Eastgate Clock — second most photographed in England", "credit": "CC BY-SA, via Wikimedia Commons" }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Chester",
+    "https://www.cheshirewestandchester.gov.uk",
+    "https://chester.com/things-to-do/history-and-heritage-of-chester/",
+    "https://commons.wikimedia.org/wiki/Category:Chester"
+  ]
+}

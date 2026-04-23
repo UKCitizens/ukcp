@@ -1,0 +1,136 @@
+{
+  "id": "preston",
+  "name": "Preston",
+  "type": "City",
+  "region": "North West",
+  "county": "Lancashire",
+  "country": "England",
+  "cityStatusYear": 2002,
+  "coordinates": { "lat": 53.7632, "lng": -2.7031 },
+  "population": {
+    "figure": 162864,
+    "year": 2024,
+    "note": "Fastest growing local authority in Lancashire in the 12 months to mid-2024"
+  },
+  "summary": "Preston is Lancashire's only city, sitting on the north bank of the River Ribble at the heart of North West England. Its name comes from Old English meaning 'Priest's Town'. Once the engine room of Britain's cotton trade, it has reinvented itself as a centre for defence aerospace, higher education, and public services — while holding on to a civic identity rooted in 800 years of Guild tradition.",
+  "history": {
+    "origins": "Preston's roots go back to the Roman period, with evidence of roads passing through the area. The settlement appeared in the Domesday Book (1086) as 'Prestune'.",
+    "charter": "In 1179, King Henry II granted Preston a Guild Merchant charter — one of the oldest in England. The Preston Guild celebrations, held every 20 years, survive to this day as the only guild still celebrated in the UK.",
+    "industrialRevolution": "The 19th century turned Preston into a major textile hub. It was the first English town outside London to be lit by gas (1815). Charles Dickens visited during the 1853–54 strike and drew on it for 'Coketown' in Hard Times.",
+    "modernEra": "Preston gained city status in 2002, England's 50th city. It was named 'Most Improved City in the UK' in 2018. The University of Central Lancashire drives a growing knowledge economy alongside defence giant BAE Systems."
+  },
+  "keyFacts": [
+    "Name means 'Priest's Town' in Old English",
+    "City status granted 2002 — England's 50th city",
+    "Preston Guild celebrated every 20 years since 1179 — unique in the UK",
+    "Britain's first motorway, the Preston By-pass, opened here on 5 December 1958",
+    "First UK KFC outlet opened in Preston in 1965",
+    "St Walburge's Church has the tallest parish church spire in England (309 feet)",
+    "Preston North End were founder members of the Football League and its first champions",
+    "The world's first LDS Church foreign mission was established here in 1837"
+  ],
+  "geography": {
+    "position": "North bank of the River Ribble, Lancashire",
+    "distanceFromManchester": "27 miles northwest",
+    "distanceFromLiverpool": "26 miles northeast",
+    "distanceFromBlackpool": "15 miles east",
+    "note": "Roughly equidistant between Glasgow and London on the West Coast Main Line"
+  },
+  "economy": {
+    "overview": "Preston has shifted from cotton and manufacturing to a knowledge and service economy. Unemployment fell from 6.5% (2014) to 3.1% (2018).",
+    "averageSalary": 30410,
+    "employmentRate": "62.5%",
+    "businesses": 5710,
+    "majorEmployers": [
+      "BAE Systems (defence aerospace, Warton and Samlesbury)",
+      "University of Central Lancashire (36,160 students)",
+      "Lancashire Teaching Hospitals NHS Trust",
+      "James Hall and Co (haulage and distribution)"
+    ]
+  },
+  "demographics": {
+    "whitebritish": "82%+",
+    "southAsian": "11.6%",
+    "religion": {
+      "christian": "47.6%",
+      "muslim": "16.1%",
+      "noReligion": "26.3%"
+    }
+  },
+  "landmarks": [
+    {
+      "name": "St Walburge's Church",
+      "description": "Grade I listed Roman Catholic church with the tallest parish church spire in England at 309 feet. Designed by Joseph Hansom. Free heritage tours every Saturday.",
+      "image": "st-walburge-church.jpg"
+    },
+    {
+      "name": "Harris Museum and Art Gallery",
+      "description": "Striking Neoclassical building opened 1893. Collections span natural history, textiles, ceramics, and decorative arts. Home to the Poulton Elk — an Ice Age elk skeleton dating back 13,500 years.",
+      "image": "harris-museum.jpg"
+    },
+    {
+      "name": "Avenham and Miller Parks",
+      "description": "Victorian parklands on the banks of the River Ribble, a short walk from the city centre. Miller Park features a grand fountain and the restored Park Hotel.",
+      "image": "miller-park-fountain.jpg"
+    },
+    {
+      "name": "Preston Riversway Docks",
+      "description": "Former commercial docks on the Ribble estuary, now home to the Ribble Steam Railway — a preserved standard gauge heritage line running through the docklands.",
+      "image": "riversway-docks.jpg"
+    },
+    {
+      "name": "City Centre",
+      "description": "Compact and walkable city centre featuring Winckley Square (a Georgian residential quarter), Fishergate and Friargate shopping districts, and the Grade I listed Sessions House.",
+      "image": "preston-centre.jpg"
+    }
+  ],
+  "notablePeople": [
+    {
+      "name": "Sir Richard Arkwright",
+      "dates": "1732–1792",
+      "note": "Inventor of the water frame spinning machine. Born in Preston; his birthplace is now Arkwright House."
+    },
+    {
+      "name": "Sir Tom Finney",
+      "dates": "1922–2014",
+      "note": "One of England's greatest footballers. Played 433 games for Preston North End. The 'Splash' statue outside Deepdale commemorates him."
+    },
+    {
+      "name": "Nick Park",
+      "dates": "born 1958",
+      "note": "Animator and filmmaker. Creator of Wallace and Gromit. Awarded Freedom of the City in 1997."
+    },
+    {
+      "name": "Andrew 'Freddie' Flintoff",
+      "dates": "born 1977",
+      "note": "England cricketer and broadcaster. Awarded Freedom of the City in 2006 following England's Ashes victory."
+    },
+    {
+      "name": "Joseph Livesey",
+      "dates": "1794–1884",
+      "note": "Pioneer of the Temperance Movement. The term 'teetotalism' was coined in Preston."
+    },
+    {
+      "name": "Lubaina Himid",
+      "dates": "born 1954",
+      "note": "Turner Prize-winning artist. Professor of Contemporary Art at the University of Central Lancashire."
+    }
+  ],
+  "transport": {
+    "rail": "Preston station serves four operators: Avanti West Coast, Northern Trains, TransPennine Express, and Caledonian Sleeper. Direct services to London Euston, Glasgow, Edinburgh, Manchester, and Leeds.",
+    "motorways": ["M6", "M55", "M61", "M65"],
+    "heritage": "Ribble Steam Railway runs along Preston Docks"
+  },
+  "images": [
+    { "file": "preston-centre.jpg", "caption": "Preston city centre", "credit": "Karl1587, Public Domain, via Wikimedia Commons" },
+    { "file": "harris-museum.jpg", "caption": "Harris Museum and Art Gallery", "credit": "© Copyright Bill Boaden, CC BY-SA 2.0, via Wikimedia Commons" },
+    { "file": "miller-park-fountain.jpg", "caption": "Miller Park fountain and Park Hotel", "credit": "CC BY-SA 4.0, via Wikimedia Commons" },
+    { "file": "riversway-docks.jpg", "caption": "Preston Riversway Docks", "credit": "CC BY-SA, via Wikimedia Commons" },
+    { "file": "st-walburge-church.jpg", "caption": "St Walburge's Church — tallest parish spire in England", "credit": "CC BY-SA, via Wikimedia Commons" }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Preston,_Lancashire",
+    "https://www.visitpreston.com",
+    "https://www.lancashire.gov.uk/lancashire-insight/area-profiles/local-authority-profiles/preston-district/"
+  ]
+}

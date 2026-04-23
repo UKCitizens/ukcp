@@ -11,6 +11,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import API_BASE from '../config.js'
 
 export function usePopulation(gss) {
   const [population, setPopulation] = useState(null)
@@ -20,7 +21,7 @@ export function usePopulation(gss) {
     if (!gss) { setPopulation(null); return }
     let cancelled = false
     setLoading(true)
-    fetch(`/api/population/${gss}`)
+    fetch(`${API_BASE}/api/population/${gss}`)
       .then(r => r.ok ? r.json() : null)
       .then(data => { if (!cancelled) setPopulation(data?.population ?? null) })
       .catch(() => { if (!cancelled) setPopulation(null) })

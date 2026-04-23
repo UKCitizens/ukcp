@@ -18,6 +18,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import API_BASE from '../config.js'
 
 // ── L0: geo-content.json — module-level cache ────────────────────────────
 // Fetch is initiated immediately on module load so it is ready by the time
@@ -238,7 +239,7 @@ export function useLocationContent(type, slug) {
     setLoading(true)
     setError(null)
 
-    fetch(`/api/content/${type}/${encodeURIComponent(slug)}`)
+    fetch(`${API_BASE}/api/content/${type}/${encodeURIComponent(slug)}`)
       .then(r => {
         if (!r.ok) throw new Error(`${r.status}`)
         return r.json()

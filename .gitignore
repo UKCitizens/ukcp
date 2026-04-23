@@ -9,3 +9,7 @@ Thumbs.db
 public/data/newplace.csv
 public/data/place-corrections.json
 data-build/sources/GBPN.csv
+dex-instructions/data-build/sources/GBPN.csv
+.playwright-mcp/
+Ali/
+preston-info-tab*.png

@@ -10,6 +10,7 @@
  */
 
 import express from 'express'
+import cors from 'cors'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
@@ -25,7 +26,7 @@ const PORT = process.env.PORT || 3000
 // One client, one connection, reused for all requests.
 // If Mongo is unavailable at startup, server continues — only Mongo-backed routes degrade.
 
-const MONGO_URI = process.env.MONGO_URI ?? 'mongodb://localhost:27017'
+const MONGO_URI = process.env.MONGODB_URI ?? 'mongodb://localhost:27017'
 const mongoClient = new MongoClient(MONGO_URI)
 let db = null
 
@@ -46,6 +47,7 @@ function geoContent() {
   return db ? db.collection('geo_content') : null
 }
 
+app.use(cors({ origin: process.env.CLIENT_ORIGIN }))
 app.use(express.json())
 
 // --- Static files ---
@@ -283,6 +285,71 @@ app.get('/api/population/:gss', async (req, res) => {
   } catch (err) {
     console.error('[population proxy] error:', err.message)
     return res.status(502).json({ error: 'Fetch failed' })
+  }
+})
+
+// --- Public: place typeahead search ---
+
+/**
+ * GET /api/places/search?q=[term]&limit=[n]
+ * Returns geo entries (country/region/county) and place rows matching the term.
+ * Geo entries are prepended so London/Inner London etc surface before place rows.
+ * Minimum 2 characters required. Used by the mid-pane location search box.
+ * Result shape:
+ *   resultType 'geo'   → { resultType, level, value, name, geoType }
+ *   resultType 'place' → { resultType, id, name, place_type, country, region, … }
+ */
+app.get('/api/places/search', (req, res) => {
+  try {
+    ensurePlacesLoaded()
+    const { q = '', limit = '10' } = req.query
+    const term = q.toLowerCase().trim()
+    if (term.length < 2) return res.json([])
+    const lim = Math.min(20, parseInt(limit, 10) || 10)
+    const results = []
+
+    // --- Geo entries first (countries, regions, counties) ---
+    try {
+      const geoPath = join(__dirname, 'public', 'data', 'geo-content.json')
+      const geoData = JSON.parse(readFileSync(geoPath, 'utf8'))
+      for (const [key, entry] of Object.entries(geoData)) {
+        if (!entry.name || !entry.name.toLowerCase().includes(term)) continue
+        const [level] = key.split(':')           // 'country' | 'region' | 'county'
+        const value   = entry.name               // e.g. 'Inner London'
+        results.push({ resultType: 'geo', level, value, name: entry.name })
+        if (results.length >= lim) return res.json(results)
+      }
+    } catch (_) { /* geo-content unavailable — skip */ }
+
+    // --- Place rows ---
+    for (const row of _placesRows) {
+      if (row.name.toLowerCase().includes(term)) {
+        results.push({
+          resultType:   'place',
+          id:           row.id,
+          name:         row.name,
+          place_type:   row.place_type,
+          country:      row.country,
+          region:       row.region,
+          ctyhistnm:    row.ctyhistnm,
+          county_gss:   row.county_gss,
+          lad_name:     row.lad_name,
+          lad_gss:      row.lad_gss,
+          constituency: row.constituency,
+          con_gss:      row.con_gss,
+          ward:         row.ward,
+          ward_gss:     row.ward_gss,
+          lat:          row.lat,
+          lng:          row.lng,
+          summary:      row.summary,
+        })
+        if (results.length >= lim) break
+      }
+    }
+    return res.json(results)
+  } catch (e) {
+    console.error('[places/search] error:', e.message)
+    return res.status(500).json({ error: e.message })
   }
 })
 

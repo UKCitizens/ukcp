@@ -33,6 +33,8 @@ Reset phrase: `Ali read ./ali-projects/ali/lowv.md` — re-apply immediately.
 
 [BIO:05] IDENTITY  | "Agricultural over abstract" is a personal working principle: comprehensible code over clever abstraction. Phil is last line of resolution so all code must be readable without AI assistance.
 
+[BIO:06] SIGNPOST  | Phil is an architect, not a developer. He is proficient with software but has no assumed knowledge of developer tools, config files, terminals, or workflows. When any action is required from Phil: state explicitly what app to open, what folder or location to go to, what to do and in what order. Never assume he knows what a tool does or where it lives. Architect-level understanding kicks in once he is correctly oriented — the signposting is the gap, not the capability. If the action belongs to Dex, write a Dex instruction file instead of explaining it to Phil.
+
 ---
 
 ## ZONE: STA — UKCP Project Environment
@@ -60,3 +62,5 @@ Reset phrase: `Ali read ./ali-projects/ali/lowv.md` — re-apply immediately.
 [STA:16] DATAMANAGER | src/components/DataManager/DataManager.jsx — top-level tabs: "Geo Content" | "Locations". Geo Content tab: two-panel finder (270px, filterable by type, sorted by completeness 0–10) + field editor (f1–f14, _qid, seed_text). Save: PATCH /api/admin/geo-content/:key. Locations tab: PlaceCorrector.jsx. Settings.jsx hosts DataManager under "Data Manager" tab with System/Access stubs.
 
 [STA:17] PLACECORRECTOR | src/components/DataManager/PlaceCorrector.jsx — two-panel: Finder (300px, search + country/type/missing-field filters, paginated 50/page, "edited" dot badge) + Editor (source context header read-only, editable: place_type/summary/constituency/con_gss/ward/ward_gss/county_gss). Save: PATCH /api/admin/places/:id → (1) updates in-memory row index, (2) writes current corrected state to place-corrections.json (per-record, overwrites not appends — dirty audit/backup), (3) commits full CSV rewrite to newplace.csv. CSV is master. If re-sourced, replay delta manually with Ali. Corrections loaded on mount via GET /api/admin/places/corrections. Server lazy-loads 54K rows into memory on first search request.
+
+[STA:18] REPO      | GitHub repo: spraglack/ukcp (private). Remote: github.com/spraglack/ukcp. GitHub account name: UKCitizens. GitHub credential email: ukcp99@gmail.com. Local master: C:\Users\phild\Desktop\Projects\Ali-Projects\UKCP\ — this is the working copy and source of truth. GitHub is backup and future deployment trigger. data-build/sources/GBPN.csv excluded from git (too large, frozen source). Git workflow: local changes → commit → push to GitHub when ready to checkpoint. Push command sequence: cd C:\Users\phild\Desktop\Projects\Ali-Projects\UKCP → git add . → git commit -m "message" → git push. Ali sees local folder only. GitHub connector not yet surfaced in Cowork sessions.

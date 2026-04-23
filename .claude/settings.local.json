@@ -47,7 +47,11 @@
       "Bash(curl -s http://localhost:3000/api/content/county/Aberdeenshire)",
       "Bash(gh auth *)",
       "Bash(gh repo *)",
-      "Bash(gh api *)"
+      "Bash(gh api *)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__github__search_repositories",
+      "mcp__mcp-registry__list_connectors",
+      "mcp__mcp-registry__search_mcp_registry"
     ]
   }
 }

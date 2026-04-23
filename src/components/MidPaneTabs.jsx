@@ -21,6 +21,8 @@
  *   onToggleExpand — () => void  (toggles between browse and explore)
  */
 
+import LocationSearch from './LocationSearch.jsx'
+
 const TAB_HEIGHT   = 36
 const ACTIVE_COLOR = '#2f9e44'
 const BORDER_COLOR = '#dee2e6'
@@ -33,7 +35,7 @@ const BORDER_COLOR = '#dee2e6'
  *   onTabChange: (tab: string) => void
  * }} props
  */
-export default function MidPaneTabs({ mapPane, infoPane, activeTab, onTabChange, viewMode, onToggleExpand }) {
+export default function MidPaneTabs({ mapPane, infoPane, activeTab, onTabChange, viewMode, onToggleExpand, onPlaceSelect, onGeoSelect }) {
   const expanded = viewMode === 'explore'
 
   const tabStyle = (id) => ({
@@ -72,6 +74,9 @@ export default function MidPaneTabs({ mapPane, infoPane, activeTab, onTabChange,
       }}>
         <button style={tabStyle('info')} onClick={() => onTabChange('info')}>Info</button>
         <button style={tabStyle('map')}  onClick={() => onTabChange('map')}>Map</button>
+
+        {/* Location search — fills space between tabs and expand toggle */}
+        {onPlaceSelect && <LocationSearch onPlaceSelect={onPlaceSelect} onGeoSelect={onGeoSelect} />}
 
         {/* Expand / collapse toggle — right-aligned in the tab strip */}
         <button
