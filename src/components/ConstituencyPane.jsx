@@ -98,7 +98,7 @@ export default function ConstituencyPane({
     // Only collapse when path-committed AND not in walker mode (no pending)
     if (constituency && !pendingConstituency) return all.filter(c => c.name === constituency)
     return all
-  }, [containment, hierarchy, country, region, county, constituency])
+  }, [containment, hierarchy, country, region, county, constituency, pendingConstituency])
 
   const availableLetters = useMemo(() => {
     const s = new Set()
@@ -159,7 +159,7 @@ export default function ConstituencyPane({
           <button
             key={l}
             className={[classes.alphaBtn, l === activeLetter ? classes.alphaBtnActive : ''].join(' ')}
-            onClick={() => { setActiveLetter(l); onWalkerModeChange?.(false) }}
+            onClick={() => setActiveLetter(l)}
           >
             {l}
           </button>

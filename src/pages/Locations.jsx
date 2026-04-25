@@ -87,6 +87,7 @@ export default function Locations() {
     dismissPending()
     setPendingConstituency(null)
     setPendingWard(null)
+    setRightWalkerMode(false)
     select(level, value)
   }
 
@@ -107,6 +108,7 @@ export default function Locations() {
     dismissPending()
     setPendingConstituency(null)
     setPendingWard(null)
+    setRightWalkerMode(false)
     setWalkerOpen(true)
   }, [goTo, dismissPending])
 
@@ -116,6 +118,7 @@ export default function Locations() {
     dismissPending()
     setPendingConstituency(null)
     setPendingWard(null)
+    setRightWalkerMode(false)
     setWalkerOpen(true)
     setViewMode('browse')
     setMidTab('map')
