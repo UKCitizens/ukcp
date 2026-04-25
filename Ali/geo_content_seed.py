@@ -266,9 +266,10 @@ def main():
     print(f'Seed sidecar written to {SEED_SIDECAR_PATH}')
 
     # Summary
-    f4_count  = sum(1 for e in geo_clean.values() if e.get('f4'))
-    f5_count  = sum(1 for e in geo_clean.values() if e.get('f5'))
-    f13_count = sum(1 for e in geo_clean.values() if e.get('f13'))
+    f4_count   = sum(1 for e in geo_clean.values() if e.get('f4'))
+    f5_count   = sum(1 for e in geo_clean.values() if e.get('f5'))
+    f13_count  = sum(1 for e in geo_clean.values() if e.get('f13'))
+    seed_count = sum(1 for e in seed_out.values() if e.get('seed_text'))
     print(f'\nResults:')
     print(f'  f4  (motto)    : {f4_count}/{len(geo)}')
     print(f'  f5  (area)     : {f5_count}/{len(geo)}')

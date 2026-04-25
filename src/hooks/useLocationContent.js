@@ -157,8 +157,14 @@ export function useLocationContent(type, slug) {
   const [partyColour, setPartyColour] = useState(null)
   const [population,  setPopulation]  = useState(null)
   const [geoData,     setGeoData]     = useState(null)
-  const [loading,     setLoading]     = useState(false)
-  const [error,       setError]       = useState(null)
+  const [loading,       setLoading]       = useState(false)
+  const [error,         setError]         = useState(null)
+  const [area,          setArea]          = useState(null)
+  const [elevation,     setElevation]     = useState(null)
+  const [website,       setWebsite]       = useState(null)
+  const [notable_facts, setNotableFacts]  = useState([])
+  const [category_tags, setCategoryTags]  = useState([])
+  const [gather_status, setGatherStatus]  = useState('none')
 
   useEffect(() => {
     let cancelled = false
@@ -177,6 +183,12 @@ export function useLocationContent(type, slug) {
       setPartyColour(null)
       setPopulation(null)
       setGeoData(null)
+      setArea(null)
+      setElevation(null)
+      setWebsite(null)
+      setNotableFacts([])
+      setCategoryTags([])
+      setGatherStatus('none')
       setError(null)
       setLoading(false)
       return
@@ -195,6 +207,12 @@ export function useLocationContent(type, slug) {
     setPartyColour(null)
     setPopulation(null)
     setGeoData(null)
+    setArea(null)
+    setElevation(null)
+    setWebsite(null)
+    setNotableFacts([])
+    setCategoryTags([])
+    setGatherStatus('none')
     setError(null)
 
     // L0: await geo-content.json load (no-op if already resolved), then check.
@@ -212,6 +230,12 @@ export function useLocationContent(type, slug) {
       setPartyColour(null)
       setPopulation(l0.population ?? null)
       setGeoData(l0.geoData ?? null)
+      setArea(null)
+      setElevation(null)
+      setWebsite(null)
+      setNotableFacts([])
+      setCategoryTags([])
+      setGatherStatus('none')
       setLoading(false)
       setError(null)
       return
@@ -230,6 +254,12 @@ export function useLocationContent(type, slug) {
       setPartyColour(cached.partyColour ?? null)
       setPopulation(null)
       setGeoData(null)
+      setArea(cached.area ?? null)
+      setElevation(cached.elevation ?? null)
+      setWebsite(cached.website ?? null)
+      setNotableFacts(cached.notable_facts ?? [])
+      setCategoryTags(cached.category_tags ?? [])
+      setGatherStatus(cached.gather_status ?? 'none')
       setLoading(false)
       setError(null)
       return
@@ -256,6 +286,12 @@ export function useLocationContent(type, slug) {
         setParty(data.party ?? null)
         setPartyColour(data.partyColour ?? null)
         setPopulation(data.population ?? null)
+        setArea(data.area ?? null)
+        setElevation(data.elevation ?? null)
+        setWebsite(data.website ?? null)
+        setNotableFacts(data.notable_facts ?? [])
+        setCategoryTags(data.category_tags ?? [])
+        setGatherStatus(data.gather_status ?? 'none')
         // Only cache to L1 if the data is substantive (no null-mpName MP stubs).
         const cacheable = data.contentType !== 'mp' || !!data.mpName
         if (cacheable) l1Write(type, slug, data)
@@ -272,5 +308,5 @@ export function useLocationContent(type, slug) {
     return () => { cancelled = true }
   }, [type, slug])
 
-  return { contentType, summary, extract, thumbnail, title, wikiUrl, mpName, party, partyColour, population, geoData, loading, error }
+  return { contentType, summary, extract, thumbnail, title, wikiUrl, mpName, party, partyColour, population, geoData, area, elevation, website, notable_facts, category_tags, gather_status, loading, error }
 }

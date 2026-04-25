@@ -51,7 +51,23 @@
       "mcp__Claude_in_Chrome__tabs_context_mcp",
       "mcp__github__search_repositories",
       "mcp__mcp-registry__list_connectors",
-      "mcp__mcp-registry__search_mcp_registry"
+      "mcp__mcp-registry__search_mcp_registry",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_snapshot",
+      "Bash(MONGODB_URI=\"mongodb+srv://ukcp99_db_user:bFhTUmtJuFkdOxFE@ukcp-dev.ujrjkvz.mongodb.net/ukcp?appName=UKCP-Dev\" node scripts/seed-geo-content.js)",
+      "Bash(curl \"https://ukcp-production.up.railway.app/api/places/search?q=Preston&limit=5\")",
+      "Bash(curl -sf \"https://ukcp-production.up.railway.app/api/places/search?q=Preston&limit=5\")",
+      "Bash(curl -s \"https://ukcp-production.up.railway.app/api/places/search?q=Preston&limit=20\")",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(d.get\\('name'\\), d.get\\('place_type'\\), d.get\\('region',''\\)\\) for d in data]\")",
+      "Bash(node scripts/gather-population.js)",
+      "Bash(node scripts/validate-population.js)",
+      "Bash(node scripts/upsert-population.js)",
+      "Bash(node -e ' *)",
+      "Bash(node scripts/gather-population.js --test)",
+      "Bash(taskkill /F /FI \"IMAGENAME eq node.exe\")",
+      "Bash(taskkill //F //FI \"IMAGENAME eq node.exe\")"
     ]
   }
 }

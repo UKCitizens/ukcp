@@ -43,6 +43,7 @@ import { useLocationContent } from '../hooks/useLocationContent.js'
 import { usePopulation } from '../hooks/usePopulation.js'
 import { NAV_COORDS } from '../config/navCoords.js'
 import { findRelatedPlace } from '../utils/findRelatedPlace.js'
+import { NewsStub, GroupsStub, PostsStub, PeopleStub, GovernmentStub, CommitteeStub } from '../components/TabStubs.jsx'
 
 export default function Locations() {
   const { places, wards, hierarchy, containment, loading } = useLocationData()
@@ -61,6 +62,10 @@ export default function Locations() {
   const [viewMode,          setViewMode]          = useState('browse')  // 'browse' | 'explore'
   const [flyTo,             setFlyTo]             = useState(null)
   const [invalidateTrigger, setInvalidateTrigger] = useState(0)
+  const [walkerMode, setWalkerMode] = useState(false)  // left pane walker mode
+  const [rightWalkerMode,     setRightWalkerMode]     = useState(false)
+  const [pendingConstituency, setPendingConstituency] = useState(null)
+  const [pendingWard,         setPendingWard]         = useState(null)
 
   // Zoom levels that mirror MiniMap.jsx ZOOM_BY_TYPE — used to compute flyTo zoom.
   const MINI_ZOOM = { hamlet: 14, village: 13, town: 12, city: 11, ward: 12, constituency: 10, county: 9, region: 7, country: 5 }
@@ -80,6 +85,8 @@ export default function Locations() {
   // Walker option click — stay in browse mode, preserve current tab.
   function handleNavSelect(level, value) {
     dismissPending()
+    setPendingConstituency(null)
+    setPendingWard(null)
     select(level, value)
   }
 
@@ -98,6 +105,8 @@ export default function Locations() {
   const handleGoTo = useCallback((index) => {
     goTo(index)
     dismissPending()
+    setPendingConstituency(null)
+    setPendingWard(null)
     setWalkerOpen(true)
   }, [goTo, dismissPending])
 
@@ -105,6 +114,8 @@ export default function Locations() {
   const handleReset = useCallback(() => {
     reset()
     dismissPending()
+    setPendingConstituency(null)
+    setPendingWard(null)
     setWalkerOpen(true)
     setViewMode('browse')
     setMidTab('map')
@@ -128,34 +139,54 @@ export default function Locations() {
 
   // Right-pane constituency/ward selection.
   const handleSelect = useCallback((level, value) => {
+    if (rightWalkerMode) {
+      if (level === 'constituency') {
+        setPendingConstituency(value)
+        setPendingWard(null)
+      } else if (level === 'ward') {
+        setPendingWard(value)
+      }
+      return
+    }
     dismissPending()
     const ancestors = level === 'constituency' ? resolveConstituencyAncestors(value) : []
     selectMany([...ancestors, { level, value }])
     setMidTab('map')
-  }, [dismissPending, selectMany, resolveConstituencyAncestors])
+  }, [rightWalkerMode, dismissPending, selectMany, resolveConstituencyAncestors])
 
   const handleSelectMany = useCallback((pairs) => {
+    if (rightWalkerMode) {
+      const conPair  = pairs.find(p => p.level === 'constituency')
+      const wardPair = pairs.find(p => p.level === 'ward')
+      if (conPair)  setPendingConstituency(conPair.value)
+      if (wardPair) setPendingWard(wardPair.value)
+      return
+    }
     dismissPending()
-    // Derive ancestors from the first constituency-level pair present.
-    const conPair = pairs.find(p => p.level === 'constituency')
+    const conPair   = pairs.find(p => p.level === 'constituency')
     const ancestors = conPair ? resolveConstituencyAncestors(conPair.value) : []
     selectMany([...ancestors, ...pairs])
     setMidTab('map')
-  }, [dismissPending, selectMany, resolveConstituencyAncestors])
+  }, [rightWalkerMode, dismissPending, selectMany, resolveConstituencyAncestors])
 
   // Left-pane place click.
-  // Derive the full nav path from the place's own geographic fields so the
-  // right pane scopes to the correct county, crumb trail is complete, and
-  // the map positions to the right area — regardless of prior nav state.
+  // Drill mode: derive full nav path from place fields so right pane scopes correctly,
+  //   crumb trail is complete, map positions to the right area. Tab switches to map.
+  // Walker mode (All active): skip selectMany so the list scope doesn't collapse —
+  //   just set the pending place for flyTo, crumb, and info content. Tab stays put.
   const handlePlaceSelect = useCallback((place) => {
-    const pairs = []
-    if (place.country)   pairs.push({ level: 'country', value: place.country })
-    if (place.region)    pairs.push({ level: 'region',  value: place.region })
-    if (place.ctyhistnm) pairs.push({ level: 'county',  value: place.ctyhistnm })
-    if (pairs.length) selectMany(pairs)
-    setPending(place)
-    setMidTab('map')
-  }, [selectMany, setPending])
+    if (walkerMode) {
+      setPending(place)
+    } else {
+      const pairs = []
+      if (place.country)   pairs.push({ level: 'country', value: place.country })
+      if (place.region)    pairs.push({ level: 'region',  value: place.region })
+      if (place.ctyhistnm) pairs.push({ level: 'county',  value: place.ctyhistnm })
+      if (pairs.length) selectMany(pairs)
+      setPending(place)
+      setMidTab('map')
+    }
+  }, [selectMany, setPending, walkerMode])
 
   // Map marker click — routes to the appropriate selection handler.
   // Each handler already sets explore mode.
@@ -199,17 +230,19 @@ export default function Locations() {
 
   // ── Content context — deepest geographic level for Wiki content ─────────
   const contentContext = useMemo(() => {
-    if (pendingPlace)  return {
+    if (pendingPlace)          return {
       type:  pendingPlace.place_type.toLowerCase(),
       slug:  pendingPlace.name.replace(/ /g, '_'),
       label: pendingPlace.name,
     }
-    if (constituency)  return { type: 'constituency', slug: constituency.replace(/ /g, '_'), label: constituency }
-    if (county)        return { type: 'county',       slug: county.replace(/ /g, '_'),       label: county       }
-    if (region)        return { type: 'region',       slug: region.replace(/ /g, '_'),       label: region       }
-    if (country)       return { type: 'country',      slug: country.replace(/ /g, '_'),      label: country      }
+    if (pendingWard)           return { type: 'ward',          slug: pendingWard.replace(/ /g, '_'),          label: pendingWard          }
+    if (pendingConstituency)   return { type: 'constituency',  slug: pendingConstituency.replace(/ /g, '_'),  label: pendingConstituency  }
+    if (constituency)          return { type: 'constituency',  slug: constituency.replace(/ /g, '_'),         label: constituency         }
+    if (county)                return { type: 'county',        slug: county.replace(/ /g, '_'),               label: county               }
+    if (region)                return { type: 'region',        slug: region.replace(/ /g, '_'),               label: region               }
+    if (country)               return { type: 'country',       slug: country.replace(/ /g, '_'),              label: country              }
     return { type: 'country', slug: 'United_Kingdom', label: 'United Kingdom' }
-  }, [pendingPlace, constituency, county, region, country])
+  }, [pendingPlace, pendingWard, pendingConstituency, constituency, county, region, country])
 
   // Ward context — rendered locally in LocationInfo, no API call needed.
   const wardInfo = useMemo(() => {
@@ -220,8 +253,22 @@ export default function Locations() {
   const {
     contentType, summary, extract, thumbnail, title, wikiUrl,
     mpName, party, partyColour, population, geoData,
+    area, elevation, website, notable_facts, category_tags,
     loading: contentLoading, error: contentError,
   } = useLocationContent(contentContext?.type, contentContext?.slug)
+
+  // locationType — current named place type or geo level, drives tab visibility in MidPaneTabs.
+  const locationType = pendingPlace
+    ? pendingPlace.place_type?.toLowerCase() ?? null
+    : contentContext?.type ?? null
+
+  // If Government tab is active but context switches to a named place, reset to Info.
+  const NAMED_PLACES_GUARD = ['city', 'town', 'village', 'hamlet']
+  useEffect(() => {
+    if (midTab === 'government' && NAMED_PLACES_GUARD.includes(locationType ?? '')) {
+      setMidTab('info')
+    }
+  }, [locationType])
 
   // ── GSS codes for Nomis population lookup (ward + constituency) ──────────
   const wardGss = useMemo(() => {
@@ -241,6 +288,17 @@ export default function Locations() {
   const contextCoords = useMemo(() => {
     if (pendingPlace?.lat && pendingPlace?.lng)
       return { lat: +pendingPlace.lat, lng: +pendingPlace.lng }
+
+    if (pendingConstituency && wards) {
+      const needle = pendingConstituency.trim().toLowerCase()
+      const rows = wards.filter(w => w.constituency?.trim().toLowerCase() === needle)
+                        .filter(w => w.lat && w.lng && !isNaN(+w.lat))
+      if (rows.length) return {
+        lat: rows.reduce((s, w) => s + +w.lat, 0) / rows.length,
+        lng: rows.reduce((s, w) => s + +w.lng, 0) / rows.length,
+      }
+    }
+
     if (ward && wards) {
       const hit = wards.find(w => w.ward === ward)
       if (hit?.lat) return { lat: +hit.lat, lng: +hit.lng }
@@ -257,7 +315,7 @@ export default function Locations() {
     if (region)   return NAV_COORDS[region]   ?? null
     if (country)  return NAV_COORDS[country]  ?? null
     return NAV_COORDS['United Kingdom']
-  }, [pendingPlace, ward, constituency, county, region, country, wards])
+  }, [pendingPlace, pendingConstituency, ward, constituency, county, region, country, wards])
 
   // ── Constituency list and total ward count ──────────────────────────────
   const constituencies = useMemo(() => {
@@ -299,8 +357,14 @@ export default function Locations() {
         onClick: undefined,
       })
     }
+    if (pendingConstituency && !pendingPlace) {
+      items.push({ label: pendingConstituency, onClick: undefined })
+    }
+    if (pendingWard && !pendingPlace) {
+      items.push({ label: `${pendingWard} (Ward)`, onClick: undefined })
+    }
     return items
-  }, [path, pendingPlace, handleGoTo, handleReset])
+  }, [path, pendingPlace, pendingConstituency, pendingWard, handleGoTo, handleReset])
 
   // ── Row 3 options ────────────────────────────────────────────────────────
   const currentOptions = path.length === 0 ? panel1 : panel2
@@ -345,16 +409,24 @@ export default function Locations() {
           onPlaceSelect={handlePlaceSelect}
           paneTitle={`Places in ${scopeLabel}`}
           focusPlace={pendingPlace}
+          onWalkerModeChange={setWalkerMode}
         />
       }
       midPane={
         <MidPaneTabs
           activeTab={midTab}
           onTabChange={handleTabChange}
+          locationType={locationType}
           viewMode={viewMode}
           onToggleExpand={handleToggleExpand}
           onPlaceSelect={handlePlaceSelect}
           onGeoSelect={handleSelect}
+          newsPane={<NewsStub />}
+          groupsPane={<GroupsStub />}
+          postsPane={<PostsStub />}
+          peoplePane={<PeopleStub />}
+          governmentPane={<GovernmentStub />}
+          committeePane={<CommitteeStub />}
           mapPane={
             <MidPaneMap
               places={places}
@@ -364,6 +436,8 @@ export default function Locations() {
               onMarkerClick={handleMarkerClick}
               flyTo={flyTo}
               invalidateTrigger={invalidateTrigger}
+              activeConstituency={pendingConstituency ?? constituency}
+              activeWard={pendingWard ?? ward}
             />
           }
           infoPane={
@@ -379,6 +453,11 @@ export default function Locations() {
               partyColour={partyColour}
               population={population ?? gssPopulation}
               geoData={geoData}
+              area={area}
+              elevation={elevation}
+              website={website}
+              notable_facts={notable_facts}
+              category_tags={category_tags}
               loading={contentLoading}
               error={contentError}
               label={contentContext?.label ?? wardInfo?.ward ?? null}
@@ -405,6 +484,9 @@ export default function Locations() {
           select={handleSelect}
           selectMany={handleSelectMany}
           paneTitle={`Constituencies with wards in ${scopeLabel}`}
+          onWalkerModeChange={setRightWalkerMode}
+          pendingConstituency={pendingConstituency}
+          pendingWard={pendingWard}
         />
       }
       footer={<Footer />}

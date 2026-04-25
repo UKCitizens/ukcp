@@ -65,41 +65,51 @@ function firstPopulatedLetter(places) {
   return ALL_LETTERS.find(l => letters.has(l)) ?? null
 }
 
-export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle, focusPlace }) {
+export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle, focusPlace, onWalkerModeChange }) {
   const [activeType,   setActiveType]   = useState(null)
-  const [activeLetter, setActiveLetter] = useState(null)
+  const [activeLetter, setActiveLetter] = useState(null)  // null = All (walker mode)
+
+  // Notify parent when walker mode changes.
+  useEffect(() => {
+    onWalkerModeChange?.(activeLetter === null)
+  }, [activeLetter, onWalkerModeChange])
 
   // Reset type + letter only when the geographic scope changes (scopeKey).
   // Using grouped as dep would reset on every nav action (new object ref each time).
+  // In walker mode (activeLetter === null) preserve All — do not revert to a letter.
   useEffect(() => {
     if (!grouped) {
       setActiveType(null)
       setActiveLetter(null)
       return
     }
-    const type   = firstNonEmptyType(grouped)
-    const letter = type ? firstPopulatedLetter(grouped[type]) : null
+    const type = firstNonEmptyType(grouped)
     setActiveType(type)
-    setActiveLetter(letter)
+    setActiveLetter(prev => {
+      if (prev === null) return null  // walker mode — stay in All
+      return type ? firstPopulatedLetter(grouped[type]) : null
+    })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scopeKey])
 
   // Jump to the type and letter of a cross-referenced or externally selected place.
+  // In walker mode (activeLetter === null) only update type — preserve All.
   useEffect(() => {
     if (!focusPlace || !grouped) return
     const type   = focusPlace.place_type
     const letter = firstLetter(focusPlace)
     if (grouped[type]?.some(p => firstLetter(p) === letter)) {
       setActiveType(type)
-      setActiveLetter(letter)
+      setActiveLetter(prev => prev === null ? null : letter)
     }
   }, [focusPlace]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // When type changes manually, reset letter to first populated for new type.
+  // In walker mode preserve All.
   function handleTypeSelect(type) {
     if (grouped[type]?.length === 0) return
     setActiveType(type)
-    setActiveLetter(firstPopulatedLetter(grouped[type]))
+    setActiveLetter(prev => prev === null ? null : firstPopulatedLetter(grouped[type]))
   }
 
   // Letters available for the active type.
@@ -108,9 +118,11 @@ export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle
     return lettersIn(grouped[activeType])
   }, [activeType, grouped])
 
-  // Filtered place list — active type intersected with active letter.
+  // Filtered place list — all places when activeLetter is null (walker mode),
+  // otherwise intersect active type with active letter (drill mode).
   const filteredPlaces = useMemo(() => {
-    if (!activeType || !activeLetter || !grouped[activeType]) return []
+    if (!activeType || !grouped[activeType]) return []
+    if (activeLetter === null) return grouped[activeType]
     return grouped[activeType].filter(p => firstLetter(p) === activeLetter)
   }, [activeType, activeLetter, grouped])
 
@@ -143,8 +155,15 @@ export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle
         })}
       </div>
 
-      {/* Row 2 — alpha strip (only populated letters) */}
+      {/* Row 2 — alpha strip. "All" clears letter filter (walker mode). */}
       <div className={classes.alphaRow}>
+        <button
+          className={[classes.alphaBtn, activeLetter === null ? classes.alphaBtnActive : ''].join(' ')}
+          onClick={() => setActiveLetter(null)}
+          title="Show all — walker mode"
+        >
+          All
+        </button>
         {ALL_LETTERS.filter(l => availableLetters.has(l)).map(l => (
           <button
             key={l}

@@ -30,6 +30,26 @@ React 18 · Vite 5 · Mantine v7 · React Router v6 · Express · Node 22
 - All delivered files must have JSDoc comments — no exceptions
 - Git operations require Phil confirmation before execution
 
+## Data Build — Pre-Deploy Step (Manual)
+
+Before deploying to cloud (Railway), `newplace.csv` must be regenerated from MongoDB to incorporate any place corrections made via PlaceCorrector.
+
+**This step is manual — NOT wired into `npm run build`. Only run when Phil instructs.**
+
+```
+node scripts/export-places.js
+```
+
+- Reads `public/data/newplace.csv` as base (54,209 rows)
+- Queries MongoDB `ukcp.place_corrections` collection
+- Merges corrections over base rows and rewrites `public/data/newplace.csv`
+- Then run `npm run build` as normal — updated CSV bundles into `dist/`
+
+Uses `MONGODB_URI` env var (defaults to `mongodb://localhost:27017` for local dev).
+Atlas URI is in `.env` — confirm which target before running.
+
+Do NOT add this as a `prebuild` npm hook. It is a deliberate, supervised step.
+
 ## Pipeline Close Protocol
 At the end of every completed pipeline run, in this exact order:
 1. Run `npm run build` — confirm clean (0 errors, 0 warnings)

@@ -15,7 +15,7 @@ import { dirname, join } from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
 
-const MONGO_URI     = process.env.MONGO_URI ?? 'mongodb://localhost:27017'
+const MONGO_URI     = process.env.MONGODB_URI ?? 'mongodb://localhost:27017'
 const GEO_JSON_PATH = join(__dirname, '..', 'public', 'data', 'geo-content.json')
 
 // Maps geo-content.json f-fields to the geo_content document schema.
@@ -47,6 +47,9 @@ function mapDocument(key, raw) {
       website:     raw.f13 ?? null,
       environment: raw.f14 ?? null,
     },
+    notable_facts: [],
+    category_tags: [],
+    gather_status: 'none',
     updatedAt: new Date(),
   }
 }

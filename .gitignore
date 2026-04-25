@@ -12,3 +12,5 @@ dex-instructions/data-build/sources/GBPN.csv
 .playwright-mcp/
 Ali/
 preston-info-tab*.png
+token.txt
+live-service-conns.txt

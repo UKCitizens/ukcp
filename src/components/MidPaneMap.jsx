@@ -176,7 +176,11 @@ function TypeToggle({ type, active, onToggle }) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function MidPaneMap({ places, wards, path, pendingPlace, onMarkerClick, flyTo, invalidateTrigger }) {
+export default function MidPaneMap({
+  places, wards, path, pendingPlace, onMarkerClick, flyTo, invalidateTrigger,
+  activeConstituency,
+  activeWard,
+}) {
   const containerRef    = useRef(null)
   const mapRef          = useRef(null)
   const layerRef        = useRef(null)
@@ -460,31 +464,28 @@ export default function MidPaneMap({ places, wards, path, pendingPlace, onMarker
       politicalLayerRef.current = null
     }
 
-    const wardEntry         = path?.find(p => p.level === 'ward')
-    const constituencyEntry = path?.find(p => p.level === 'constituency')
-    if (!wardEntry && !constituencyEntry) return
+    if (!activeWard && !activeConstituency) return
 
     let lat = null, lng = null, label = '', sublabel = ''
+    let zoom = 10
 
-    let zoom = 10  // default for constituency
-
-    if (wardEntry && Array.isArray(wards)) {
-      const needle = wardEntry.value.trim().toLowerCase()
+    if (activeWard && Array.isArray(wards)) {
+      const needle = activeWard.trim().toLowerCase()
       const hit = wards.find(w => w.name?.trim().toLowerCase() === needle)
       if (hit && hasCoords(hit)) {
         lat = +hit.lat; lng = +hit.lng
-        label    = wardEntry.value
-        sublabel = `Ward${constituencyEntry ? ` · ${constituencyEntry.value}` : ''}`
+        label    = activeWard
+        sublabel = `Ward${activeConstituency ? ` · ${activeConstituency}` : ''}`
         zoom     = 12
       }
     }
 
-    if (lat === null && constituencyEntry) {
-      const needle = constituencyEntry.value.trim().toLowerCase()
+    if (lat === null && activeConstituency) {
+      const needle = activeConstituency.trim().toLowerCase()
       const centroid = constituencyCentroids.find(c => c.name?.trim().toLowerCase() === needle)
       if (centroid && hasCoords(centroid)) {
         lat = +centroid.lat; lng = +centroid.lng
-        label    = constituencyEntry.value
+        label    = activeConstituency
         sublabel = 'Constituency'
         zoom     = 10
       }
@@ -506,7 +507,7 @@ export default function MidPaneMap({ places, wards, path, pendingPlace, onMarker
     politicalLayerRef.current = group
 
     map.flyTo([lat, lng], zoom, { duration: 0.6 })
-  }, [path, wards, constituencyCentroids])
+  }, [activeConstituency, activeWard, wards, constituencyCentroids])
 
   const { value } = resolveLevel(path)
 

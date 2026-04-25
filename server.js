@@ -47,6 +47,11 @@ function geoContent() {
   return db ? db.collection('geo_content') : null
 }
 
+/** Returns the places collection, or null if Mongo is unavailable. */
+function placesCol() {
+  return db ? db.collection('places') : null
+}
+
 app.use(cors({ origin: process.env.CLIENT_ORIGIN }))
 app.use(express.json())
 
@@ -115,16 +120,22 @@ app.get('/api/content/:type/:slug', async (req, res) => {
         const doc = await col.findOne({ type, slug })
         if (doc && (doc.summary || doc.extract)) {
           const result = {
-            contentType: doc.summary ? 'curated' : 'wiki',
-            summary:     doc.summary ?? null,
-            extract:     doc.extract ?? null,
-            thumbnail:   doc.thumbnail ?? null,
-            title:       doc.name ?? slug,
-            wikiUrl:     doc.wikiUrl ?? null,
-            mpName:      null,
-            party:       null,
-            partyColour: null,
-            population:  doc.population ?? null,
+            contentType:  doc.summary ? 'curated' : 'wiki',
+            summary:      doc.summary ?? null,
+            extract:      doc.extract ?? null,
+            thumbnail:    doc.thumbnail ?? null,
+            title:        doc.name ?? slug,
+            wikiUrl:      doc.wikiUrl ?? null,
+            mpName:       null,
+            party:        null,
+            partyColour:  null,
+            population:   doc.population ?? null,
+            area:          doc.area          ?? null,
+            elevation:     doc.elevation     ?? null,
+            website:       doc.website       ?? null,
+            notable_facts: doc.notable_facts ?? [],
+            category_tags: doc.category_tags ?? [],
+            gather_status: doc.gather_status ?? 'none',
           }
           contentCacheSet(cacheKey, result, ttl)
           return res.json(result)
@@ -222,15 +233,21 @@ app.get('/api/content/:type/:slug', async (req, res) => {
     } catch (e) { console.error(`[wikidata] ${slug} error:`, e.message) }
 
     const result = {
-      contentType: 'wiki',
-      extract:     wiki.extract   ?? null,
-      thumbnail:   wiki.thumbnail?.source ?? null,
-      title:       wiki.title     ?? slug,
-      wikiUrl:     wiki.content_urls?.desktop?.page ?? `https://en.wikipedia.org/wiki/${slug}`,
-      mpName:      null,
-      party:       null,
-      partyColour: null,
+      contentType:   'wiki',
+      extract:       wiki.extract   ?? null,
+      thumbnail:     wiki.thumbnail?.source ?? null,
+      title:         wiki.title     ?? slug,
+      wikiUrl:       wiki.content_urls?.desktop?.page ?? `https://en.wikipedia.org/wiki/${slug}`,
+      mpName:        null,
+      party:         null,
+      partyColour:   null,
       population,
+      area:          null,
+      elevation:     null,
+      website:       null,
+      notable_facts: [],
+      category_tags: [],
+      gather_status: 'none',
     }
 
     // Cache the Wikipedia result in Mongo for future local-first hits
@@ -299,11 +316,10 @@ app.get('/api/population/:gss', async (req, res) => {
  *   resultType 'geo'   → { resultType, level, value, name, geoType }
  *   resultType 'place' → { resultType, id, name, place_type, country, region, … }
  */
-app.get('/api/places/search', (req, res) => {
+app.get('/api/places/search', async (req, res) => {
   try {
-    ensurePlacesLoaded()
     const { q = '', limit = '10' } = req.query
-    const term = q.toLowerCase().trim()
+    const term = q.trim()
     if (term.length < 2) return res.json([])
     const lim = Math.min(20, parseInt(limit, 10) || 10)
     const results = []
@@ -313,37 +329,26 @@ app.get('/api/places/search', (req, res) => {
       const geoPath = join(__dirname, 'public', 'data', 'geo-content.json')
       const geoData = JSON.parse(readFileSync(geoPath, 'utf8'))
       for (const [key, entry] of Object.entries(geoData)) {
-        if (!entry.name || !entry.name.toLowerCase().includes(term)) continue
+        if (!entry.name || !entry.name.toLowerCase().includes(term.toLowerCase())) continue
         const [level] = key.split(':')           // 'country' | 'region' | 'county'
-        const value   = entry.name               // e.g. 'Inner London'
-        results.push({ resultType: 'geo', level, value, name: entry.name })
+        results.push({ resultType: 'geo', level, value: entry.name, name: entry.name })
         if (results.length >= lim) return res.json(results)
       }
     } catch (_) { /* geo-content unavailable — skip */ }
 
-    // --- Place rows ---
-    for (const row of _placesRows) {
-      if (row.name.toLowerCase().includes(term)) {
-        results.push({
-          resultType:   'place',
-          id:           row.id,
-          name:         row.name,
-          place_type:   row.place_type,
-          country:      row.country,
-          region:       row.region,
-          ctyhistnm:    row.ctyhistnm,
-          county_gss:   row.county_gss,
-          lad_name:     row.lad_name,
-          lad_gss:      row.lad_gss,
-          constituency: row.constituency,
-          con_gss:      row.con_gss,
-          ward:         row.ward,
-          ward_gss:     row.ward_gss,
-          lat:          row.lat,
-          lng:          row.lng,
-          summary:      row.summary,
-        })
-        if (results.length >= lim) break
+    // --- Place rows from MongoDB ---
+    const col = placesCol()
+    if (col) {
+      const remaining = lim - results.length
+      const docs = await col
+        .find({ name: { $regex: term, $options: 'i' } })
+        .limit(remaining)
+        .project({ name:1, place_type:1, country:1, region:1, ctyhistnm:1, county_gss:1,
+                   lad_name:1, lad_gss:1, constituency:1, con_gss:1, ward:1, ward_gss:1,
+                   lat:1, lng:1, summary:1 })
+        .toArray()
+      for (const { _id, ...fields } of docs) {
+        results.push({ resultType: 'place', id: _id, ...fields })
       }
     }
     return res.json(results)
@@ -353,100 +358,36 @@ app.get('/api/places/search', (req, res) => {
   }
 })
 
-// --- Admin: places search + corrections ---
+// --- Admin: places search + corrections (MongoDB) ---
 
-/**
- * Places index — loaded once from newplace.csv on first search request.
- * Stored as Array for ordered iteration; id → index Map for fast lookup.
- */
-let _placesRows  = null
-let _placesById  = null
-
-const PLACES_CSV       = join(__dirname, 'public', 'data', 'newplace.csv')
-const CORRECTIONS_SRC  = join(__dirname, 'public', 'data', 'place-corrections.json')
-const CORRECTIONS_DIST = join(__dirname, 'dist',   'data', 'place-corrections.json')
-
-const CSV_HEADER = ['id','name','type','place_type','country','country_gss','region','region_gss',
-                    'ctyhistnm','county_gss','lad_name','lad_gss','constituency','con_gss',
-                    'ward','ward_gss','lat','lng','summary']
-
-/** Minimal quoted-CSV line parser. Handles double-quote escaping. */
-function parseCSVLine(line) {
-  const out = []; let cur = ''; let q = false
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i]
-    if (ch === '"') { if (q && line[i+1] === '"') { cur += '"'; i++ } else q = !q }
-    else if (ch === ',' && !q) { out.push(cur); cur = '' }
-    else cur += ch
-  }
-  out.push(cur)
-  return out
-}
-
-/** Serialise a field value for CSV — quote if it contains comma, quote, or newline. */
-function csvField(val) {
-  const s = String(val ?? '')
-  return (s.includes(',') || s.includes('"') || s.includes('\n'))
-    ? `"${s.replace(/"/g, '""')}"` : s
-}
-
-function ensurePlacesLoaded() {
-  if (_placesRows) return
-  const src  = readFileSync(PLACES_CSV, 'utf8')
-  const lines = src.split('\n')
-  _placesRows = []
-  _placesById = new Map()
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim()
-    if (!line) continue
-    const cols = parseCSVLine(line)
-    const row  = {}
-    CSV_HEADER.forEach((h, j) => { row[h] = cols[j] ?? '' })
-    if (!row.id) continue
-    _placesRows.push(row)
-    _placesById.set(row.id, row)
-  }
-  console.log(`[places] loaded ${_placesRows.length} rows`)
-}
-
-function readCorrections() {
-  try {
-    return existsSync(CORRECTIONS_SRC) ? JSON.parse(readFileSync(CORRECTIONS_SRC, 'utf8')) : {}
-  } catch { return {} }
-}
-
-function writeCorrections(data) {
-  const json = JSON.stringify(data, null, 2)
-  if (existsSync(CORRECTIONS_DIST)) writeFileSync(CORRECTIONS_DIST, json, 'utf8')
-  writeFileSync(CORRECTIONS_SRC, json, 'utf8')
-}
+const PLACE_EDITABLE = new Set(['place_type','summary','constituency','con_gss','ward','ward_gss','county_gss','area','elevation','website','notable_facts','category_tags','gather_status'])
 
 /**
  * GET /api/admin/places
  * Query params: q, country, type (place_type), missing (constituency|type|county_gss|summary), page, limit
  * Returns: { total, page, limit, results[] }
  */
-app.get('/api/admin/places', (req, res) => {
+app.get('/api/admin/places', async (req, res) => {
+  const col = placesCol()
+  if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   try {
-    ensurePlacesLoaded()
     const { q = '', country = '', type = '', missing = '', page = '0', limit = '50' } = req.query
     const pg  = Math.max(0, parseInt(page, 10)  || 0)
     const lim = Math.min(200, parseInt(limit, 10) || 50)
-    const term = q.toLowerCase().trim()
 
-    const filtered = _placesRows.filter(row => {
-      if (term    && !row.name.toLowerCase().includes(term))   return false
-      if (country && row.country !== country)                  return false
-      if (type    && row.place_type !== type)                  return false
-      if (missing === 'constituency' && row.constituency)      return false
-      if (missing === 'type'         && row.place_type)        return false
-      if (missing === 'county_gss'   && row.county_gss)        return false
-      if (missing === 'summary'      && row.summary)           return false
-      return true
-    })
+    const query = {}
+    if (q.trim())                   query.name         = { $regex: q.trim(), $options: 'i' }
+    if (country)                    query.country      = country
+    if (type)                       query.place_type   = type
+    if (missing === 'constituency') query.constituency = ''
+    if (missing === 'type')         query.place_type   = ''
+    if (missing === 'county_gss')   query.county_gss   = ''
+    if (missing === 'summary')      query.summary      = ''
 
-    const results = filtered.slice(pg * lim, pg * lim + lim)
-    return res.json({ total: filtered.length, page: pg, limit: lim, results })
+    const total   = await col.countDocuments(query)
+    const rawDocs = await col.find(query).skip(pg * lim).limit(lim).toArray()
+    const results = rawDocs.map(({ _id, ...fields }) => ({ id: _id, ...fields }))
+    return res.json({ total, page: pg, limit: lim, results })
   } catch (e) {
     console.error('[places] search error:', e.message)
     return res.status(500).json({ error: e.message })
@@ -455,65 +396,49 @@ app.get('/api/admin/places', (req, res) => {
 
 /**
  * GET /api/admin/places/corrections
- * Returns the full corrections map.
+ * Returns map of { id: { correctedFields } } for all places flagged _corrected: true.
+ * Used by PlaceCorrector to render "edited" badge on finder entries.
  */
-app.get('/api/admin/places/corrections', (req, res) => {
-  return res.json(readCorrections())
+app.get('/api/admin/places/corrections', async (req, res) => {
+  const col = placesCol()
+  if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
+  try {
+    const docs = await col
+      .find({ _corrected: true })
+      .project({ place_type:1, summary:1, constituency:1, con_gss:1, ward:1, ward_gss:1, county_gss:1 })
+      .toArray()
+    const map = {}
+    for (const { _id, ...fields } of docs) map[_id] = fields
+    return res.json(map)
+  } catch (e) {
+    console.error('[places] corrections error:', e.message)
+    return res.status(500).json({ error: e.message })
+  }
 })
 
 /**
  * PATCH /api/admin/places/:id
- * Writes corrected fields to:
- *   1. In-memory row index (immediate search reflection)
- *   2. place-corrections.json (per-record current state — dirty data audit/backup)
- *   3. newplace.csv (master dataset — full file rewrite)
- * corrections.json holds the current corrected state for each touched record,
- * not a history. Each save overwrites the previous state for that record.
+ * Updates editable fields on the places document in MongoDB.
+ * Sets _corrected: true so the corrections endpoint can identify touched records.
  */
-const PLACE_EDITABLE = new Set(['place_type','summary','constituency','con_gss','ward','ward_gss','county_gss'])
-const PLACES_CSV_DIST = join(__dirname, 'dist', 'data', 'newplace.csv')
-
-/** Serialise all in-memory rows back to CSV.
- *  dist/ is the live path — written first. public/ is source-of-record for rebuilds.
- */
-function writeCSV() {
-  const lines = [CSV_HEADER.join(',')]
-  for (const row of _placesRows) {
-    lines.push(CSV_HEADER.map(h => csvField(row[h] ?? '')).join(','))
-  }
-  const out = lines.join('\n') + '\n'
-  if (existsSync(PLACES_CSV_DIST)) writeFileSync(PLACES_CSV_DIST, out, 'utf8')
-  writeFileSync(PLACES_CSV, out, 'utf8')
-}
-
-app.patch('/api/admin/places/:id', (req, res) => {
+app.patch('/api/admin/places/:id', async (req, res) => {
+  const col = placesCol()
+  if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   const { id }  = req.params
   const updates = req.body
   if (!updates || typeof updates !== 'object' || Array.isArray(updates)) {
     return res.status(400).json({ error: 'Body must be a plain object' })
   }
   try {
-    ensurePlacesLoaded()
-    if (!_placesById.has(id)) return res.status(404).json({ error: `Place not found: ${id}` })
-
-    // Strip non-editable keys
     const safe = {}
     for (const [k, v] of Object.entries(updates)) {
       if (PLACE_EDITABLE.has(k)) safe[k] = v
     }
-
-    // 1. Update in-memory row
-    const row = _placesById.get(id)
-    Object.assign(row, safe)
-
-    // 2. Write delta file — current corrected state per record, overwrites previous
-    const corr = readCorrections()
-    corr[id] = { ...(corr[id] ?? {}), ...safe }
-    writeCorrections(corr)
-
-    // 3. Commit to master CSV
-    writeCSV()
-
+    const result = await col.updateOne(
+      { _id: id },
+      { $set: { ...safe, _corrected: true } }
+    )
+    if (result.matchedCount === 0) return res.status(404).json({ error: `Place not found: ${id}` })
     console.log(`[places] committed: ${id}`)
     return res.json({ ok: true })
   } catch (e) {
@@ -567,7 +492,7 @@ app.patch('/api/admin/geo-content/:key', (req, res) => {
  * Body may include any subset of: summary, extract, thumbnail, wikiUrl, geoData.
  * Always sets updatedAt. Returns { ok: true } or error JSON.
  */
-const GEO_CONTENT_MONGO_EDITABLE = new Set(['summary', 'extract', 'thumbnail', 'wikiUrl', 'geoData'])
+const GEO_CONTENT_MONGO_EDITABLE = new Set(['summary', 'extract', 'thumbnail', 'wikiUrl', 'geoData', 'notable_facts', 'category_tags', 'gather_status'])
 
 app.patch('/api/admin/geo-content-mongo/:type/:slug', async (req, res) => {
   const { type, slug } = req.params

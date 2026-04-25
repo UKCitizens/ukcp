@@ -94,7 +94,7 @@ export default function LocationSearch({ onPlaceSelect, onGeoSelect }) {
   return (
     <div
       data-locSearch
-      style={{ position: 'relative', flex: 1, minWidth: 0, maxWidth: 260, margin: '0 8px' }}
+      style={{ position: 'relative', flex: 1, minWidth: 0, maxWidth: 180, margin: '0 6px', alignSelf: 'center' }}
     >
       <input
         ref={inputRef}

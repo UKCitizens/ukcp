@@ -379,3 +379,7 @@ LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-08
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-08 19:21:08
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-21 21:31
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-23
+LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-23 (data rebuild: 54211 rows, 0 corrections applied)
+LOCAL MONGO RESEEDED — places collection 54211 rows, 4 corrections applied 2026-04-24
+LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-24 18:27
+LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-25 (right-pane walker mode: All button, pendingConstituency/Ward, map highlight via props)

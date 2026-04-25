@@ -16,6 +16,9 @@
  *   region  → all constituencies in hierarchy region
  *   country → all constituencies in hierarchy country
  *   none    → all UK (~633)
+ *
+ * NOTE: Right-pane walker mode (All button, preview without path commit) is
+ * deferred — planned for a dedicated navigation refactor session.
  */
 
 import { useMemo, useState, useEffect } from 'react'
@@ -73,7 +76,12 @@ function getWardsFromFlat(wards, constituencyName) {
 
 // ── Component ─────────────────────────────────────────────────────────────
 
-export default function ConstituencyPane({ containment, path, hierarchy, wards, select, selectMany, paneTitle }) {
+export default function ConstituencyPane({
+  containment, path, hierarchy, wards, select, selectMany, paneTitle,
+  onWalkerModeChange,
+  pendingConstituency,
+  pendingWard,
+}) {
   const [activeLetter, setActiveLetter] = useState(null)
 
   const country      = path?.find(p => p.level === 'country')?.value      ?? null
@@ -82,10 +90,13 @@ export default function ConstituencyPane({ containment, path, hierarchy, wards, 
   const constituency = path?.find(p => p.level === 'constituency')?.value ?? null
   const ward         = path?.find(p => p.level === 'ward')?.value         ?? null
 
+  const activeConstituency = pendingConstituency ?? constituency
+  const activeWard         = pendingWard         ?? ward
+
   const constituencies = useMemo(() => {
     const all = getConstituenciesForScope(containment, hierarchy, country, region, county)
-    // If a constituency is already in path (walker nav), scope list to just that entry.
-    if (constituency) return all.filter(c => c.name === constituency)
+    // Only collapse when path-committed AND not in walker mode (no pending)
+    if (constituency && !pendingConstituency) return all.filter(c => c.name === constituency)
     return all
   }, [containment, hierarchy, country, region, county, constituency])
 
@@ -109,9 +120,8 @@ export default function ConstituencyPane({ containment, path, hierarchy, wards, 
     return constituencies.filter(c => c.name?.[0]?.toUpperCase() === activeLetter)
   }, [constituencies, activeLetter])
 
-  // Display constituency for ward panel — nav-selected takes priority,
-  // otherwise preview the first item in the current filtered list.
-  const displayConstituency = constituency ?? filtered[0]?.name ?? null
+  // Show ward panel only when user has explicitly selected a constituency
+  const displayConstituency = activeConstituency ?? null
 
   const allWards = useMemo(
     () => getWardsFromFlat(wards, displayConstituency),
@@ -120,8 +130,8 @@ export default function ConstituencyPane({ containment, path, hierarchy, wards, 
 
   // When a ward is in path, collapse the list to just that entry.
   const selectedWards = useMemo(
-    () => ward ? allWards.filter(w => w === ward) : allWards,
-    [allWards, ward]
+    () => activeWard ? allWards.filter(w => w === activeWard) : allWards,
+    [allWards, activeWard]
   )
 
   if (!constituencies.length) {
@@ -140,11 +150,16 @@ export default function ConstituencyPane({ containment, path, hierarchy, wards, 
 
       {/* A-Z strip */}
       <div className={classes.alphaRow}>
+        <button
+          className={[classes.alphaBtn, activeLetter === null ? classes.alphaBtnActive : ''].join(' ')}
+          onClick={() => { setActiveLetter(null); onWalkerModeChange?.(true) }}
+          title="Show all — walker mode"
+        >All</button>
         {ALL_LETTERS.filter(l => availableLetters.has(l)).map(l => (
           <button
             key={l}
             className={[classes.alphaBtn, l === activeLetter ? classes.alphaBtnActive : ''].join(' ')}
-            onClick={() => setActiveLetter(l)}
+            onClick={() => { setActiveLetter(l); onWalkerModeChange?.(false) }}
           >
             {l}
           </button>
@@ -160,7 +175,7 @@ export default function ConstituencyPane({ containment, path, hierarchy, wards, 
             : filtered.map(c => (
                 <button
                   key={c.id}
-                  className={[classes.constBtn, c.name === constituency ? classes.constBtnActive : ''].join(' ')}
+                  className={[classes.constBtn, c.name === activeConstituency ? classes.constBtnActive : ''].join(' ')}
                   onClick={() => select('constituency', c.name)}
                 >
                   {c.name}
@@ -179,7 +194,7 @@ export default function ConstituencyPane({ containment, path, hierarchy, wards, 
                 : selectedWards.map(w => (
                     <button
                       key={w}
-                      className={[classes.wardBtn, w === ward ? classes.wardBtnActive : ''].join(' ')}
+                      className={[classes.wardBtn, w === activeWard ? classes.wardBtnActive : ''].join(' ')}
                       onClick={() => selectMany([
                         { level: 'constituency', value: displayConstituency },
                         { level: 'ward',         value: w },

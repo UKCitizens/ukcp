@@ -46,8 +46,10 @@ import MiniMap from './MiniMap.jsx'
 export default function LocationInfo({
   contentType, summary, extract, thumbnail, title, wikiUrl,
   mpName, party, partyColour, population, geoData,
+  area, elevation, website, notable_facts, category_tags,
   loading, error, label, wardInfo, lat, lng, onMapClick,
 }) {
+  const placeData = { area, elevation, website, notable_facts, category_tags }
   // ── Ward — local context, no external fetch ─────────────────────────────
   if (wardInfo) {
     return (
@@ -299,6 +301,52 @@ export default function LocationInfo({
             Source: Wikipedia — {title ?? label}
           </Anchor>
         </>
+      )}
+
+      {/* Area + Elevation stats row */}
+      {(placeData?.area || placeData?.elevation) && (
+        <Group gap={0} style={{ borderTop: '1px solid #f1f3f5', marginTop: 8 }}>
+          {placeData.area && (
+            <div style={{ flex: 1, padding: '8px 0', borderRight: placeData.elevation ? '1px solid #f1f3f5' : 'none' }}>
+              <Text size="10px" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: '0.06em', marginBottom: 2 }}>Area</Text>
+              <Text size="xs" fw={500}>{placeData.area}</Text>
+            </div>
+          )}
+          {placeData.elevation && (
+            <div style={{ flex: 1, padding: '8px 0', paddingLeft: 14 }}>
+              <Text size="10px" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: '0.06em', marginBottom: 2 }}>Elevation</Text>
+              <Text size="xs" fw={500}>{placeData.elevation}</Text>
+            </div>
+          )}
+        </Group>
+      )}
+
+      {/* Notable facts */}
+      {placeData?.notable_facts?.length > 0 && (
+        <div style={{ borderTop: '1px solid #f1f3f5', marginTop: 8, paddingTop: 8 }}>
+          <Text size="10px" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: '0.06em', marginBottom: 6 }}>Notable</Text>
+          {placeData.notable_facts.map((fact, i) => (
+            <Text key={i} size="xs" style={{ lineHeight: 1.6, marginBottom: 2 }}>• {fact}</Text>
+          ))}
+        </div>
+      )}
+
+      {/* Category tags */}
+      {placeData?.category_tags?.length > 0 && (
+        <div style={{ borderTop: '1px solid #f1f3f5', marginTop: 8, paddingTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {placeData.category_tags.map((tag, i) => (
+            <span key={i} style={{ fontSize: 11, padding: '2px 8px', borderRadius: 10, background: '#f1f3f5', color: '#495057' }}>{tag}</span>
+          ))}
+        </div>
+      )}
+
+      {/* Official website */}
+      {placeData?.website && (
+        <div style={{ borderTop: '1px solid #f1f3f5', marginTop: 8, paddingTop: 8 }}>
+          <Anchor href={placeData.website} target="_blank" rel="noopener noreferrer" size="xs" c="dimmed">
+            Official website
+          </Anchor>
+        </div>
       )}
     </Stack>
   )
