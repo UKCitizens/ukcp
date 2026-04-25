@@ -13,7 +13,7 @@
  * ward branches). Changing this value invalidates any previously cached data.
  * @type {string}
  */
-export const CACHE_KEY_HIERARCHY   = 'UKCP_HIERARCHY_v6'
+export const CACHE_KEY_HIERARCHY   = 'UKCP_HIERARCHY_v7'
 
 /**
  * localStorage key for the flat LOC-row array used by filterPlaces.
@@ -21,7 +21,7 @@ export const CACHE_KEY_HIERARCHY   = 'UKCP_HIERARCHY_v6'
  * Changing this value invalidates any previously cached places data.
  * @type {string}
  */
-export const CACHE_KEY_PLACES      = 'UKCP_PLACES_v6'
+export const CACHE_KEY_PLACES      = 'UKCP_PLACES_v7'
 
 /**
  * localStorage key for the constituency containment map.
@@ -36,4 +36,4 @@ export const CACHE_KEY_CONTAINMENT = 'UKCP_CONTAINMENT_v1'
  * Sourced from newplace.csv — type === 'WD' rows only.
  * @type {string}
  */
-export const CACHE_KEY_WARDS = 'UKCP_WARDS_v6'
+export const CACHE_KEY_WARDS = 'UKCP_WARDS_v7'
