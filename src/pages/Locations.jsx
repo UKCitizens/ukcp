@@ -488,6 +488,8 @@ export default function Locations() {
           selectMany={handleSelectMany}
           paneTitle={`Constituencies with wards in ${scopeLabel}`}
           onWalkerModeChange={setRightWalkerMode}
+          walkerMode={rightWalkerMode}
+          onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}
           pendingConstituency={pendingConstituency}
           pendingWard={pendingWard}
         />

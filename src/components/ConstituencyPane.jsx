@@ -79,6 +79,8 @@ function getWardsFromFlat(wards, constituencyName) {
 export default function ConstituencyPane({
   containment, path, hierarchy, wards, select, selectMany, paneTitle,
   onWalkerModeChange,
+  walkerMode,
+  onWardPending,
   pendingConstituency,
   pendingWard,
 }) {
@@ -93,27 +95,35 @@ export default function ConstituencyPane({
   const activeConstituency = pendingConstituency ?? constituency
   const activeWard         = pendingWard         ?? ward
 
+  // allConstituencies: full scoped list — deps are scope only (no pendingConstituency).
+  // useEffect watches this so activeLetter only resets on genuine scope change,
+  // not on every walker click (which was the bug: pendingConstituency in deps
+  // caused a new array ref each click → useEffect fired → activeLetter reset to
+  // first letter → user silently kicked out of All mode → list collapsed).
+  const allConstituencies = useMemo(() => {
+    return getConstituenciesForScope(containment, hierarchy, country, region, county)
+  }, [containment, hierarchy, country, region, county])
+
+  // constituencies: applies collapse when path-committed and not in walker mode.
   const constituencies = useMemo(() => {
-    const all = getConstituenciesForScope(containment, hierarchy, country, region, county)
-    // Only collapse when path-committed AND not in walker mode (no pending)
-    if (constituency && !pendingConstituency) return all.filter(c => c.name === constituency)
-    return all
-  }, [containment, hierarchy, country, region, county, constituency, pendingConstituency])
+    if (constituency && !pendingConstituency) return allConstituencies.filter(c => c.name === constituency)
+    return allConstituencies
+  }, [allConstituencies, constituency, pendingConstituency])
 
   const availableLetters = useMemo(() => {
     const s = new Set()
-    for (const c of constituencies) {
+    for (const c of allConstituencies) {
       const l = c.name?.[0]?.toUpperCase()
       if (l) s.add(l)
     }
     return s
-  }, [constituencies])
+  }, [allConstituencies])
 
-  // Reset to first populated letter when scope changes (new constituency list).
+  // Reset to first populated letter only when the scoped list itself changes.
   useEffect(() => {
     const first = ALL_LETTERS.find(l => availableLetters.has(l)) ?? null
     setActiveLetter(first)
-  }, [constituencies]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [allConstituencies]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const filtered = useMemo(() => {
     if (!activeLetter) return constituencies
@@ -129,9 +139,10 @@ export default function ConstituencyPane({
   )
 
   // When a ward is in path, collapse the list to just that entry.
+  // In walker mode, always show all wards — path's ward must not collapse the preview list.
   const selectedWards = useMemo(
-    () => activeWard ? allWards.filter(w => w === activeWard) : allWards,
-    [allWards, activeWard]
+    () => (!walkerMode && activeWard) ? allWards.filter(w => w === activeWard) : allWards,
+    [allWards, activeWard, walkerMode]
   )
 
   if (!constituencies.length) {
@@ -195,10 +206,13 @@ export default function ConstituencyPane({
                     <button
                       key={w}
                       className={[classes.wardBtn, w === activeWard ? classes.wardBtnActive : ''].join(' ')}
-                      onClick={() => selectMany([
-                        { level: 'constituency', value: displayConstituency },
-                        { level: 'ward',         value: w },
-                      ])}
+                      onClick={() => walkerMode
+                        ? onWardPending?.(displayConstituency, w)
+                        : selectMany([
+                            { level: 'constituency', value: displayConstituency },
+                            { level: 'ward',         value: w },
+                          ])
+                      }
                     >
                       {w}
                     </button>
