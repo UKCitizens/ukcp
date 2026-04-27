@@ -23,6 +23,7 @@
 
 import { Box, Group, Text, ActionIcon, Loader, Image, Tooltip } from '@mantine/core'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext.jsx'
 import UKCPLogo from '../../assets/UKCPlogo.png'
 import {
   IconHome,
@@ -49,6 +50,7 @@ import classes from './SiteHeaderRow1.module.css'
 export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const { session } = useAuth()
 
   function handleLocationSelector() {
     // Only navigate if not already on /locations — re-navigating the same route
@@ -108,8 +110,12 @@ export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
           {/* Utility: Profile, Help, Settings */}
           <Group gap="xs" align="center">
 
-            <Tooltip label="Profile" position="bottom" withArrow>
-              <ActionIcon variant="subtle" aria-label="Profile" onClick={() => navigate('/profile')}>
+            <Tooltip label={session ? 'Profile' : 'Register'} position="bottom" withArrow>
+              <ActionIcon
+                variant="subtle"
+                aria-label={session ? 'Profile' : 'Register'}
+                onClick={() => navigate(session ? '/profile' : '/register')}
+              >
                 <IconUser size={24} />
               </ActionIcon>
             </Tooltip>

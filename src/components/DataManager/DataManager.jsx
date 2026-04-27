@@ -19,6 +19,7 @@ import {
   ScrollArea, Divider, ActionIcon, Loader, Alert, Tabs,
 } from '@mantine/core'
 import PlaceCorrector from './PlaceCorrector.jsx'
+import UserManager    from './UserManager.jsx'
 
 // ── Field schema ─────────────────────────────────────────────────────────────
 // Defines display order, label, input type, and contextual hint for each field.
@@ -331,6 +332,7 @@ export default function DataManager() {
       <Tabs.List style={{ flexShrink: 0 }}>
         <Tabs.Tab value="geo">Geo Content</Tabs.Tab>
         <Tabs.Tab value="places">Locations</Tabs.Tab>
+        <Tabs.Tab value="users">Users</Tabs.Tab>
       </Tabs.List>
 
       <Tabs.Panel value="geo"   style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
@@ -338,6 +340,9 @@ export default function DataManager() {
       </Tabs.Panel>
       <Tabs.Panel value="places" style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
         <PlaceCorrector />
+      </Tabs.Panel>
+      <Tabs.Panel value="users" style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+        <UserManager />
       </Tabs.Panel>
     </Tabs>
   )
