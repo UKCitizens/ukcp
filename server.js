@@ -15,7 +15,7 @@ import cors from 'cors'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import cookieParser        from 'cookie-parser'
 import { createClient }    from '@supabase/supabase-js'
 import { randomUUID }      from 'crypto'
@@ -79,7 +79,7 @@ function anonCookiesCol() {
   return db ? db.collection('anon_device_cookies') : null
 }
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN }))
+app.use(cors({ origin: process.env.CLIENT_ORIGIN, credentials: true }))
 app.use(express.json())
 
 // --- Cookie parser ---
@@ -673,6 +673,113 @@ app.patch('/api/admin/geo-content-mongo/:type/:slug', async (req, res) => {
   } catch (err) {
     console.error('[admin] geo-content-mongo patch error:', err.message)
     return res.status(500).json({ error: err.message })
+  }
+})
+
+// --- Auth check ---
+
+/**
+ * GET /api/auth/check
+ * Called by the login page on mount. Reads the httpOnly device cookie and
+ * returns whether this device has a record in anon_device_cookies.
+ * No auth required — the whole point is to check before the user logs in.
+ */
+app.get('/api/auth/check', async (req, res) => {
+  const token = req.cookies[DEVICE_COOKIE_NAME]
+  if (!token) return res.json({ known: false })
+  const col = anonCookiesCol()
+  if (!col) return res.json({ known: false })
+  try {
+    const doc = await col.findOne({ token })
+    return res.json({ known: !!doc })
+  } catch {
+    return res.json({ known: false })
+  }
+})
+
+// --- Admin: user management ---
+
+const USER_EDITABLE = new Set([
+  'display_name', 'username', 'avatar_url', 'bio', 'access_tier',
+  'is_verified', 'verification_method', 'home_ward_gss', 'home_constituency_gss',
+  'default_post_visibility', 'is_active', 'is_suspended', 'status',
+])
+
+/**
+ * GET /api/admin/users
+ * Query params: q (email/display_name search), page, limit
+ * Returns: { total, page, limit, results[] }
+ */
+app.get('/api/admin/users', async (req, res) => {
+  const col = usersCol()
+  if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
+  try {
+    const { q = '', page = '0', limit = '50' } = req.query
+    const pg  = Math.max(0, parseInt(page, 10) || 0)
+    const lim = Math.min(200, parseInt(limit, 10) || 50)
+    const query = q.trim()
+      ? { $or: [
+          { email:        { $regex: q.trim(), $options: 'i' } },
+          { display_name: { $regex: q.trim(), $options: 'i' } },
+        ] }
+      : {}
+    const total   = await col.countDocuments(query)
+    const rawDocs = await col.find(query).skip(pg * lim).limit(lim)
+      .sort({ created_at: -1 }).toArray()
+    const results = rawDocs.map(({ _id, ...fields }) => ({ id: String(_id), ...fields }))
+    return res.json({ total, page: pg, limit: lim, results })
+  } catch (e) {
+    console.error('[admin/users] list error:', e.message)
+    return res.status(500).json({ error: e.message })
+  }
+})
+
+/**
+ * PATCH /api/admin/users/:id
+ * Updates editable fields on a users document. id is the Mongo _id string.
+ */
+app.patch('/api/admin/users/:id', async (req, res) => {
+  const col = usersCol()
+  if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
+  let oid
+  try { oid = new ObjectId(req.params.id) } catch { return res.status(400).json({ error: 'Invalid id' }) }
+  const updates = req.body
+  if (!updates || typeof updates !== 'object' || Array.isArray(updates)) {
+    return res.status(400).json({ error: 'Body must be a plain object' })
+  }
+  try {
+    const safe = { updated_at: new Date() }
+    for (const [k, v] of Object.entries(updates)) {
+      if (USER_EDITABLE.has(k)) safe[k] = v
+    }
+    const result = await col.updateOne({ _id: oid }, { $set: safe })
+    if (result.matchedCount === 0) return res.status(404).json({ error: 'User not found' })
+    console.log(`[admin/users] updated: ${req.params.id}`)
+    return res.json({ ok: true })
+  } catch (e) {
+    console.error('[admin/users] patch error:', e.message)
+    return res.status(500).json({ error: e.message })
+  }
+})
+
+/**
+ * DELETE /api/admin/users/:supabaseId/auth
+ * Hard-deletes the user from Supabase auth. Mongo record is untouched --
+ * caller should have already set status:'deleted' via PATCH before calling this.
+ */
+app.delete('/api/admin/users/:supabaseId/auth', async (req, res) => {
+  const { supabaseId } = req.params
+  try {
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(supabaseId)
+    if (error) {
+      console.error('[admin/users] supabase delete error:', error.message)
+      return res.status(502).json({ error: error.message })
+    }
+    console.log(`[admin/users] supabase auth deleted: ${supabaseId}`)
+    return res.json({ ok: true })
+  } catch (e) {
+    console.error('[admin/users] auth delete error:', e.message)
+    return res.status(500).json({ error: e.message })
   }
 })
 
