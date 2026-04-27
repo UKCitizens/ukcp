@@ -11,16 +11,19 @@ import { supabase } from '../lib/supabase.js'
 import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
-  const [email,    setEmail]    = useState('')
-  const [password, setPassword] = useState('')
-  const [error,    setError]    = useState(null)
-  const [busy,     setBusy]     = useState(false)
+  const [error, setError] = useState(null)
+  const [busy,  setBusy]  = useState(false)
   const navigate = useNavigate()
 
   async function handleSubmit(e) {
     e.preventDefault()
     setError(null)
     setBusy(true)
+
+    // Read from DOM directly — catches autofilled values that bypass React onChange
+    const form     = e.currentTarget
+    const email    = form.elements.namedItem('email').value
+    const password = form.elements.namedItem('password').value
 
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 
@@ -39,16 +42,16 @@ export default function Login() {
       {error && <Alert color="red">{error}</Alert>}
       <TextInput
         label="Email"
+        name="email"
         type="email"
+        autoComplete="email"
         required
-        value={email}
-        onChange={e => setEmail(e.target.value)}
       />
       <PasswordInput
         label="Password"
+        name="password"
+        autoComplete="current-password"
         required
-        value={password}
-        onChange={e => setPassword(e.target.value)}
       />
       <Button type="submit" loading={busy}>Sign in</Button>
       <Text size="sm">
