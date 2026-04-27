@@ -11,6 +11,8 @@ import Locations   from './pages/Locations.jsx'
 import MyHome      from './pages/MyHome.jsx'
 import MyVote      from './pages/MyVote.jsx'
 import Profile     from './pages/Profile.jsx'
+import Login       from './pages/Login.jsx'
+import Register    from './pages/Register.jsx'
 import Help        from './pages/Help.jsx'
 import Settings    from './pages/Settings.jsx'
 
@@ -27,6 +29,8 @@ export default function App() {
         <Route path="/myhome"     element={<MyHome />}    />
         <Route path="/myvote"     element={<MyVote />}    />
         <Route path="/profile"    element={<Profile />}   />
+        <Route path="/login"      element={<Login />}     />
+        <Route path="/register"   element={<Register />}  />
         <Route path="/help"       element={<Help />}      />
         <Route path="/settings"   element={<Settings />}  />
       </Routes>

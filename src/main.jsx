@@ -9,12 +9,15 @@ import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
 import { theme } from './theme/theme.js'
 import App from './app.jsx'
+import { AuthProvider } from './context/AuthContext.jsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <MantineProvider theme={theme} defaultColorScheme="light">
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </MantineProvider>
   </React.StrictMode>
 )

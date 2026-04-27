@@ -9,12 +9,16 @@
  * Port: configured via .env PORT, defaults to 3000.
  */
 
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { MongoClient } from 'mongodb'
+import cookieParser        from 'cookie-parser'
+import { createClient }    from '@supabase/supabase-js'
+import { randomUUID }      from 'crypto'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -35,12 +39,25 @@ async function connectMongo() {
     await mongoClient.connect()
     db = mongoClient.db('ukcp')
     await db.collection('geo_content').createIndex({ type: 1, slug: 1 }, { unique: true })
+    await db.collection('users').createIndex({ supabase_id: 1 }, { unique: true })
+    await db.collection('users').createIndex({ email: 1 }, { unique: true })
+    await db.collection('anon_device_cookies').createIndex({ token: 1 }, { unique: true })
+    await db.collection('anon_device_cookies').createIndex({ user_id: 1 })
     console.log('MongoDB connected')
   } catch (err) {
     console.error('[mongo] connection failed — continuing without MongoDB:', err.message)
     db = null
   }
 }
+
+// --- Supabase Admin Client ---
+// Used server-side only for JWT validation and user creation. Service role key required.
+// Never expose SUPABASE_SERVICE_ROLE_KEY to the client.
+const supabaseAdmin = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
+  { auth: { autoRefreshToken: false, persistSession: false } }
+)
 
 /** Returns the geo_content collection, or null if Mongo is unavailable. */
 function geoContent() {
@@ -52,8 +69,141 @@ function placesCol() {
   return db ? db.collection('places') : null
 }
 
+/** Returns the users collection, or null if Mongo is unavailable. */
+function usersCol() {
+  return db ? db.collection('users') : null
+}
+
+/** Returns the anon_device_cookies collection, or null if Mongo is unavailable. */
+function anonCookiesCol() {
+  return db ? db.collection('anon_device_cookies') : null
+}
+
 app.use(cors({ origin: process.env.CLIENT_ORIGIN }))
 app.use(express.json())
+
+// --- Cookie parser ---
+app.use(cookieParser())
+
+// --- Device cookie middleware ---
+// Runs on every request. Sets a long-lived device cookie if not present.
+// Creates an anon_device_cookies record in Mongo.
+// Does not block the request -- failure is silent (cookie features degrade gracefully).
+
+const DEVICE_COOKIE_NAME    = 'ukcp_device'
+const DEVICE_COOKIE_MAX_AGE = 365 * 24 * 60 * 60 * 1000
+
+async function deviceCookieMiddleware(req, res, next) {
+  try {
+    let token = req.cookies[DEVICE_COOKIE_NAME]
+
+    if (!token) {
+      token = randomUUID()
+      res.cookie(DEVICE_COOKIE_NAME, token, {
+        httpOnly:  true,
+        sameSite:  'lax',
+        maxAge:    DEVICE_COOKIE_MAX_AGE,
+        secure:    process.env.NODE_ENV === 'production',
+      })
+
+      const col = anonCookiesCol()
+      if (col) {
+        await col.insertOne({
+          token,
+          user_id:    null,
+          created_at: new Date(),
+          last_seen:  new Date(),
+          ip:         req.ip ?? null,
+        })
+      }
+    } else {
+      const col = anonCookiesCol()
+      if (col) {
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+        await col.updateOne(
+          { token, last_seen: { $lt: oneHourAgo } },
+          { $set: { last_seen: new Date() } }
+        )
+      }
+    }
+
+    req.deviceToken = token
+  } catch (err) {
+    console.error('[device-cookie]', err.message)
+  }
+
+  next()
+}
+
+app.use(deviceCookieMiddleware)
+
+// --- Auth middleware ---
+// Validates the Supabase JWT via the admin client (handles ECC P-256 automatically).
+// On valid token: looks up or creates the MongoDB users record, attaches to req.user.
+// On invalid token: 401.
+
+async function requireAuth(req, res, next) {
+  const authHeader = req.headers.authorization
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
+  const token = authHeader.slice(7)
+
+  const { data: { user: sbUser }, error } = await supabaseAdmin.auth.getUser(token)
+  if (error || !sbUser) {
+    return res.status(401).json({ error: 'Invalid or expired token' })
+  }
+
+  const supabase_id = sbUser.id
+  const col = usersCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+
+  let user = await col.findOne({ supabase_id })
+
+  if (!user) {
+    const email = sbUser.email ?? null
+    const now   = new Date()
+
+    const doc = {
+      supabase_id,
+      email,
+      display_name:            email ? email.split('@')[0] : 'citizen',
+      username:                null,
+      avatar_url:              null,
+      bio:                     null,
+      access_tier:             'seen',
+      is_verified:             false,
+      verification_method:     null,
+      home_ward_gss:           null,
+      home_constituency_gss:   null,
+      default_post_visibility: 'anonymous',
+      device_cookie_id:        null,
+      is_active:               true,
+      is_suspended:            false,
+      created_at:              now,
+      updated_at:              now,
+    }
+
+    const result = await col.insertOne(doc)
+    user = { ...doc, _id: result.insertedId }
+
+    const cookieCol = anonCookiesCol()
+    if (cookieCol && req.deviceToken) {
+      await cookieCol.updateOne(
+        { token: req.deviceToken, user_id: null },
+        { $set: { user_id: result.insertedId } }
+      )
+      await col.updateOne(
+        { _id: result.insertedId },
+        { $set: { device_cookie_id: req.deviceToken } }
+      )
+    }
+  }
+
+  req.user = user
+  next()
+}
 
 // --- Static files ---
 // Serve the Vite production build
@@ -524,6 +674,58 @@ app.patch('/api/admin/geo-content-mongo/:type/:slug', async (req, res) => {
     console.error('[admin] geo-content-mongo patch error:', err.message)
     return res.status(500).json({ error: err.message })
   }
+})
+
+// --- Profile routes ---
+
+// GET /api/profile -- returns the authenticated user's profile
+app.get('/api/profile', requireAuth, (req, res) => {
+  const { _id, email, display_name, username, bio, access_tier,
+          is_verified, home_ward_gss, home_constituency_gss,
+          default_post_visibility, created_at } = req.user
+
+  res.json({
+    id: _id,
+    email,
+    display_name,
+    username,
+    bio,
+    access_tier,
+    is_verified,
+    home_ward_gss,
+    home_constituency_gss,
+    default_post_visibility,
+    created_at,
+  })
+})
+
+// PATCH /api/profile -- update editable profile fields
+app.patch('/api/profile', requireAuth, async (req, res) => {
+  const allowed = [
+    'display_name', 'username', 'bio',
+    'default_post_visibility', 'home_ward_gss', 'home_constituency_gss',
+  ]
+
+  const update = {}
+  for (const field of allowed) {
+    if (req.body[field] !== undefined) update[field] = req.body[field]
+  }
+
+  if (Object.keys(update).length === 0) {
+    return res.status(400).json({ error: 'No valid fields provided' })
+  }
+
+  if (update.default_post_visibility &&
+      !['anonymous', 'named'].includes(update.default_post_visibility)) {
+    return res.status(400).json({ error: 'default_post_visibility must be anonymous or named' })
+  }
+
+  update.updated_at = new Date()
+
+  const col = usersCol()
+  await col.updateOne({ _id: req.user._id }, { $set: update })
+
+  res.json({ ok: true })
 })
 
 // --- SPA catch-all ---
