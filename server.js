@@ -12,6 +12,7 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import { createServer as createHttpsServer } from 'https'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
@@ -31,7 +32,11 @@ const PORT = process.env.PORT || 3000
 // If Mongo is unavailable at startup, server continues — only Mongo-backed routes degrade.
 
 const MONGO_URI = process.env.MONGODB_URI ?? 'mongodb://localhost:27017'
-const mongoClient = new MongoClient(MONGO_URI)
+const mongoClient = new MongoClient(MONGO_URI, {
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS:          10000,
+  connectTimeoutMS:         5000,
+})
 let db = null
 
 async function connectMongo() {
@@ -301,7 +306,8 @@ app.get('/api/content/:type/:slug', async (req, res) => {
       const searchName = slug.replace(/_/g, ' ')
       const conUrl = `https://members-api.parliament.uk/api/Location/Constituency/Search?searchText=${encodeURIComponent(searchName)}&skip=0&take=5`
       const conResp = await fetch(conUrl, {
-        headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' }
+        headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' },
+        signal: AbortSignal.timeout(8000),
       })
       if (!conResp.ok) return res.status(502).json({ error: 'Parliament API failed' })
       const conData = await conResp.json()
@@ -327,7 +333,10 @@ app.get('/api/content/:type/:slug', async (req, res) => {
         const slugsToTry = [baseName, `${baseName}_(UK_Parliament_constituency)`]
         for (const wdSlug of slugsToTry) {
           const wdUrl  = `https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles=${encodeURIComponent(wdSlug)}&props=claims&languages=en&format=json`
-          const wdResp = await fetch(wdUrl, { headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' } })
+          const wdResp = await fetch(wdUrl, {
+            headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' },
+            signal: AbortSignal.timeout(8000),
+          })
           if (!wdResp.ok) continue
           const wdData  = await wdResp.json()
           const entity  = Object.values(wdData.entities ?? {})[0]
@@ -357,7 +366,8 @@ app.get('/api/content/:type/:slug', async (req, res) => {
     // ── All other types — Wikipedia REST Summary API ─────────────────────────
     const wikiUrl  = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`
     const response = await fetch(wikiUrl, {
-      headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' }
+      headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' },
+      signal: AbortSignal.timeout(8000),
     })
     if (!response.ok) {
       return res.status(response.status === 404 ? 404 : 502).json({ error: 'Wikipedia fetch failed' })
@@ -369,7 +379,10 @@ app.get('/api/content/:type/:slug', async (req, res) => {
     let population = null
     try {
       const wdUrl  = `https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles=${encodeURIComponent(slug)}&props=claims&languages=en&format=json`
-      const wdResp = await fetch(wdUrl, { headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' } })
+      const wdResp = await fetch(wdUrl, {
+        headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' },
+        signal: AbortSignal.timeout(8000),
+      })
       if (wdResp.ok) {
         const wdData   = await wdResp.json()
         const entity   = Object.values(wdData.entities ?? {})[0]
@@ -441,7 +454,10 @@ app.get('/api/population/:gss', async (req, res) => {
 
   try {
     const nomisUrl = `https://www.nomisweb.co.uk/api/v01/dataset/NM_2001_1.data.json?geography=${gss}&cell=0&measures=20100&select=obs_value`
-    const resp = await fetch(nomisUrl, { headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' } })
+    const resp = await fetch(nomisUrl, {
+      headers: { 'User-Agent': 'UKCP/1.0 (phil@ukcp.dev)' },
+      signal: AbortSignal.timeout(8000),
+    })
     if (!resp.ok) return res.status(502).json({ error: 'Nomis API failed' })
     const data  = await resp.json()
     const value = data.obs?.[0]?.obs_value?.value
@@ -843,8 +859,26 @@ app.get('*', (req, res) => {
 })
 
 // --- Start ---
+// In local development, run HTTPS if cert.pem and key.pem exist in the project root.
+// Generate with: openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=localhost"
+// Browser will warn once on first visit -- click "proceed anyway".
+// In production (Railway) the certs are absent and HTTP runs as normal (Railway handles SSL termination).
+
 connectMongo().then(() => {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`UKCP running on http://localhost:${PORT}`)
-  })
+  const certPath = join(__dirname, 'cert.pem')
+  const keyPath  = join(__dirname, 'key.pem')
+
+  if (existsSync(certPath) && existsSync(keyPath)) {
+    const HTTPS_PORT = process.env.HTTPS_PORT || 3443
+    createHttpsServer(
+      { cert: readFileSync(certPath), key: readFileSync(keyPath) },
+      app
+    ).listen(HTTPS_PORT, '0.0.0.0', () => {
+      console.log(`UKCP running on https://localhost:${HTTPS_PORT} (local SSL)`)
+    })
+  } else {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`UKCP running on http://localhost:${PORT}`)
+    })
+  }
 })
