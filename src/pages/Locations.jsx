@@ -144,6 +144,9 @@ export default function Locations() {
   // Map marker ward clicks in walker mode still route through handleSelectMany.
   const handleSelect = useCallback((level, value) => {
     dismissPending()
+    setPendingConstituency(null)
+    setPendingWard(null)
+    setRightWalkerMode(false)
     const ancestors = level === 'constituency' ? resolveConstituencyAncestors(value) : []
     selectMany([...ancestors, { level, value }])
     setMidTab('map')
@@ -477,7 +480,10 @@ export default function Locations() {
           select={handleSelect}
           selectMany={handleSelectMany}
           paneTitle={`Constituencies with wards in ${scopeLabel}`}
-          onWalkerModeChange={setRightWalkerMode}
+          onWalkerModeChange={(active) => {
+            setRightWalkerMode(active)
+            if (!active) { setPendingConstituency(null); setPendingWard(null) }
+          }}
           walkerMode={rightWalkerMode}
           onConstituencyPending={(name) => { setPendingConstituency(name); setPendingWard(null) }}
           onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}
