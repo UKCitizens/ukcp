@@ -81,6 +81,7 @@ export default function ConstituencyPane({
   onWalkerModeChange,
   walkerMode,
   onWardPending,
+  onConstituencyPending,
   pendingConstituency,
   pendingWard,
 }) {
@@ -170,7 +171,7 @@ export default function ConstituencyPane({
           <button
             key={l}
             className={[classes.alphaBtn, l === activeLetter ? classes.alphaBtnActive : ''].join(' ')}
-            onClick={() => setActiveLetter(l)}
+            onClick={() => { setActiveLetter(l); onWalkerModeChange?.(false) }}
           >
             {l}
           </button>
@@ -187,7 +188,7 @@ export default function ConstituencyPane({
                 <button
                   key={c.id}
                   className={[classes.constBtn, c.name === activeConstituency ? classes.constBtnActive : ''].join(' ')}
-                  onClick={() => select('constituency', c.name)}
+                  onClick={() => walkerMode ? onConstituencyPending?.(c.name) : select('constituency', c.name)}
                 >
                   {c.name}
                 </button>

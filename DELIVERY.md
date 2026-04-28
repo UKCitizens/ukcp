@@ -385,3 +385,4 @@ LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-24 18:27
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-25 (right-pane walker mode: All button, pendingConstituency/Ward, map highlight via props)
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-25 (walker fix: letter clicks no longer exit walker mode; nav handlers clear rightWalkerMode)
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-25 (walker fix patch: pendingConstituency added to constituencies useMemo dep array)
+LIVE INSTANCE RESTARTED — :3443 serving build completed 2026-04-28 10:26

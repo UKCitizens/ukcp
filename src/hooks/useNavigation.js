@@ -5,8 +5,8 @@
  *
  * panel1 shows all top-level countries from the hierarchy.
  * panel2 shows children at the current path depth via getChildren.
- * The full path is persisted to sessionStorage under UKCP_NAV_PATH on every
- * change and restored on mount once the hierarchy is available.
+ * The path is cleared in sessionStorage on mount (navigation always starts fresh)
+ * and written on every change. Session restore was intentionally removed.
  */
 
 import { useState, useEffect, useCallback } from 'react'
@@ -23,21 +23,6 @@ const SESSION_KEY = 'UKCP_NAV_PATH'
 const LEVEL_ORDER = ['country', 'region', 'county', 'constituency', 'ward']
 
 /**
- * Reads and JSON-parses the navigation path from sessionStorage.
- * Returns null on any failure (missing key, invalid JSON, SecurityError).
- * @returns {Array<{ level: string, value: string }>|null}
- */
-function readSession() {
-  try {
-    const raw = sessionStorage.getItem(SESSION_KEY)
-    if (raw === null) return null
-    return JSON.parse(raw)
-  } catch {
-    return null
-  }
-}
-
-/**
  * Writes the navigation path to sessionStorage as JSON.
  * Failures are silently swallowed.
  * @param {Array<{ level: string, value: string }>} path - Path to persist.
@@ -47,38 +32,6 @@ function writeSession(path) {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(path))
   } catch {
     // silently swallow — do not surface sessionStorage write failures
-  }
-}
-
-/**
- * Validates that every step in a saved path exists in the current hierarchy.
- * Returns false on any mismatch so stale session data is discarded rather than
- * applied to an incompatible hierarchy.
- *
- * @param {object} hierarchy - Full hierarchy from buildHierarchy.
- * @param {Array<{ level: string, value: string }>} path - Saved path to validate.
- * @returns {boolean}
- */
-function isPathValid(hierarchy, path) {
-  try {
-    if (!hierarchy || !Array.isArray(path) || path.length === 0) return false
-    const countryNode = hierarchy[path[0].value]
-    if (!countryNode) return false
-    if (path.length === 1) return true
-    const regionNode = countryNode.regions?.[path[1].value]
-    if (!regionNode) return false
-    if (path.length === 2) return true
-    const countyNode = regionNode.counties?.[path[2].value]
-    if (!countyNode) return false
-    if (path.length === 3) return true
-    const constiNode = countyNode.constituencies?.[path[3].value]
-    if (!constiNode) return false
-    if (path.length === 4) return true
-    // path.length === 5: ward level
-    const wardName = path[4]?.value
-    return wardName ? !!constiNode.wards?.[wardName] : false
-  } catch {
-    return false
   }
 }
 

@@ -25,7 +25,10 @@ export default function Register() {
     const addr  = form.elements.namedItem('email').value
     const { error: sbError } = await supabase.auth.signInWithOtp({
       email: addr,
-      options: { shouldCreateUser: true },
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo:  window.location.origin,
+      },
     })
     setBusy(false)
     if (sbError) {

@@ -14,3 +14,5 @@ Ali/
 preston-info-tab*.png
 token.txt
 live-service-conns.txt
+cert.pem
+key.pem

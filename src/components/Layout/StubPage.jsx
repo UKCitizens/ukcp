@@ -26,10 +26,8 @@ export default function StubPage({ title }) {
           row3Visible={false}
           loading={false}
           pendingPlace={null}
-          confirmedPlace={null}
           walkerOpen={false}
           path={[]}
-          onConfirm={() => {}}
           onDismiss={() => {}}
           currentOptions={[]}
           onSelect={() => {}}

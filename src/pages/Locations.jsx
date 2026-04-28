@@ -51,9 +51,7 @@ export default function Locations() {
   const { grouped, scopeKey } = usePlacesFilter(places, path)
   const {
     pendingPlace,
-    confirmedPlace,
     setPending,
-    confirmPlace,
     dismissPending,
   } = useSelectionState()
 
@@ -140,22 +138,16 @@ export default function Locations() {
     return pairs
   }, [wards])
 
-  // Right-pane constituency/ward selection.
+  // Right-pane constituency/ward selection — commit path only.
+  // Walker-mode constituency clicks are handled via onConstituencyPending (direct callback).
+  // Walker-mode ward clicks are handled via onWardPending (direct callback).
+  // Map marker ward clicks in walker mode still route through handleSelectMany.
   const handleSelect = useCallback((level, value) => {
-    if (rightWalkerMode) {
-      if (level === 'constituency') {
-        setPendingConstituency(value)
-        setPendingWard(null)
-      } else if (level === 'ward') {
-        setPendingWard(value)
-      }
-      return
-    }
     dismissPending()
     const ancestors = level === 'constituency' ? resolveConstituencyAncestors(value) : []
     selectMany([...ancestors, { level, value }])
     setMidTab('map')
-  }, [rightWalkerMode, dismissPending, selectMany, resolveConstituencyAncestors])
+  }, [dismissPending, selectMany, resolveConstituencyAncestors])
 
   const handleSelectMany = useCallback((pairs) => {
     if (rightWalkerMode) {
@@ -392,10 +384,8 @@ export default function Locations() {
           row3Visible={row3Visible}
           loading={loading}
           pendingPlace={pendingPlace}
-          confirmedPlace={confirmedPlace}
           walkerOpen={walkerOpen}
           path={path}
-          onConfirm={() => confirmPlace(path)}
           onDismiss={dismissPending}
           currentOptions={currentOptions}
           onSelect={handleNavSelect}
@@ -489,6 +479,7 @@ export default function Locations() {
           paneTitle={`Constituencies with wards in ${scopeLabel}`}
           onWalkerModeChange={setRightWalkerMode}
           walkerMode={rightWalkerMode}
+          onConstituencyPending={(name) => { setPendingConstituency(name); setPendingWard(null) }}
           onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}
           pendingConstituency={pendingConstituency}
           pendingWard={pendingWard}

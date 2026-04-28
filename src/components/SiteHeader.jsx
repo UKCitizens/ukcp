@@ -30,13 +30,10 @@ import SiteHeaderRow4 from './Header/SiteHeaderRow4.jsx'
  * @param {boolean}     props.row3Visible     - When true Row 3 is rendered.
  * @param {boolean}     props.loading         - Passed to Row 1 data loader.
  * @param {object|null} props.pendingPlace    - Passed to SiteHeaderRow2.
- * @param {object|null} props.confirmedPlace  - Passed to SiteHeaderRow2.
- * @param {boolean}     props.walkerOpen      - Passed to SiteHeaderRow2.
+ * @param {boolean}     props.walkerOpen      - Passed to SiteHeaderRow3.
  * @param {string|null} props.bannerImage     - Wikipedia thumbnail URL for banner bg swap.
  * @param {Array<{ level: string, value: string }>} props.path - Navigation
  *                                               path; passed to Row 2 and Row 3.
- * @param {Function}    props.onConfirm       - Passed to SiteHeaderRow2.
- * @param {Function}    props.onDismiss       - Passed to SiteHeaderRow2.
  * @param {string[]}    props.currentOptions  - Option list for Row 3 line 1.
  * @param {Function}    props.onSelect        - Called when a Row 3 option is clicked.
  * @param {Array<{ label: string, onClick?: () => void }>} props.crumbs - Pre-built crumb trail.
@@ -49,10 +46,8 @@ export default function SiteHeader({
   row3Visible,
   loading,
   pendingPlace,
-  confirmedPlace,
   walkerOpen,
   path,
-  onConfirm,
   onDismiss,
   currentOptions,
   onSelect,
