@@ -166,8 +166,12 @@ router.post('/:id/join', requireAuth, async (req, res) => {
     return res.status(503).json({ error: 'Postcode lookup unavailable. Please try again shortly.' })
   }
 
-  // 5. Constituency gate — hard match on con_gss
-  if (resolved.con_gss !== committee.con_gss) {
+  // 5. Constituency gate — GSS match preferred, name match as fallback for vintage gap
+  const gssMatch  = resolved.con_gss && resolved.con_gss === committee.con_gss
+  const nameMatch = resolved.constituency?.toLowerCase().trim() ===
+                    committee.name?.toLowerCase().trim()
+
+  if (!gssMatch && !nameMatch) {
     return res.status(403).json({
       error: `This forum is for residents of ${committee.name}. Your postcode is registered to ${resolved.constituency}.`,
     })
