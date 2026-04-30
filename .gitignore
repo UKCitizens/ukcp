@@ -11,8 +11,10 @@ data-build/sources/GBPN.csv
 dex-instructions/data-build/sources/GBPN.csv
 .playwright-mcp/
 Ali/
+Sage/
 preston-info-tab*.png
 token.txt
+dex-creds.env
 live-service-conns.txt
 cert.pem
 key.pem

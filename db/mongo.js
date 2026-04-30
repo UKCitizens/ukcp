@@ -51,4 +51,16 @@ export function placesCol()     { return db ? db.collection('places')           
 export function usersCol()      { return db ? db.collection('users')               : null }
 
 /** Returns the anon_device_cookies collection, or null if Mongo is unavailable. */
-export function anonCookiesCol() { return db ? db.collection('anon_device_cookies') : null }
+export function anonCookiesCol()      { return db ? db.collection('anon_device_cookies') : null }
+
+/** Returns the associations collection, or null if Mongo is unavailable. */
+export function associationsCol()     { return db ? db.collection('associations')      : null }
+
+/** Returns the spaces collection, or null if Mongo is unavailable. */
+export function spacesCol()           { return db ? db.collection('spaces')            : null }
+
+/** Returns the group_memberships collection, or null if Mongo is unavailable. */
+export function groupMembershipsCol() { return db ? db.collection('group_memberships') : null }
+
+/** Returns the posts collection, or null if Mongo is unavailable. */
+export function postsCol()            { return db ? db.collection('posts')             : null }

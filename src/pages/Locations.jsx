@@ -43,7 +43,9 @@ import { useLocationContent } from '../hooks/useLocationContent.js'
 import { usePopulation } from '../hooks/usePopulation.js'
 import { NAV_COORDS } from '../config/navCoords.js'
 import { findRelatedPlace } from '../utils/findRelatedPlace.js'
-import { NewsStub, GroupsStub, PostsStub, PeopleStub, GovernmentStub, CommitteeStub } from '../components/TabStubs.jsx'
+import { NewsStub, PeopleStub, GovernmentStub, CommitteeStub } from '../components/TabStubs.jsx'
+import GroupsTab from '../components/Groups/GroupsTab.jsx'
+import PostsTab  from '../components/Posts/PostsTab.jsx'
 
 export default function Locations() {
   const { places, wards, hierarchy, containment, loading } = useLocationData()
@@ -418,8 +420,8 @@ export default function Locations() {
           onPlaceSelect={handlePlaceSelect}
           onGeoSelect={handleSelect}
           newsPane={<NewsStub />}
-          groupsPane={<GroupsStub />}
-          postsPane={<PostsStub />}
+          groupsPane={<GroupsTab locationType={contentContext?.type} locationSlug={contentContext?.slug} />}
+          postsPane={<PostsTab  locationType={contentContext?.type} locationSlug={contentContext?.slug} />}
           peoplePane={<PeopleStub />}
           governmentPane={<GovernmentStub />}
           committeePane={<CommitteeStub />}

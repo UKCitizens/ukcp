@@ -386,3 +386,30 @@ LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-25 (right-pane
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-25 (walker fix: letter clicks no longer exit walker mode; nav handlers clear rightWalkerMode)
 LIVE INSTANCE RESTARTED — :3000 serving build completed 2026-04-25 (walker fix patch: pendingConstituency added to constituencies useMemo dep array)
 LIVE INSTANCE RESTARTED — :3443 serving build completed 2026-04-28 10:26
+LIVE INSTANCE RESTARTED — :3443 serving build completed 2026-04-28 11:53
+LIVE INSTANCE RESTARTED — :3443 serving build completed 2026-04-28 12:01
+LIVE INSTANCE RESTARTED — :3443 serving build completed 2026-04-28 12:24
+LIVE INSTANCE RESTARTED — :3443 serving build completed 2026-04-28 12:44
+
+---
+
+# Sprint B+C Delivery Log
+
+**Date:** 30 Apr 2026
+**Spec:** dex-instructions/dex-instructions-sprint-bc-groups-posts.md
+
+## Build
+- Seed: 5 associations + 2 spaces inserted to Atlas. All 4 collection indexes created.
+- Build: PASS (0 errors, 0 warnings, 6947 modules)
+
+## Files delivered
+- db/mongo.js — 4 new collection accessors (associations, spaces, group_memberships, posts)
+- scripts/seed-sprint-bc.js — seed + index creation script
+- routes/groups.js — GET /api/groups, POST /api/groups/:kind/:id/join, GET /api/groups/:kind/:id/members
+- routes/posts.js — GET /api/posts, POST /api/posts
+- server.js — wired groupsRouter + postsRouter
+- src/components/Groups/GroupsTab.jsx — Groups tab panel
+- src/components/Posts/PostsTab.jsx — Posts tab panel
+- src/pages/Locations.jsx — stubs replaced with GroupsTab + PostsTab, contentContext passed
+
+LIVE INSTANCE RESTARTED — :3443 serving build completed 2026-04-30 16:57
