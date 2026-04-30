@@ -47,9 +47,9 @@ export async function getChaptersAtScope(type, slug, userId) {
   // Fetch existing chapters for this scope.
   const groupIds = groups.map(g => g._id)
   const chapters = await ncCol.find({
-    national_group_ref: { $in: groupIds },
-    tier:               type,
-    slug,
+    national_group_ref:      { $in: groupIds },
+    'location_scope.type':   type,
+    'location_scope.slug':   slug,
   }).toArray()
 
   const chapterByGroupId = Object.fromEntries(
@@ -87,7 +87,7 @@ async function ensureChaptersExist(groups, tier, slug, ncCol) {
   const now = new Date()
   const ops = groups.map(ng => ({
     updateOne: {
-      filter: { national_group_ref: ng._id, tier, slug },
+      filter: { national_group_ref: ng._id, slug: `${ng.slug}--${tier}--${slug.toLowerCase()}` },
       update: {
         $setOnInsert: {
           national_group_ref: ng._id,
