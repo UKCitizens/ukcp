@@ -64,3 +64,9 @@ export function groupMembershipsCol() { return db ? db.collection('group_members
 
 /** Returns the posts collection, or null if Mongo is unavailable. */
 export function postsCol()            { return db ? db.collection('posts')             : null }
+
+/** Returns the committees collection, or null if Mongo is unavailable. */
+export function committeesCol()       { return db ? db.collection('committees')        : null }
+
+/** Returns the committee_forums collection, or null if Mongo is unavailable. */
+export function committeeForumsCol()  { return db ? db.collection('committee_forums')  : null }
