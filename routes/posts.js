@@ -15,6 +15,7 @@ import {
   groupMembershipsCol,
   associationsCol,
   spacesCol,
+  networkChaptersCol,
   usersCol,
 } from '../db/mongo.js'
 
@@ -106,7 +107,9 @@ router.post('/', requireAuth, async (req, res) => {
       ? associationsCol()
       : collective_ref.collection === 'spaces'
         ? spacesCol()
-        : null
+        : collective_ref.collection === 'network_chapters'
+          ? networkChaptersCol()
+          : null
 
     if (!targetCol) {
       return res.status(400).json({ error: 'Invalid collective_ref.collection' })

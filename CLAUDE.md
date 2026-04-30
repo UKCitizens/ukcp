@@ -13,7 +13,39 @@ Source this file first. All tokens and URIs are in it.
 Execute in order -- no user prompt needed:
 1. Echo: `Dex online. CLAUDE.md loaded.`
 2. Read `dex-creds.env` -- confirm endpoints known.
-3. Read PRG zone below -- confirm current task state.
+3. Read `Ali/key-register.md` -- check Expiry column for any key expiring within
+   30 days or marked EXPIRED. If found, report at the top of session open before
+   anything else: key name, current expiry, renewal path.
+4. Read PRG zone below -- confirm current task state.
+5. Read dex-instructions/ -- list all instruction files, identify any not yet marked
+   complete in PRG zone, and report to Phil: file name, status (pending/complete).
+
+---
+
+## SPRINT EXECUTION DIRECTIVE
+
+Instruction files in dex-instructions/ are sequenced sprints. Execute them
+in filename order, stepping through one at a time within a session.
+
+On session start:
+- List all instruction files in dex-instructions/ in filename order.
+- Mark each as complete or pending based on PRG zone.
+- State the full list to Phil so he can see what is queued.
+- Begin the first pending sprint immediately (no separate go-ahead needed
+  at session open -- Phil starting the session is the go-ahead).
+
+After each sprint completes:
+- Follow PIPELINE CLOSE protocol.
+- Update PRG zone: mark sprint complete, note date and outcome.
+- Report to Phil: sprint name, what was delivered, any issues.
+- Stop. Wait for Phil's explicit instruction before proceeding.
+  Phil will either say go (next sprint runs) or stop (session ends).
+- Do not read ahead into the next instruction file while waiting.
+
+If a sprint cannot complete:
+- Stop at the failure point. Report error verbatim.
+- Do not attempt to continue to the next sprint.
+- Await Phil's decision.
 
 ---
 
@@ -121,9 +153,22 @@ Phil relies on :3000 as the stable review point. This step is not optional.
 
 ## ZONE: PRG -- Dynamic progress (Dex maintains this zone)
 
-[PRG:21] STATUS    | Sprint B+C (Groups + Posts POC) complete. 30 Apr 2026.
-                     All sections delivered: MongoDB seed, server routes, client components, wiring.
-                     :3443 live. Awaiting Phil acceptance criteria check on local instance.
+[PRG:21] STATUS    | Fix: con_gss boundary mismatch patched. 30 Apr 2026.
+                     Join gate now passes on name match when GSS codes differ (2024 boundary vintage gap).
+                     Commit: 4456a04.
+
+[PRG:24] SPRINT-COMMITTEES | Seed Constituency Committees. Status: complete. 30 Apr 2026.
+                     Script: scripts/seed-committees.js. 632 records, 6 indexes.
+                     Local and Atlas seeded. Commit: 625c9f2.
+
+[PRG:26] SPRINT-JOIN      | Forum Join Onboarding. Status: complete. 30 Apr 2026.
+                     services/postcodes.js. POST /api/forums/:id/join (auth + postcode gate).
+                     JoinForumModal.jsx. CommitteeTab updated. Commit: d5875d7.
+
+[PRG:25] SPRINT-FORUMS    | Committee Forums + UI. Status: complete. 30 Apr 2026.
+                     Script: scripts/seed-committee-forums.js. 632 forums + back-fill.
+                     Route: GET /api/forums (type+slug), GET /api/forums/:id. Member join annotated.
+                     UI: CommitteeTab.jsx wired into Locations.jsx. Commit: 02a7a2f.
 
 [PRG:23] SPRINT-BC | Groups + Posts POC. Status: complete.
                      Seed: 5 associations + 2 spaces in Atlas. 4 collections indexed.
@@ -131,6 +176,17 @@ Phil relies on :3000 as the stable review point. This step is not optional.
                      GET /api/groups/:kind/:id/members.
                      UI: GroupsTab.jsx + PostsTab.jsx wired into Locations.jsx via contentContext.
                      Commit + deploy pending Phil sign-off on acceptance criteria.
+
+[PRG:27] SPRINT-NETWORKS | Community Networks. Status: complete. 30 Apr 2026.
+                     Seed: scripts/seed-national-groups.js -- 8 national_groups, local + Atlas.
+                     DB: national_groups + network_chapters indexes in connectMongo().
+                        nationalGroupsCol() + networkChaptersCol() accessors added.
+                        posts.js extended to accept network_chapters as collective_ref.
+                     Service: services/communityNetworks.js (getChaptersAtScope, ensureChaptersExist,
+                              joinChapter, leaveChapter, getNationalFeed).
+                     Routes: routes/communityNetworks.js -- 5 routes registered.
+                     UI: CommunityNetworksSection.jsx, GroupsTab.jsx updated with filter strip.
+                     Commit: pending.
 
 [PRG:22] TEMPLATE  | Format for new entries:
                      [PRG:XX] TASK | Brief description. Status: in progress / complete / blocked.

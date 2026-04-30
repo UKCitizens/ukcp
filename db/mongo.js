@@ -34,6 +34,16 @@ export async function connectMongo() {
     await db.collection('users').createIndex({ email: 1 }, { unique: true })
     await db.collection('anon_device_cookies').createIndex({ token: 1 }, { unique: true })
     await db.collection('anon_device_cookies').createIndex({ user_id: 1 })
+    await db.collection('national_groups').createIndex({ slug: 1 }, { unique: true })
+    await db.collection('national_groups').createIndex({ status: 1 })
+    await db.collection('network_chapters').createIndex(
+      { national_group_ref: 1, tier: 1, slug: 1 },
+      { unique: true }
+    )
+    await db.collection('network_chapters').createIndex({ tier: 1, slug: 1 })
+    await db.collection('network_chapters').createIndex({ status: 1 })
+    await db.collection('posts').createIndex({ 'collective_ref.id': 1, created_at: -1 })
+    await db.collection('posts').createIndex({ national_feed_suppressed: 1 })
     console.log('MongoDB connected')
   } catch (err) {
     console.error('[mongo] connection failed -- continuing without MongoDB:', err.message)
@@ -70,3 +80,9 @@ export function committeesCol()       { return db ? db.collection('committees') 
 
 /** Returns the committee_forums collection, or null if Mongo is unavailable. */
 export function committeeForumsCol()  { return db ? db.collection('committee_forums')  : null }
+
+/** Returns the national_groups collection, or null if Mongo is unavailable. */
+export function nationalGroupsCol()  { return db ? db.collection('national_groups')  : null }
+
+/** Returns the network_chapters collection, or null if Mongo is unavailable. */
+export function networkChaptersCol() { return db ? db.collection('network_chapters') : null }
