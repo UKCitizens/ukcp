@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import PostsTab from '../Posts/PostsTab.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -113,10 +114,11 @@ export default function CommunityNetworksSection({ locationType, locationSlug, s
 }
 
 function NetworkCard({ nationalGroup, chapter, isMember, session, onJoin, onLeave, locationType, locationSlug }) {
-  const [joining,     setJoining]   = useState(false)
-  const [showFeed,    setShowFeed]  = useState(false)
-  const [feedPosts,   setFeedPosts] = useState([])
-  const [feedLoading, setFeedLoading] = useState(false)
+  const [joining,        setJoining]        = useState(false)
+  const [showFeed,       setShowFeed]       = useState(false)
+  const [showLocalPosts, setShowLocalPosts] = useState(false)
+  const [feedPosts,      setFeedPosts]      = useState([])
+  const [feedLoading,    setFeedLoading]    = useState(false)
 
   async function handleJoin() {
     if (!chapter) return
@@ -186,10 +188,25 @@ function NetworkCard({ nationalGroup, chapter, isMember, session, onJoin, onLeav
       </div>
 
       <div style={cardFooter}>
-        <button style={feedToggle} onClick={toggleNationalFeed}>
-          {showFeed ? 'Hide national posts' : 'View national posts'}
+        {chapter && (
+          <button style={feedToggle} onClick={() => setShowLocalPosts(p => !p)}>
+            {showLocalPosts ? 'Hide local posts' : 'Local posts'}
+          </button>
+        )}
+        <button style={{ ...feedToggle, marginLeft: chapter ? 12 : 0 }} onClick={toggleNationalFeed}>
+          {showFeed ? 'Hide national posts' : 'National posts'}
         </button>
       </div>
+
+      {showLocalPosts && chapter && (
+        <div style={feedPanel}>
+          <PostsTab
+            locationType={chapter.location_scope.type}
+            locationSlug={chapter.location_scope.slug}
+            collectiveRef={{ collection: 'network_chapters', id: String(chapter._id) }}
+          />
+        </div>
+      )}
 
       {showFeed && (
         <div style={feedPanel}>

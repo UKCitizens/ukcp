@@ -1,7 +1,8 @@
 /**
  * @file src/components/Committee/CommitteeTab.jsx
  * @description Committee tab panel. Fetches and displays the constituency committee
- * forum for the current location scope. Renders a read-only post feed and Join Forum flow.
+ * forum for the current location scope. Renders forum header, Join Forum flow, and
+ * a full post feed with composer via PostsTab.
  *
  * Props:
  *   locationType  — geo node type (constituency | ward | county | ...)
@@ -11,19 +12,9 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import JoinForumModal from './JoinForumModal.jsx'
+import PostsTab from '../Posts/PostsTab.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
-
-/** Format a UTC date string as a relative timestamp. */
-function timeAgo(dateStr) {
-  const diff = Date.now() - new Date(dateStr).getTime()
-  const mins = Math.floor(diff / 60000)
-  if (mins < 1)  return 'just now'
-  if (mins < 60) return `${mins}m ago`
-  const hrs = Math.floor(mins / 60)
-  if (hrs < 24)  return `${hrs}h ago`
-  return `${Math.floor(hrs / 24)}d ago`
-}
 
 /**
  * @param {{ locationType: string|null, locationSlug: string|null }} props
@@ -31,7 +22,6 @@ function timeAgo(dateStr) {
 export default function CommitteeTab({ locationType, locationSlug }) {
   const { session } = useAuth()
   const [forum,         setForum]         = useState(null)
-  const [posts,         setPosts]         = useState([])
   const [loading,       setLoading]       = useState(false)
   const [error,         setError]         = useState(null)
   const [isMember,      setIsMember]      = useState(false)
@@ -40,7 +30,6 @@ export default function CommitteeTab({ locationType, locationSlug }) {
   useEffect(() => {
     if (locationType !== 'constituency' || !locationSlug) {
       setForum(null)
-      setPosts([])
       setIsMember(false)
       return
     }
@@ -49,7 +38,6 @@ export default function CommitteeTab({ locationType, locationSlug }) {
     setLoading(true)
     setError(null)
     setForum(null)
-    setPosts([])
     setIsMember(false)
 
     const headers = session?.access_token
@@ -78,19 +66,6 @@ export default function CommitteeTab({ locationType, locationSlug }) {
           sessionStorage.removeItem('pendingForumJoin')
           setShowJoinModal(true)
         }
-
-        // Fetch post feed for this forum
-        const url =
-          `${API_BASE}/api/posts` +
-          `?location_type=constituency` +
-          `&location_slug=${encodeURIComponent(locationSlug)}` +
-          `&collective_id=${data._id}` +
-          `&collective_col=committee_forums`
-
-        fetch(url)
-          .then(r => r.ok ? r.json() : Promise.reject(r.status))
-          .then(feed => { if (!cancelled) setPosts(feed) })
-          .catch(() => { if (!cancelled) setPosts([]) })
       })
       .catch(() => {
         if (!cancelled) { setError('Failed to load committee forum'); setLoading(false) }
@@ -99,7 +74,7 @@ export default function CommitteeTab({ locationType, locationSlug }) {
     return () => { cancelled = true }
   }, [locationType, locationSlug, session])
 
-  function handleJoinSuccess(updatedForum) {
+  function handleJoinSuccess() {
     setShowJoinModal(false)
     setIsMember(true)
     setForum(prev => prev ? { ...prev, member_count: (prev.member_count ?? 0) + 1 } : prev)
@@ -140,12 +115,12 @@ export default function CommitteeTab({ locationType, locationSlug }) {
         )}
       </div>
 
-      {/* Post feed */}
-      <p style={sectionHead}>Forum Posts</p>
-      {posts.length === 0
-        ? <p style={dim}>No posts yet in this forum.</p>
-        : posts.map(post => <PostCard key={post._id} post={post} />)
-      }
+      {/* Post feed + composer */}
+      <PostsTab
+        locationType="constituency"
+        locationSlug={locationSlug}
+        collectiveRef={{ collection: 'committee_forums', id: String(forum._id) }}
+      />
 
       {/* Join modal */}
       {showJoinModal && (
@@ -159,19 +134,6 @@ export default function CommitteeTab({ locationType, locationSlug }) {
   )
 }
 
-/** @param {{ post: object }} props */
-function PostCard({ post }) {
-  return (
-    <div style={card}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: '#343a40' }}>{post.author}</span>
-        <span style={{ fontSize: 11, color: '#868e96' }}>{timeAgo(post.created_at)}</span>
-      </div>
-      <p style={{ fontSize: 13, color: '#212529', margin: 0, lineHeight: 1.5 }}>{post.body}</p>
-    </div>
-  )
-}
-
 const wrap             = { padding: 16 }
 const dim              = { fontSize: 13, color: '#868e96', margin: 0 }
 const forumHeader      = { background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 6, padding: 14, marginBottom: 20 }
@@ -179,7 +141,5 @@ const forumName        = { fontSize: 15, fontWeight: 700, color: '#212529', marg
 const forumDesc        = { fontSize: 12, color: '#495057', margin: 0 }
 const memberCountStyle = { fontSize: 12, color: '#868e96' }
 const mpLine           = { fontSize: 12, color: '#495057', margin: '8px 0 0 0' }
-const sectionHead      = { fontSize: 13, fontWeight: 600, color: '#343a40', margin: '0 0 10px 0' }
-const card             = { border: '1px solid #dee2e6', borderRadius: 6, padding: 12, marginBottom: 10, background: '#fff' }
 const joinedBadge      = { fontSize: 12, color: '#2f9e44', fontWeight: 600 }
 const joinBtn          = { fontSize: 12, padding: '4px 12px', border: 'none', borderRadius: 4, background: '#2f9e44', color: '#fff', cursor: 'pointer' }

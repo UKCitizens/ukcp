@@ -199,6 +199,24 @@ router.post('/:id/join', requireAuth, async (req, res) => {
     reason,
   })
 
+  // Persist confirmed location to user record. Overwrites on re-join — intentional.
+  const usrColRef = usersCol()
+  if (usrColRef) {
+    await usrColRef.updateOne(
+      { _id: req.user._id },
+      {
+        $set: {
+          'confirmed_location.postcode':     resolved.postcode,
+          'confirmed_location.ward':         resolved.ward,
+          'confirmed_location.ward_gss':     resolved.ward_gss,
+          'confirmed_location.constituency': resolved.constituency,
+          'confirmed_location.con_gss':      resolved.con_gss,
+          'confirmed_location.confirmed_at': new Date(),
+        },
+      }
+    )
+  }
+
   // 8. Increment member_count
   await forumCol.updateOne({ _id: forum._id }, { $inc: { member_count: 1 } })
 
