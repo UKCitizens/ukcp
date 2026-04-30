@@ -1,8 +1,7 @@
 /**
  * @file src/components/Committee/CommitteeTab.jsx
  * @description Committee tab panel. Fetches and displays the constituency committee
- * forum for the current location scope. Renders a read-only post feed.
- * Join flow and post form are deferred to the next sprint.
+ * forum for the current location scope. Renders a read-only post feed and Join Forum flow.
  *
  * Props:
  *   locationType  — geo node type (constituency | ward | county | ...)
@@ -11,6 +10,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
+import JoinForumModal from './JoinForumModal.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -30,15 +30,18 @@ function timeAgo(dateStr) {
  */
 export default function CommitteeTab({ locationType, locationSlug }) {
   const { session } = useAuth()
-  const [forum,   setForum]   = useState(null)
-  const [posts,   setPosts]   = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState(null)
+  const [forum,         setForum]         = useState(null)
+  const [posts,         setPosts]         = useState([])
+  const [loading,       setLoading]       = useState(false)
+  const [error,         setError]         = useState(null)
+  const [isMember,      setIsMember]      = useState(false)
+  const [showJoinModal, setShowJoinModal] = useState(false)
 
   useEffect(() => {
     if (locationType !== 'constituency' || !locationSlug) {
       setForum(null)
       setPosts([])
+      setIsMember(false)
       return
     }
 
@@ -47,6 +50,7 @@ export default function CommitteeTab({ locationType, locationSlug }) {
     setError(null)
     setForum(null)
     setPosts([])
+    setIsMember(false)
 
     const headers = session?.access_token
       ? { Authorization: `Bearer ${session.access_token}` }
@@ -64,8 +68,16 @@ export default function CommitteeTab({ locationType, locationSlug }) {
       .then(data => {
         if (cancelled) return
         setForum(data)
+        setIsMember(data?.is_member ?? false)
         setLoading(false)
         if (!data) return
+
+        // Auto-open join modal if returning from auth with a pending join for this forum
+        const pendingId = sessionStorage.getItem('pendingForumJoin')
+        if (pendingId && pendingId === String(data._id) && session) {
+          sessionStorage.removeItem('pendingForumJoin')
+          setShowJoinModal(true)
+        }
 
         // Fetch post feed for this forum
         const url =
@@ -87,6 +99,12 @@ export default function CommitteeTab({ locationType, locationSlug }) {
     return () => { cancelled = true }
   }, [locationType, locationSlug, session])
 
+  function handleJoinSuccess(updatedForum) {
+    setShowJoinModal(false)
+    setIsMember(true)
+    setForum(prev => prev ? { ...prev, member_count: (prev.member_count ?? 0) + 1 } : prev)
+  }
+
   if (locationType !== 'constituency') {
     return <div style={wrap}><p style={dim}>Select a constituency to see its committee forum.</p></div>
   }
@@ -104,15 +122,11 @@ export default function CommitteeTab({ locationType, locationSlug }) {
           The public forum for {forum.committee?.name ?? locationSlug.replace(/_/g, ' ')} constituency
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 8 }}>
-          <span style={memberCount}>{forum.member_count ?? 0} members</span>
-          {forum.is_member
+          <span style={memberCountStyle}>{forum.member_count ?? 0} members</span>
+          {isMember
             ? <span style={joinedBadge}>Joined</span>
             : (
-              <button
-                style={joinBtn}
-                disabled
-                onClick={() => console.log('join clicked')}
-              >
+              <button style={joinBtn} onClick={() => setShowJoinModal(true)}>
                 Join Forum
               </button>
             )
@@ -132,6 +146,15 @@ export default function CommitteeTab({ locationType, locationSlug }) {
         ? <p style={dim}>No posts yet in this forum.</p>
         : posts.map(post => <PostCard key={post._id} post={post} />)
       }
+
+      {/* Join modal */}
+      {showJoinModal && (
+        <JoinForumModal
+          forum={forum}
+          onClose={() => setShowJoinModal(false)}
+          onSuccess={handleJoinSuccess}
+        />
+      )}
     </div>
   )
 }
@@ -149,14 +172,14 @@ function PostCard({ post }) {
   )
 }
 
-const wrap        = { padding: 16 }
-const dim         = { fontSize: 13, color: '#868e96', margin: 0 }
-const forumHeader = { background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 6, padding: 14, marginBottom: 20 }
-const forumName   = { fontSize: 15, fontWeight: 700, color: '#212529', margin: '0 0 4px 0' }
-const forumDesc   = { fontSize: 12, color: '#495057', margin: 0 }
-const memberCount = { fontSize: 12, color: '#868e96' }
-const mpLine      = { fontSize: 12, color: '#495057', margin: '8px 0 0 0' }
-const sectionHead = { fontSize: 13, fontWeight: 600, color: '#343a40', margin: '0 0 10px 0' }
-const card        = { border: '1px solid #dee2e6', borderRadius: 6, padding: 12, marginBottom: 10, background: '#fff' }
-const joinedBadge = { fontSize: 12, color: '#2f9e44', fontWeight: 600 }
-const joinBtn     = { fontSize: 12, padding: '4px 12px', border: 'none', borderRadius: 4, background: '#adb5bd', color: '#fff', cursor: 'not-allowed' }
+const wrap             = { padding: 16 }
+const dim              = { fontSize: 13, color: '#868e96', margin: 0 }
+const forumHeader      = { background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 6, padding: 14, marginBottom: 20 }
+const forumName        = { fontSize: 15, fontWeight: 700, color: '#212529', margin: '0 0 4px 0' }
+const forumDesc        = { fontSize: 12, color: '#495057', margin: 0 }
+const memberCountStyle = { fontSize: 12, color: '#868e96' }
+const mpLine           = { fontSize: 12, color: '#495057', margin: '8px 0 0 0' }
+const sectionHead      = { fontSize: 13, fontWeight: 600, color: '#343a40', margin: '0 0 10px 0' }
+const card             = { border: '1px solid #dee2e6', borderRadius: 6, padding: 12, marginBottom: 10, background: '#fff' }
+const joinedBadge      = { fontSize: 12, color: '#2f9e44', fontWeight: 600 }
+const joinBtn          = { fontSize: 12, padding: '4px 12px', border: 'none', borderRadius: 4, background: '#2f9e44', color: '#fff', cursor: 'pointer' }
