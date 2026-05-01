@@ -127,8 +127,7 @@ export default function Locations() {
 
   // ── Explore-mode handlers (deliberate selection) ────────────────────────
 
-  // Resolve country/region/county ancestors for a constituency name from wards data.
-  // Returns pairs array ready to prepend to a selectMany call.
+  // Resolve country/region/county ancestors (up to county only) for a constituency name.
   const resolveConstituencyAncestors = useCallback((constituencyName) => {
     if (!wards || !constituencyName) return []
     const norm = constituencyName.trim().toLowerCase()
@@ -141,41 +140,56 @@ export default function Locations() {
     return pairs
   }, [wards])
 
-  // Right-pane constituency/ward selection — commit path only.
-  // Walker-mode constituency clicks are handled via onConstituencyPending (direct callback).
-  // Walker-mode ward clicks are handled via onWardPending (direct callback).
-  // Map marker ward clicks in walker mode still route through handleSelectMany.
+  // Resolve county ancestry and constituency name for a ward.
+  const resolveWardAncestors = useCallback((wardName) => {
+    if (!wards || !wardName) return { constituency: null, countyPairs: [] }
+    const norm = wardName.trim().toLowerCase()
+    const hit  = wards.find(w => w.ward?.trim().toLowerCase() === norm)
+    if (!hit) return { constituency: null, countyPairs: [] }
+    const countyPairs = []
+    if (hit.country)      countyPairs.push({ level: 'country', value: hit.country })
+    if (hit.region)       countyPairs.push({ level: 'region',  value: hit.region })
+    if (hit.ctyhistnm)    countyPairs.push({ level: 'county',  value: hit.ctyhistnm })
+    return { constituency: hit.constituency ?? null, countyPairs }
+  }, [wards])
+
+  // Unified selection handler.
+  // country/region/county — nav levels, go straight into path via select().
+  // constituency/ward     — content context only; path updated to county scope.
   const handleSelect = useCallback((level, value) => {
     dismissPending()
     setPendingConstituency(null)
     setPendingWard(null)
-    setRightWalkerMode(false)
-    const ancestors = level === 'constituency' ? resolveConstituencyAncestors(value) : []
-    selectMany([...ancestors, { level, value }])
-    setMidTab('map')
-  }, [dismissPending, selectMany, resolveConstituencyAncestors])
+    if (['country', 'region', 'county'].includes(level)) {
+      select(level, value)
+    } else if (level === 'ward') {
+      const { constituency: wardCon, countyPairs } = resolveWardAncestors(value)
+      if (countyPairs.length) selectMany(countyPairs)
+      if (wardCon) setPendingConstituency(wardCon)
+      setPendingWard(value)
+    } else {
+      // constituency
+      const countyPairs = resolveConstituencyAncestors(value)
+      if (countyPairs.length) selectMany(countyPairs)
+      setPendingConstituency(value)
+    }
+  }, [dismissPending, select, selectMany, resolveConstituencyAncestors, resolveWardAncestors])
 
   const handleSelectMany = useCallback((pairs) => {
-    if (rightWalkerMode) {
-      const conPair  = pairs.find(p => p.level === 'constituency')
-      const wardPair = pairs.find(p => p.level === 'ward')
-      if (conPair)  setPendingConstituency(conPair.value)
-      if (wardPair) setPendingWard(wardPair.value)
-      return
-    }
     dismissPending()
-    const conPair   = pairs.find(p => p.level === 'constituency')
-    const ancestors = conPair ? resolveConstituencyAncestors(conPair.value) : []
-    selectMany([...ancestors, ...pairs])
-    setMidTab('map')
-  }, [rightWalkerMode, dismissPending, selectMany, resolveConstituencyAncestors])
+    const conPair  = pairs.find(p => p.level === 'constituency')
+    const wardPair = pairs.find(p => p.level === 'ward')
+    const countyPairs = conPair
+      ? resolveConstituencyAncestors(conPair.value)
+      : wardPair ? resolveWardAncestors(wardPair.value).countyPairs : []
+    if (countyPairs.length) selectMany(countyPairs)
+    if (conPair)  setPendingConstituency(conPair.value)
+    if (wardPair) setPendingWard(wardPair.value)
+  }, [dismissPending, selectMany, resolveConstituencyAncestors, resolveWardAncestors])
 
-  // Left-pane place click.
-  // Drill mode: derive full nav path from place fields so right pane scopes correctly,
-  //   crumb trail is complete, map positions to the right area. Tab switches to map.
-  // Walker mode (All active): skip selectMany so the list scope doesn't collapse —
-  //   just set the pending place for flyTo, crumb, and info content. Tab stays put.
-  const handlePlaceSelect = useCallback((place) => {
+  // Left pane click — walker mode (All selected) = preview only, no path change.
+  // Letter selected = full commit: path updates to county, panes scope.
+  const handleLeftPlaceSelect = useCallback((place) => {
     if (walkerMode) {
       setPending(place)
     } else {
@@ -185,9 +199,18 @@ export default function Locations() {
       if (place.ctyhistnm) pairs.push({ level: 'county',  value: place.ctyhistnm })
       if (pairs.length) selectMany(pairs)
       setPending(place)
-      setMidTab('map')
     }
   }, [selectMany, setPending, walkerMode])
+
+  // Map/search place selection — always commits regardless of walker mode.
+  const handlePlaceSelect = useCallback((place) => {
+    const pairs = []
+    if (place.country)   pairs.push({ level: 'country', value: place.country })
+    if (place.region)    pairs.push({ level: 'region',  value: place.region })
+    if (place.ctyhistnm) pairs.push({ level: 'county',  value: place.ctyhistnm })
+    if (pairs.length) selectMany(pairs)
+    setPending(place)
+  }, [selectMany, setPending])
 
   // Map marker click — routes to the appropriate selection handler.
   // Each handler already sets explore mode.
@@ -358,17 +381,12 @@ export default function Locations() {
         onClick: undefined,
       })
     }
-    if (pendingConstituency && !pendingPlace) {
-      items.push({ label: pendingConstituency, onClick: undefined })
-    }
-    if (pendingWard && !pendingPlace) {
-      items.push({ label: `${pendingWard} (Ward)`, onClick: undefined })
-    }
     return items
   }, [path, pendingPlace, pendingConstituency, pendingWard, handleGoTo, handleReset])
 
   // ── Row 3 options ────────────────────────────────────────────────────────
-  const currentOptions = path.length === 0 ? panel1 : panel2
+  // Walker stops at county — no constituency options in the top nav strip.
+  const currentOptions = path.length === 0 ? panel1 : path.length >= 3 ? [] : panel2
 
   // ── Row visibility ───────────────────────────────────────────────────────
   const row2Visible = true
@@ -405,7 +423,7 @@ export default function Locations() {
         <PlacesCard
           grouped={grouped}
           scopeKey={scopeKey}
-          onPlaceSelect={handlePlaceSelect}
+          onPlaceSelect={handleLeftPlaceSelect}
           paneTitle={`Places in ${scopeLabel}`}
           focusPlace={pendingPlace}
           onWalkerModeChange={setWalkerMode}
@@ -483,10 +501,7 @@ export default function Locations() {
           select={handleSelect}
           selectMany={handleSelectMany}
           paneTitle={`Constituencies with wards in ${scopeLabel}`}
-          onWalkerModeChange={(active) => {
-            setRightWalkerMode(active)
-            if (!active) { setPendingConstituency(null); setPendingWard(null) }
-          }}
+          onWalkerModeChange={(active) => setRightWalkerMode(active)}
           walkerMode={rightWalkerMode}
           onConstituencyPending={(name) => { setPendingConstituency(name); setPendingWard(null) }}
           onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}

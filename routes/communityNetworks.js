@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
   if (!type || !slug) {
     return res.status(400).json({ error: 'type and slug are required' })
   }
-  const VALID_TIERS = ['ward', 'constituency', 'county']
+  const VALID_TIERS = ['ward', 'constituency', 'county', 'city', 'town', 'village', 'hamlet']
   if (!VALID_TIERS.includes(type)) {
     return res.status(400).json({ error: `type must be one of: ${VALID_TIERS.join(', ')}` })
   }

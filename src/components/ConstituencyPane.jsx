@@ -120,10 +120,9 @@ export default function ConstituencyPane({
     return s
   }, [allConstituencies])
 
-  // Reset to first populated letter only when the scoped list itself changes.
+  // Reset to All (null) when the scoped list itself changes — county nav change.
   useEffect(() => {
-    const first = ALL_LETTERS.find(l => availableLetters.has(l)) ?? null
-    setActiveLetter(first)
+    setActiveLetter(null)
   }, [allConstituencies]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const filtered = useMemo(() => {

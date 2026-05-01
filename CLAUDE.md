@@ -177,6 +177,15 @@ Phil relies on :3000 as the stable review point. This step is not optional.
                      UI: GroupsTab.jsx + PostsTab.jsx wired into Locations.jsx via contentContext.
                      Commit + deploy pending Phil sign-off on acceptance criteria.
 
+[PRG:28] SPRINT-LOCATION | User Location Persistence + Post Composer Wiring. Status: complete. 30 Apr 2026.
+                     routes/forums.js: confirmed_location written to user on forum join.
+                     routes/posts.js: committee_forums added to collective_ref whitelist.
+                     CommitteeTab.jsx: PostsTab replaces inline feed.
+                     CommunityNetworksSection.jsx: local posts toggle per chapter.
+                     Commit: a1a35fa.
+                     Hotfix: ensureChaptersExist E11000 -- filter/query slug mismatch fixed.
+                     Commit: 37da545.
+
 [PRG:27] SPRINT-NETWORKS | Community Networks. Status: complete. 30 Apr 2026.
                      Seed: scripts/seed-national-groups.js -- 8 national_groups, local + Atlas.
                      DB: national_groups + network_chapters indexes in connectMongo().
@@ -186,7 +195,7 @@ Phil relies on :3000 as the stable review point. This step is not optional.
                               joinChapter, leaveChapter, getNationalFeed).
                      Routes: routes/communityNetworks.js -- 5 routes registered.
                      UI: CommunityNetworksSection.jsx, GroupsTab.jsx updated with filter strip.
-                     Commit: pending.
+                     Commit: 6415140.
 
 [PRG:22] TEMPLATE  | Format for new entries:
                      [PRG:XX] TASK | Brief description. Status: in progress / complete / blocked.

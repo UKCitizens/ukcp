@@ -71,7 +71,24 @@
       "Bash(curl -s -D - http://localhost:3000/api/profile -o /dev/null)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(openssl req *)",
+      "Bash(node --check \"C:\\\\Users\\\\phild\\\\Desktop\\\\Projects\\\\Ali-Projects\\\\UKCP\\\\server.js\")",
+      "Bash(curl -sk https://localhost:3443/api/content/county/Aberdeenshire)",
+      "Bash(curl -sk \"https://localhost:3443/api/content/ward/Brindleyplace\")",
+      "Bash(curl -sk \"https://localhost:3443/api/content/constituency/richmond_park\")",
+      "Read(//c/Users/phild/Desktop/Projects/Ali-Projects/BMC/**)",
+      "Bash(python -c \"import zipfile; z = zipfile.ZipFile\\('dex-instructions.zip'\\); print\\('\\\\n'.join\\(z.namelist\\(\\)\\)\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(git config *)",
+      "Bash(curl -s -X POST https://backboard.railway.app/graphql/v2 -H 'Content-Type: application/json' -H 'Authorization: Bearer de9e9e03-4b0e-4ae1-b7c9-bd4d75e0837b' -d '{\"query\":\"{ projects { edges { node { id name } } } }\"}')",
+      "Bash(MONGODB_URI=\"mongodb+srv://ukcp99_db_user:bFhTUmtJuFkdOxFE@ukcp-dev.ujrjkvz.mongodb.net/ukcp?appName=UKCP-Dev\" node scripts/seed-sprint-bc.js)",
+      "Bash(npx kill-port *)",
+      "Bash(xargs cat *)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill /PID 35024 /F)",
+      "Bash(curl -s \"http://localhost:3000/api/forums?type=constituency&slug=Liverpool%2C_Riverside\")",
+      "Bash(curl -s \"https://localhost:3443/api/forums?type=constituency&slug=Liverpool%2C_Riverside\" -k)"
     ]
   }
 }

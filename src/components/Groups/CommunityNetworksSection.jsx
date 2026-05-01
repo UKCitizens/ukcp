@@ -16,7 +16,7 @@ import PostsTab from '../Posts/PostsTab.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
-const VALID_TIERS = ['ward', 'constituency', 'county']
+const VALID_TIERS = ['ward', 'constituency', 'county', 'city', 'town', 'village', 'hamlet']
 
 export default function CommunityNetworksSection({ locationType, locationSlug, session }) {
   const [data,    setData]    = useState([])

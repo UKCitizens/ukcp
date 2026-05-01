@@ -21,7 +21,7 @@
  *   CSS module. Row height is the ROW1_HEIGHT constant — no hardcoded px value.
  */
 
-import { Box, Group, Text, ActionIcon, Loader, Image, Tooltip } from '@mantine/core'
+import { Box, Group, Text, ActionIcon, Loader, Image, Tooltip, Button } from '@mantine/core'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
 import UKCPLogo from '../../assets/UKCPlogo.png'
@@ -50,7 +50,7 @@ import classes from './SiteHeaderRow1.module.css'
 export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const { session } = useAuth()
+  const { session, user, profile, signOut } = useAuth()
 
   function handleLocationSelector() {
     // Only navigate if not already on /locations — re-navigating the same route
@@ -107,18 +107,39 @@ export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
 
           </Group>
 
-          {/* Utility: Profile, Help, Settings */}
+          {/* Utility: Profile/auth, Help, Settings */}
           <Group gap="xs" align="center">
 
-            <Tooltip label={session ? 'Profile' : 'Register'} position="bottom" withArrow>
-              <ActionIcon
-                variant="subtle"
-                aria-label={session ? 'Profile' : 'Register'}
-                onClick={() => navigate(session ? '/profile' : '/register')}
+            {session ? (
+              <Group gap={4} align="center">
+                <Tooltip label="Profile" position="bottom" withArrow>
+                  <ActionIcon variant="subtle" aria-label="Profile" onClick={() => navigate('/profile')}>
+                    <IconUser size={24} />
+                  </ActionIcon>
+                </Tooltip>
+                <Text size="xs" c="dimmed" hiddenFrom="sm">
+                  {profile?.display_name || user?.email?.split('@')[0] || 'Account'}
+                </Text>
+                <Button
+                  size="compact-xs"
+                  variant="subtle"
+                  color="gray"
+                  onClick={signOut}
+                >
+                  Log out
+                </Button>
+              </Group>
+            ) : (
+              <Button
+                size="compact-sm"
+                variant="light"
+                color="green"
+                leftSection={<IconUser size={16} />}
+                onClick={() => navigate('/')}
               >
-                <IconUser size={24} />
-              </ActionIcon>
-            </Tooltip>
+                Log in
+              </Button>
+            )}
 
             <Tooltip label="Help" position="bottom" withArrow>
               <ActionIcon variant="subtle" aria-label="Help" onClick={() => navigate('/help')}>
