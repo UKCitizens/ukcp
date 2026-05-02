@@ -14,6 +14,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import API_BASE from '../../config.js'
+import { useAuth } from '../../context/AuthContext.jsx'
 import {
   TextInput, Textarea, Button, Badge, Stack, Group, Text, Title,
   ScrollArea, Divider, ActionIcon, Loader, Alert, Tabs,
@@ -71,6 +72,11 @@ function typeFromKey(key) {
 // ── DataManager ───────────────────────────────────────────────────────────────
 
 export default function DataManager() {
+  const { session } = useAuth()
+  const authHeaders = session?.access_token
+    ? { Authorization: `Bearer ${session.access_token}` }
+    : {}
+
   const [activeTab, setActiveTab] = useState('geo')
   const [data,        setData]        = useState(null)
   const [loading,     setLoading]     = useState(true)
@@ -131,7 +137,7 @@ export default function DataManager() {
     try {
       const res = await fetch(`${API_BASE}/api/admin/geo-content/${encodeURIComponent(selectedKey)}`, {
         method:  'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders },
         body:    JSON.stringify(form),
       })
       if (!res.ok) throw new Error(await res.text())

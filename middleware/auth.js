@@ -1,13 +1,17 @@
 /**
  * @file middleware/auth.js
- * @description Supabase admin client and requireAuth middleware.
+ * @description Supabase admin client, requireAuth, and requireRole middleware.
  *
  * requireAuth validates the Bearer JWT via Supabase's admin API (handles ECC
  * P-256 automatically). On a valid token it looks up or creates the MongoDB
- * users record and attaches it to req.user. On an invalid token it returns 401.
+ * users record and attaches it to req.user, plus normalised app_metadata
+ * claims to req.claims. On an invalid token it returns 401.
  *
  * On first login the users record is created here and the device cookie (if
  * present on the request) is linked to the new user record.
+ *
+ * requireRole(role) is a factory that returns a middleware enforcing
+ * req.claims.platform_role === role. Use after requireAuth.
  *
  * supabaseAdmin is also exported for use in routes that need direct Supabase
  * admin operations (e.g. hard-delete from auth in the admin users route).
@@ -86,5 +90,29 @@ export async function requireAuth(req, res, next) {
   }
 
   req.user = user
+
+  // Normalised platform claims from Supabase app_metadata (server-controlled).
+  // Defaults match the shape used by AuthContext on the client.
+  const meta = sbUser.app_metadata ?? {}
+  req.claims = {
+    platform_role:         meta.platform_role         ?? 'citizen',
+    affiliated_roles:      Array.isArray(meta.affiliated_roles) ? meta.affiliated_roles : [],
+    display_name:          meta.display_name          ?? '',
+    registration_complete: meta.registration_complete ?? false,
+  }
+
   next()
+}
+
+/**
+ * Factory: returns a middleware that enforces req.claims.platform_role === role.
+ * Must be mounted after requireAuth. Returns 403 on mismatch.
+ */
+export function requireRole(role) {
+  return function (req, res, next) {
+    if (!req.claims || req.claims.platform_role !== role) {
+      return res.status(403).json({ error: 'Forbidden' })
+    }
+    next()
+  }
 }

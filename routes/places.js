@@ -2,18 +2,18 @@
  * @file routes/places.js
  * @description Place search and admin correction routes.
  *
- * GET  /api/places/search           -- Public typeahead. Searches geo-content.json
- *                                      (countries/regions/counties) then MongoDB places.
- * GET  /api/admin/places            -- Admin paginated search with filters.
- * GET  /api/admin/places/corrections -- All places flagged _corrected:true.
- * PATCH /api/admin/places/:id       -- Update editable fields on a places document.
+ * GET  /api/places/search             -- Public typeahead (Tier 0).
+ * GET  /api/admin/places              -- Admin paginated search (Tier 2).
+ * GET  /api/admin/places/corrections  -- Places flagged _corrected:true (Tier 2).
+ * PATCH /api/admin/places/:id         -- Update editable fields on a places doc (Tier 2).
  */
 
-import { Router }   from 'express'
-import { readFileSync } from 'fs'
-import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
-import { placesCol } from '../db/mongo.js'
+import { Router }                          from 'express'
+import { readFileSync }                    from 'fs'
+import { fileURLToPath }                   from 'url'
+import { dirname, join }                   from 'path'
+import { placesCol }                       from '../db/mongo.js'
+import { requireAuth, requireRole }        from '../middleware/auth.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
@@ -73,9 +73,16 @@ router.get('/places/search', async (req, res) => {
   }
 })
 
+// ── Admin block (Tier 2: requireAuth + requireRole('admin')) ─────────────────
+//
+// Applied per-route below rather than via router.use() because the public
+// /places/search route lives on this same router and must remain Tier 0.
+
+const adminGuard = [requireAuth, requireRole('admin')]
+
 // ── GET /api/admin/places ─────────────────────────────────────────────────────
 
-router.get('/admin/places', async (req, res) => {
+router.get('/admin/places', ...adminGuard, async (req, res) => {
   const col = placesCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   try {
@@ -104,7 +111,7 @@ router.get('/admin/places', async (req, res) => {
 
 // ── GET /api/admin/places/corrections ────────────────────────────────────────
 
-router.get('/admin/places/corrections', async (req, res) => {
+router.get('/admin/places/corrections', ...adminGuard, async (req, res) => {
   const col = placesCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   try {
@@ -125,7 +132,7 @@ router.get('/admin/places/corrections', async (req, res) => {
 
 // ── PATCH /api/admin/places/:id ───────────────────────────────────────────────
 
-router.patch('/admin/places/:id', async (req, res) => {
+router.patch('/admin/places/:id', ...adminGuard, async (req, res) => {
   const col = placesCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   const { id }  = req.params

@@ -418,3 +418,21 @@ LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-04-30 18:35
 LIVE INSTANCE RESTARTED -- :3000 serving build completed Thu Apr 30 21:31:43 GMTDT 2026
 LIVE INSTANCE RESTARTED -- :3000 serving build completed Thu Apr 30 2026 (user location persistence + post composer wiring)
 HOTFIX DEPLOYED -- Railway redeploy triggered Thu Apr 30 2026 (ensureChaptersExist E11000 fix: filter/query slug mismatch -- commit 37da545)
+LIVE INSTANCE RESTARTED -- :3000 serving build completed Thu May 01 2026 (community networks + user location persistence + post wiring -- commit 2c91b8b)
+LIVE INSTANCE RESTARTED -- :3000 serving build completed Fri May  1 19:16:42 GMTDT 2026
+BUILD COMPLETE -- At the School Gates POC -- Fri May  1 21:05:56 GMTDT 2026
+BUILD COMPLETE -- Schools full data implementation -- Fri May  1 21:28:20 GMTDT 2026
+
+BUILD COMPLETE -- Session snapshot (Section 1 of user-session-state sprint) -- Fri May  1 22:58:01 GMTDT 2026
+BUILD COMPLETE -- user_follows (Section 2 of user-session-state sprint) -- Fri May  1 23:05:48 GMTDT 2026
+BUILD COMPLETE -- UserStateContext + identity strip (Section 3 of user-session-state sprint) -- Fri May  1 23:27:06 GMTDT 2026
+BUILD COMPLETE -- anon merge on login (Section 4 of user-session-state sprint -- sprint complete) -- Fri May  1 23:29:27 GMTDT 2026
+BUILD COMPLETE -- Playwright sprint test scaffold (10 tests for PRG:32) -- Sat May  2 00:04:57 GMTDT 2026
+SPRINT TEST RESULTS -- PRG:32 -- 10/10 PASS via Playwright -- Sat May  2 00:13:14 GMTDT 2026
+BUG FIXES VERIFIED -- merge moved to AuthContext + useSessionSnapshot ready scrim -- 10/10 tests pass via real production path -- Sat May  2 00:25:02 GMTDT 2026
+BUILD COMPLETE -- Auth Section 1 (Supabase claims + admin role gate) -- Sat May  2 00:52:34 GMTDT 2026
+LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:05:10 GMTDT 2026 (Auth Section 1)
+LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:09:59 GMTDT 2026 (Auth Section 2 -- AuthContext claims)
+LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:21:19 GMTDT 2026 (Auth Section 3 -- Profile page)
+LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:25:48 GMTDT 2026 (Auth Section 4 -- Login redirect)
+LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:42:42 GMTDT 2026 (Auth Section 4 fix -- post-login default reverted to /locations, sprint-32 10/10)

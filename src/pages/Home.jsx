@@ -29,20 +29,26 @@ export default function Home() {
 
   useEffect(() => {
     // If auth params are in the URL (magic link callback), keep the spinner
-    // and let onAuthStateChange handle everything -- don't show the form prematurely.
+    // up while AuthContext handles SIGNED_IN -> merge -> redirect. Don't show
+    // the form prematurely.
     const hasAuthParams =
       window.location.hash.includes('access_token') ||
       window.location.search.includes('code=')
 
+    // Hide the form when we know there is no session waiting. Post-SIGNED_IN
+    // navigation is owned by AuthContext (Section 4) -- no listener here.
+    // We still need an INITIAL_SESSION listener so a logged-in user landing
+    // on /login is bounced out (AuthContext only navigates on SIGNED_IN).
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
+      if (event === 'INITIAL_SESSION' && session) {
         navigate('/locations', { replace: true })
-      } else {
+        return
+      }
+      if (!session && !hasAuthParams) {
         setChecking(false)
       }
     })
 
-    // Only use getSession as a fast-path when there are no auth params in the URL
     if (!hasAuthParams) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session) {

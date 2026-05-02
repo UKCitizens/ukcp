@@ -15,6 +15,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import API_BASE from '../../config.js'
+import { useAuth } from '../../context/AuthContext.jsx'
 import {
   TextInput, Textarea, Select, Button, Badge, Stack, Group,
   Text, ScrollArea, Divider, ActionIcon, Loader, Alert, Pagination,
@@ -48,6 +49,11 @@ const COUNTRIES = ['England', 'Scotland', 'Wales', 'Northern Ireland']
 // ── PlaceCorrector ────────────────────────────────────────────────────────────
 
 export default function PlaceCorrector() {
+  const { session } = useAuth()
+  const authHeaders = session?.access_token
+    ? { Authorization: `Bearer ${session.access_token}` }
+    : {}
+
   const [corrections,  setCorrections]  = useState({})
   const [results,      setResults]      = useState([])
   const [total,        setTotal]        = useState(0)
@@ -71,19 +77,22 @@ export default function PlaceCorrector() {
   const LIMIT = 50
 
   // ── Load corrections overlay on mount ───────────────────────────────────
+  // Wait for auth before hitting protected admin route.
   useEffect(() => {
-    fetch(`${API_BASE}/api/admin/places/corrections`)
+    if (!session?.access_token) return
+    fetch(`${API_BASE}/api/admin/places/corrections`, { headers: authHeaders })
       .then(r => r.ok ? r.json() : {})
       .then(setCorrections)
       .catch(() => setCorrections({}))
-  }, [])
+  }, [session?.access_token])
 
   // ── Trigger search when filters change ──────────────────────────────────
   useEffect(() => {
+    if (!session?.access_token) return
     clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => doSearch(1), 350)
     return () => clearTimeout(debounceRef.current)
-  }, [search, countryFilter, typeFilter, missingFilter])
+  }, [search, countryFilter, typeFilter, missingFilter, session?.access_token])
 
   function doSearch(pg) {
     setSearching(true)
@@ -94,7 +103,7 @@ export default function PlaceCorrector() {
     if (typeFilter)      params.set('type',     typeFilter)
     if (missingFilter)   params.set('missing',  missingFilter)
 
-    fetch(`${API_BASE}/api/admin/places?${params}`)
+    fetch(`${API_BASE}/api/admin/places?${params}`, { headers: authHeaders })
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json() })
       .then(data => { setResults(data.results); setTotal(data.total); setPage(pg) })
       .catch(e => setSearchError(e.message))
@@ -129,7 +138,7 @@ export default function PlaceCorrector() {
     try {
       const res = await fetch(`${API_BASE}/api/admin/places/${encodeURIComponent(selectedId)}`, {
         method:  'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders },
         body:    JSON.stringify(form),
       })
       if (!res.ok) throw new Error(await res.text())
@@ -143,7 +152,7 @@ export default function PlaceCorrector() {
         const slug = (selectedPlace.name ?? '').replace(/ /g, '_')
         fetch(`${API_BASE}/api/admin/geo-content-mongo/${encodeURIComponent(type)}/${encodeURIComponent(slug)}`, {
           method:  'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...authHeaders },
           body:    JSON.stringify({ summary: form.summary }),
         }).catch(e => console.warn('[PlaceCorrector] Mongo summary sync failed:', e.message))
       }

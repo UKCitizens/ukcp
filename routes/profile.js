@@ -2,15 +2,21 @@
  * @file routes/profile.js
  * @description Authenticated user profile routes.
  *
- * GET  /api/profile -- Returns the authenticated user's public profile fields.
- * PATCH /api/profile -- Updates editable profile fields.
+ * GET   /api/profile             -- Composite profile (user + follows + groups + posts + claims).
+ * PATCH /api/profile             -- Update editable user fields (display_name, bio, etc).
+ * PATCH /api/profile/preferences -- Update preferences sub-document.
  *
- * Both routes require a valid Supabase Bearer token (requireAuth middleware).
+ * All routes require a valid Supabase Bearer token (requireAuth middleware).
  */
 
 import { Router }      from 'express'
 import { requireAuth } from '../middleware/auth.js'
-import { usersCol }    from '../db/mongo.js'
+import {
+  usersCol,
+  followsCol,
+  postsCol,
+  groupMembershipsCol,
+} from '../db/mongo.js'
 
 const router = Router()
 
@@ -19,26 +25,73 @@ const PROFILE_EDITABLE = [
   'default_post_visibility', 'home_ward_gss', 'home_constituency_gss',
 ]
 
+// Server-side allowlist for preferences. Each value validated against an enum
+// before write -- no free-text preference fields land in the user record.
+const PREFERENCE_ENUMS = {
+  default_load_page:    new Set(['locations', 'myhome']),
+  default_tab:          new Set(['map', 'info', 'groups', 'news', 'traders', 'civic']),
+  default_posting_mode: new Set(['anonymous', 'named']),
+}
+
+// Fields stripped from the user record before returning. device_cookie_id ties
+// the user to their browser fingerprint -- no reason to expose it client-side.
+const SENSITIVE_USER_FIELDS = ['device_cookie_id']
+
+function sanitiseUser(user) {
+  if (!user) return null
+  const out = { ...user }
+  for (const f of SENSITIVE_USER_FIELDS) delete out[f]
+  return out
+}
+
 // GET /api/profile
-router.get('/profile', requireAuth, (req, res) => {
-  const {
-    _id, email, display_name, username, bio, access_tier,
-    is_verified, home_ward_gss, home_constituency_gss,
-    default_post_visibility, created_at,
-  } = req.user
+router.get('/profile', requireAuth, async (req, res) => {
+  const usrCol = usersCol()
+  const folCol = followsCol()
+  const memCol = groupMembershipsCol()
+  const pstCol = postsCol()
+
+  if (!usrCol) return res.status(503).json({ error: 'Database unavailable' })
+
+  // Re-read from Mongo so the response reflects fields that may have been
+  // mirrored after the requireAuth lookup (e.g. claims sync via PUT claims).
+  const user = await usrCol.findOne({ _id: req.user._id })
+
+  const follows = folCol
+    ? await folCol.find({ user_id: req.user._id }).sort({ followed_at: -1 }).toArray()
+    : []
+
+  // Group memberships are tracked in group_memberships, not user_follows.
+  // Returned alongside follows so the civic-footprint panel can render them.
+  const joined_groups = memCol
+    ? await memCol.find({ user_id: req.user._id, status: 'active' })
+        .sort({ joined_at: -1 }).toArray()
+    : []
+
+  // Posts: only the named ones can be tied back to this user. Anonymous posts
+  // store author_user_id: null and are linked only by anon_token, so we can't
+  // count them per user from the post record alone.
+  let recent_posts = []
+  let post_count   = 0
+  if (pstCol) {
+    recent_posts = await pstCol.find({
+      author_user_id: req.user._id,
+      status:         'published',
+    }).sort({ created_at: -1 }).limit(5).toArray()
+    post_count = await pstCol.countDocuments({
+      author_user_id: req.user._id,
+      status:         'published',
+    })
+  }
 
   res.json({
-    id: _id,
-    email,
-    display_name,
-    username,
-    bio,
-    access_tier,
-    is_verified,
-    home_ward_gss,
-    home_constituency_gss,
-    default_post_visibility,
-    created_at,
+    user:            sanitiseUser(user),
+    follows,
+    joined_groups,
+    recent_posts,
+    post_count,
+    anon_post_count: 0,
+    claims:          req.claims,
   })
 })
 
@@ -62,6 +115,35 @@ router.patch('/profile', requireAuth, async (req, res) => {
 
   const col = usersCol()
   await col.updateOne({ _id: req.user._id }, { $set: update })
+  res.json({ ok: true })
+})
+
+// PATCH /api/profile/preferences
+router.patch('/profile/preferences', requireAuth, async (req, res) => {
+  const body = req.body ?? {}
+  const $set = {}
+
+  for (const [field, allowed] of Object.entries(PREFERENCE_ENUMS)) {
+    if (field in body) {
+      const value = body[field]
+      if (!allowed.has(value)) {
+        return res.status(400).json({
+          error: `${field} must be one of: ${[...allowed].join(', ')}`,
+        })
+      }
+      $set[`preferences.${field}`] = value
+    }
+  }
+
+  if (Object.keys($set).length === 0) {
+    return res.status(400).json({ error: 'No valid preference fields provided' })
+  }
+
+  $set.updated_at = new Date()
+
+  const col = usersCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+  await col.updateOne({ _id: req.user._id }, { $set })
   res.json({ ok: true })
 })
 

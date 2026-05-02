@@ -42,8 +42,20 @@ export async function connectMongo() {
     )
     await db.collection('network_chapters').createIndex({ tier: 1, slug: 1 })
     await db.collection('network_chapters').createIndex({ status: 1 })
+    await db.collection('schools').createIndex({ urn:      1 }, { unique: true })
+    await db.collection('schools').createIndex({ ward_gss: 1 })
+    await db.collection('schools').createIndex({ con_gss:  1 })
+    await db.collection('schools').createIndex({ la_gss:   1 })
+    await db.collection('schools').createIndex({ location: '2dsphere' }, { sparse: true })
     await db.collection('posts').createIndex({ 'collective_ref.id': 1, created_at: -1 })
     await db.collection('posts').createIndex({ national_feed_suppressed: 1 })
+    await db.collection('user_session').createIndex({ user_id: 1 }, { unique: true })
+    await db.collection('user_follows').createIndex({ user_id: 1, entity_type: 1 })
+    await db.collection('user_follows').createIndex({ entity_type: 1, entity_id: 1 })
+    await db.collection('user_follows').createIndex(
+      { user_id: 1, entity_type: 1, entity_id: 1 },
+      { unique: true }
+    )
     console.log('MongoDB connected')
   } catch (err) {
     console.error('[mongo] connection failed -- continuing without MongoDB:', err.message)
@@ -86,3 +98,12 @@ export function nationalGroupsCol()  { return db ? db.collection('national_group
 
 /** Returns the network_chapters collection, or null if Mongo is unavailable. */
 export function networkChaptersCol() { return db ? db.collection('network_chapters') : null }
+
+/** Returns the schools collection, or null if Mongo is unavailable. */
+export function schoolsCol()         { return db ? db.collection('schools')          : null }
+
+/** Returns the user_session collection, or null if Mongo is unavailable. */
+export function sessionCol()         { return db ? db.collection('user_session')     : null }
+
+/** Returns the user_follows collection, or null if Mongo is unavailable. */
+export function followsCol()         { return db ? db.collection('user_follows')     : null }

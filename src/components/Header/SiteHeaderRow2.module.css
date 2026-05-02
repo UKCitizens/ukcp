@@ -1,50 +1,51 @@
 /**
  * SiteHeaderRow2.module.css
- * Layout and visual styles for Row 2 — the UKCP location context banner.
+ * Five-slot banner strip for the UKCP location context banner (Row 2).
  */
 
-/**
- * Outer row wrapper. Full width, fixed height set via Mantine h prop.
- * Banner image background.
- */
-.row2 {
-  background-image: url(../../assets/UKBanner.png);
-  background-size: 100% 100%;
-  background-position: center center;
-  width: 100%;
-  overflow: hidden;
-}
-
-/**
- * Shared row border — thin bottom separator between header rows.
- */
 .row {
   border-bottom: 1px solid var(--mantine-color-dark-3);
 }
 
-/**
- * Inner content wrapper — full width, centres label both horizontally
- * and vertically.
- */
-.rowInner {
-  width: 98%;
-  margin: 0 auto;
+/* Each of the 5 equal-width image slots */
+.slot {
+  flex: 1;
   height: 100%;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+  background-color: var(--mantine-color-gray-2);
+}
+
+/* Slot with no image assigned yet -- subtle diagonal stripe placeholder */
+.slotEmpty {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--mantine-color-gray-2) 0px,
+    var(--mantine-color-gray-2) 6px,
+    var(--mantine-color-gray-3) 6px,
+    var(--mantine-color-gray-3) 12px
+  );
+}
+
+/* Thin separator between slots */
+.slot + .slot {
+  border-left: 1px solid var(--mantine-color-gray-4);
+}
+
+/* Location label -- centred in the middle slot */
+.contextLabel {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/**
- * Context label — black, bold, centred. Text-shadow for legibility
- * against the banner image.
- */
-.contextLabel {
-  color: #111111;
+  font-size: 1.25rem;
   font-weight: 700;
-  text-align: center;
+  color: #111111;
   text-shadow:
-    0 0 6px rgba(255, 255, 255, 0.8),
-    0 0 12px rgba(255, 255, 255, 0.5);
+    0 0 6px rgba(255, 255, 255, 0.9),
+    0 0 14px rgba(255, 255, 255, 0.6);
   letter-spacing: 0.01em;
+  pointer-events: none;
 }

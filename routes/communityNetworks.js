@@ -19,7 +19,7 @@ import {
   leaveChapter,
   getNationalFeed,
 } from '../services/communityNetworks.js'
-import { postsCol }    from '../db/mongo.js'
+import { postsCol, networkChaptersCol } from '../db/mongo.js'
 
 const router = Router()
 
@@ -98,6 +98,24 @@ router.get('/:ngId/feed', async (req, res) => {
     parseInt(limit, 10)
   )
   res.json(result)
+})
+
+// GET /api/community-networks/chapter-by-institution?type=school&id=100045
+router.get('/chapter-by-institution', async (req, res) => {
+  const col = networkChaptersCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+  const { type, id } = req.query
+  if (!type || !id) return res.status(400).json({ error: 'type and id required' })
+  try {
+    const chapter = await col.findOne(
+      { institution_type: type, institution_id: id },
+      { projection: { _id: 1 } }
+    )
+    if (!chapter) return res.status(404).json({ error: 'Chapter not found' })
+    res.json({ chapter_id: chapter._id })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to find chapter' })
+  }
 })
 
 // PATCH /api/community-networks/feed/:postId/suppress

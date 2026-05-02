@@ -9,13 +9,13 @@ import { Center, Text } from '@mantine/core'
 
 const stub = (label) => (
   <Center style={{ height: '100%', minHeight: 120 }}>
-    <Text size="sm" c="dimmed">{label} — coming soon</Text>
+    <Text size="sm" c="dimmed">{label} -- coming soon</Text>
   </Center>
 )
 
-export const NewsStub       = () => stub('News')
-export const GroupsStub     = () => stub('Groups')
-export const PostsStub      = () => stub('Posts')
-export const PeopleStub     = () => stub('People')
-export const GovernmentStub = () => stub('Government')
-export const CommitteeStub  = () => stub('Committee')
+export const NewsStub         = () => stub('News')
+export const GroupsStub       = () => stub('Groups')
+export const LocalTradersStub = () => stub('Local Traders')
+export const CivicStub        = () => stub('Civic')
+export const CommitteeStub    = () => stub('Committee')
+export const PostsStub        = () => stub('Posts')      // retained -- used internally by CommitteeTab / CommunityNetworksSection

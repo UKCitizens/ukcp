@@ -1,7 +1,7 @@
 /**
  * @file src/components/Groups/GroupsTab.jsx
  * @description Groups tab panel. Shows associations ("Groups"), spaces ("Local Spaces"),
- *   and community networks (national networks with local chapters).
+ *   Groups and Local Spaces. Community Networks live in the right nav (GroupsRightNav).
  *
  * Props:
  *   locationType  -- geo node type (ward|constituency|county|region|country)
@@ -10,20 +10,11 @@
 
 import { useState, useEffect }     from 'react'
 import { useAuth }                 from '../../context/AuthContext.jsx'
-import CommunityNetworksSection    from './CommunityNetworksSection.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
-const FILTERS = [
-  { key: 'all',      label: 'All' },
-  { key: 'groups',   label: 'Groups' },
-  { key: 'spaces',   label: 'Local Spaces' },
-  { key: 'networks', label: 'Community Networks' },
-]
-
-export default function GroupsTab({ locationType, locationSlug }) {
+export default function GroupsTab({ locationType, locationSlug, filter = 'all' }) {
   const { session }  = useAuth()
-  const [filter, setFilter]   = useState('all')
   const [groups,  setGroups]  = useState([])
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState(null)
@@ -65,9 +56,8 @@ export default function GroupsTab({ locationType, locationSlug }) {
   const associations = groups.filter(g => g.kind === 'association')
   const spaces       = groups.filter(g => g.kind === 'space')
 
-  const showGroups   = filter === 'all' || filter === 'groups'
-  const showSpaces   = filter === 'all' || filter === 'spaces'
-  const showNetworks = filter === 'all' || filter === 'networks'
+  const showGroups = filter === 'all' || filter === 'groups'
+  const showSpaces = filter === 'all' || filter === 'spaces'
 
   if (!locationType) {
     return <div style={wrap}><p style={dim}>Select a location to view groups.</p></div>
@@ -75,19 +65,6 @@ export default function GroupsTab({ locationType, locationSlug }) {
 
   return (
     <div style={{ padding: 0 }}>
-      {/* Filter strip */}
-      <div style={filterStrip}>
-        {FILTERS.map(f => (
-          <button
-            key={f.key}
-            style={filter === f.key ? { ...filterBtn, ...filterBtnActive } : filterBtn}
-            onClick={() => setFilter(f.key)}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
       {loading && <div style={wrap}><p style={dim}>Loading groups...</p></div>}
       {error   && <div style={wrap}><p style={dim}>{error}</p></div>}
 
@@ -110,13 +87,7 @@ export default function GroupsTab({ locationType, locationSlug }) {
               onJoin={(id) => handleJoin('spaces', id)}
             />
           )}
-          {showNetworks && (
-            <CommunityNetworksSection
-              locationType={locationType}
-              locationSlug={locationSlug}
-              session={session}
-            />
-          )}
+
         </>
       )}
     </div>
@@ -182,11 +153,8 @@ function GroupCard({ item, showCategory, session, onJoin }) {
   )
 }
 
-const wrap            = { padding: 16 }
-const dim             = { fontSize: 13, color: '#868e96', margin: 0 }
-const filterStrip     = { display: 'flex', gap: 4, padding: '10px 16px 8px', borderBottom: '1px solid #f1f3f5' }
-const filterBtn       = { fontSize: 12, padding: '4px 10px', border: '1px solid #dee2e6', borderRadius: 20, background: '#fff', color: '#495057', cursor: 'pointer', whiteSpace: 'nowrap' }
-const filterBtnActive = { background: '#1971c2', color: '#fff', borderColor: '#1971c2' }
+const wrap        = { padding: 16 }
+const dim         = { fontSize: 13, color: '#868e96', margin: 0 }
 const sectionHead     = { fontSize: 13, fontWeight: 600, color: '#343a40', margin: '12px 16px 8px' }
 const card            = { border: '1px solid #dee2e6', borderRadius: 6, padding: 12, margin: '0 16px 10px', background: '#fff' }
 const cardName        = { fontSize: 13, fontWeight: 600, margin: '0 0 4px 0', color: '#212529' }

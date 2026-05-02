@@ -37,6 +37,9 @@ import groupsRouter                    from './routes/groups.js'
 import postsRouter                     from './routes/posts.js'
 import forumsRouter                    from './routes/forums.js'
 import communityNetworksRouter         from './routes/communityNetworks.js'
+import schoolsRouter                   from './routes/schools.js'
+import sessionRouter                   from './routes/session.js'
+import followsRouter                   from './routes/follows.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
@@ -66,6 +69,9 @@ app.use('/api/groups',  groupsRouter)
 app.use('/api/posts',   postsRouter)
 app.use('/api/forums',  forumsRouter)
 app.use('/api/community-networks', communityNetworksRouter)
+app.use('/api/schools',           schoolsRouter)
+app.use('/api', sessionRouter)
+app.use('/api/follows', followsRouter)
 
 // ── SPA catch-all ─────────────────────────────────────────────────────────────
 // Any unmatched route returns index.html -- React Router handles client-side nav.

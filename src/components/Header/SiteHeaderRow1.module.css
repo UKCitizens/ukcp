@@ -39,3 +39,36 @@
   align-items: center;
   justify-content: space-between;
 }
+
+/**
+ * Identity strip — sits between the logo and the icon cluster.
+ * Subtle, monochrome, dot-separated. Quiet next to the green wordmark.
+ */
+.identityStrip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1rem;
+  margin-right: auto;
+  font-size: 0.78rem;
+  color: var(--mantine-color-gray-6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.identityStrip > span + span::before {
+  content: '·';
+  margin-right: 0.5rem;
+  color: var(--mantine-color-gray-4);
+}
+
+.who {
+  font-weight: 600;
+  color: var(--mantine-color-gray-7);
+}
+
+.where, .network {
+  color: var(--mantine-color-gray-6);
+}

@@ -13,15 +13,18 @@
 
 import { useState, useEffect } from 'react'
 import PostsTab from '../Posts/PostsTab.jsx'
+import CommunityNetworkCard from './CommunityNetworkCard.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
 const VALID_TIERS = ['ward', 'constituency', 'county', 'city', 'town', 'village', 'hamlet']
+const NETWORK_MODE_SLUGS = new Set(['at-the-school-gates'])
 
-export default function CommunityNetworksSection({ locationType, locationSlug, session }) {
-  const [data,    setData]    = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState(null)
+export default function CommunityNetworksSection({ locationType, locationSlug, session, onNetworkSelect }) {
+  const [data,        setData]        = useState([])
+  const [loading,     setLoading]     = useState(false)
+  const [error,       setError]       = useState(null)
+  const [selectedId,  setSelectedId]  = useState(null)
 
   useEffect(() => {
     if (!locationType || !locationSlug) return
@@ -89,26 +92,57 @@ export default function CommunityNetworksSection({ locationType, locationSlug, s
   if (loading) return <div style={wrap}><p style={dim}>Loading community networks...</p></div>
   if (error)   return <div style={wrap}><p style={dim}>{error}</p></div>
 
+  const selectedItem = selectedId
+    ? data.find(d => d.nationalGroup._id?.toString() === selectedId)
+    : null
+
   return (
     <div style={wrap}>
-      <p style={intro}>
-        Community Networks are national topic groups with local chapters.
-        Every network has a chapter here -- join to connect with people near you
-        who care about the same issues.
-      </p>
-      {data.map(({ nationalGroup, chapter, is_member }) => (
+      {/* Network icon grid -- 3 columns, scrolls vertically if > 9 */}
+      <div style={{
+        display:             'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap:                 6,
+        maxHeight:           210,
+        overflowY:           'auto',
+        marginBottom:        10,
+      }}>
+        {data.map(({ nationalGroup }) => {
+          const slug = nationalGroup.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+          const hasDedicatedMode = NETWORK_MODE_SLUGS.has(slug)
+          return (
+            <CommunityNetworkCard
+              key={nationalGroup._id}
+              name={nationalGroup.name}
+              description={nationalGroup.purpose_statement}
+              topicCategory={nationalGroup.topic_category}
+              isSelected={selectedId === nationalGroup._id?.toString()}
+              onClick={() => {
+                if (hasDedicatedMode && onNetworkSelect) {
+                  onNetworkSelect(slug)
+                } else {
+                  setSelectedId(selectedId === nationalGroup._id?.toString() ? null : nationalGroup._id?.toString())
+                }
+              }}
+            />
+          )
+        })}
+      </div>
+
+      {/* Selected network detail */}
+      {selectedItem && (
         <NetworkCard
-          key={nationalGroup._id}
-          nationalGroup={nationalGroup}
-          chapter={chapter}
-          isMember={is_member}
+          key={selectedItem.nationalGroup._id}
+          nationalGroup={selectedItem.nationalGroup}
+          chapter={selectedItem.chapter}
+          isMember={selectedItem.is_member}
           session={session}
           onJoin={handleJoin}
           onLeave={handleLeave}
           locationType={locationType}
           locationSlug={locationSlug}
         />
-      ))}
+      )}
     </div>
   )
 }

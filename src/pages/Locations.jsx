@@ -26,7 +26,17 @@
  *   - Place crumb cleared on any backward navigation.
  */
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
+import { useAuth } from '../context/AuthContext.jsx'
+import { useUserState } from '../context/UserStateContext.jsx'
+
+const API_BASE   = import.meta.env.VITE_API_URL ?? ''
+const SAVES_KEY  = 'ukcp_saves'
+
+// Display labels for known network slugs. Add an entry per new network.
+const NETWORK_LABELS = {
+  'at-the-school-gates': 'School Gates',
+}
 import PageLayout from '../components/PageLayout.jsx'
 import SiteHeader from '../components/SiteHeader.jsx'
 import PlacesCard from '../components/PlacesCard.jsx'
@@ -41,14 +51,27 @@ import { usePlacesFilter } from '../hooks/usePlacesFilter.js'
 import { useSelectionState } from '../hooks/useSelectionState.js'
 import { useLocationContent } from '../hooks/useLocationContent.js'
 import { usePopulation } from '../hooks/usePopulation.js'
+import { useSessionSnapshot } from '../hooks/useSessionSnapshot.js'
 import { NAV_COORDS } from '../config/navCoords.js'
 import { findRelatedPlace } from '../utils/findRelatedPlace.js'
-import { NewsStub, PeopleStub, GovernmentStub } from '../components/TabStubs.jsx'
+import { NewsStub, LocalTradersStub } from '../components/TabStubs.jsx'
 import GroupsTab    from '../components/Groups/GroupsTab.jsx'
-import PostsTab     from '../components/Posts/PostsTab.jsx'
 import CommitteeTab from '../components/Committee/CommitteeTab.jsx'
+import GroupsLeftNav   from '../components/TabNavs/GroupsLeftNav.jsx'
+import GroupsRightNav  from '../components/TabNavs/GroupsRightNav.jsx'
+import NewsLeftNav     from '../components/TabNavs/NewsLeftNav.jsx'
+import NewsRightNav    from '../components/TabNavs/NewsRightNav.jsx'
+import TradersLeftNav  from '../components/TabNavs/TradersLeftNav.jsx'
+import TradersRightNav from '../components/TabNavs/TradersRightNav.jsx'
+import CivicLeftNav    from '../components/TabNavs/CivicLeftNav.jsx'
+import CivicRightNav   from '../components/TabNavs/CivicRightNav.jsx'
+import SchoolsLeftNav     from '../components/SchoolGates/SchoolsLeftNav.jsx'
+import SchoolGatesMid     from '../components/SchoolGates/SchoolGatesMid.jsx'
+import SchoolsRightNav    from '../components/SchoolGates/SchoolsRightNav.jsx'
 
 export default function Locations() {
+  const { session, loading: authLoading, profile } = useAuth()
+  const { updateUserState } = useUserState()
   const { places, wards, hierarchy, containment, loading } = useLocationData()
   const { path, panel1, panel2, select, selectMany, goTo, reset } = useNavigation(hierarchy)
   const { grouped, scopeKey } = usePlacesFilter(places, path)
@@ -58,6 +81,12 @@ export default function Locations() {
     dismissPending,
   } = useSelectionState()
 
+  const [groupsFilter,       setGroupsFilter]       = useState('all')
+  const [activeNetwork,      setActiveNetwork]      = useState(null)
+  const [selectedSchoolUrns, setSelectedSchoolUrns] = useState([])
+  const [focusSchoolUrn,     setFocusSchoolUrn]     = useState(null)
+  const [loadedSchools,      setLoadedSchools]      = useState([])
+  const [tabNavMode,         setTabNavMode]         = useState(false)  // false = location nav, true = tab-specific nav
   const [walkerOpen,        setWalkerOpen]        = useState(true)
   const [midTab,            setMidTab]            = useState('map')
   const [viewMode,          setViewMode]          = useState('browse')  // 'browse' | 'explore'
@@ -67,6 +96,89 @@ export default function Locations() {
   const [rightWalkerMode,     setRightWalkerMode]     = useState(false)
   const [pendingConstituency, setPendingConstituency] = useState(null)
   const [pendingWard,         setPendingWard]         = useState(null)
+
+  // ── Session snapshot ─────────────────────────────────────────────────────
+  // Persists app state across reloads. Logged-in → user_session collection.
+  // Anon → localStorage. Restore fires once after auth resolves.
+  const snapshot = useMemo(() => ({
+    geo_path:            path,
+    active_tab:          midTab,
+    active_network:      activeNetwork,
+    selected_school_urn: focusSchoolUrn,
+    tab_nav_mode:        tabNavMode,
+    group_filter:        groupsFilter,
+  }), [path, midTab, activeNetwork, focusSchoolUrn, tabNavMode, groupsFilter])
+
+  // snapHasData tracks whether the snapshot restore actually populated state.
+  // If false after snapshotReady flips, profile.preferences is used as a
+  // fallback so first-time users land on their preferred default tab.
+  const [snapHasData, setSnapHasData] = useState(false)
+
+  const handleRestore = useCallback((snap) => {
+    if (!snap) return
+    setSnapHasData(true)
+    if (Array.isArray(snap.geo_path) && snap.geo_path.length) {
+      selectMany(snap.geo_path)
+    }
+    if (snap.active_tab)                          setMidTab(snap.active_tab)
+    if (snap.active_network)                      setActiveNetwork(snap.active_network)
+    if (snap.selected_school_urn)                 setFocusSchoolUrn(snap.selected_school_urn)
+    if (typeof snap.tab_nav_mode === 'boolean')   setTabNavMode(snap.tab_nav_mode)
+    if (snap.group_filter)                        setGroupsFilter(snap.group_filter)
+  }, [selectMany])
+
+  const { ready: snapshotReady } = useSessionSnapshot({
+    session, loading: authLoading, snapshot, onRestore: handleRestore,
+  })
+
+  // Preferences fallback: only when no snapshot data restored.
+  // Runs once after snapshotReady so it can't fight the snapshot.
+  const prefsAppliedRef = useRef(false)
+  useEffect(() => {
+    if (!snapshotReady || prefsAppliedRef.current) return
+    if (snapHasData) { prefsAppliedRef.current = true; return }
+    const prefs = profile?.user?.preferences
+    if (prefs?.default_tab) {
+      setMidTab(prefs.default_tab)
+      prefsAppliedRef.current = true
+    }
+  }, [snapshotReady, snapHasData, profile?.user?.preferences])
+
+  // ── School follows hydration ──────────────────────────────────────────────
+  // On auth resolve, populate selectedSchoolUrns from user_follows (logged-in)
+  // or ukcp_saves localStorage (anon). Runs once per auth state.
+  const followsHydrated = useRef(false)
+  useEffect(() => {
+    if (authLoading) return
+    if (followsHydrated.current) return
+    followsHydrated.current = true
+
+    if (session?.access_token) {
+      fetch(`${API_BASE}/api/follows?entity_type=school`, {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      })
+        .then(r => r.ok ? r.json() : [])
+        .then(rows => setSelectedSchoolUrns(rows.map(r => r.entity_id)))
+        .catch(() => {})
+    } else {
+      try {
+        const saves = JSON.parse(localStorage.getItem(SAVES_KEY) ?? '[]')
+        setSelectedSchoolUrns(
+          saves.filter(s => s.entity_type === 'school').map(s => s.entity_id)
+        )
+      } catch {}
+    }
+  }, [authLoading, session?.access_token])
+
+  // ── Identity strip context ────────────────────────────────────────────────
+  // Surfaces current scope and network mode to the header strip.
+  useEffect(() => {
+    const last = path[path.length - 1]
+    updateUserState({
+      scope:   last ? last.value : 'UK',
+      network: activeNetwork ? (NETWORK_LABELS[activeNetwork] ?? '') : '',
+    })
+  }, [path, activeNetwork, updateUserState])
 
   // Zoom levels that mirror MiniMap.jsx ZOOM_BY_TYPE — used to compute flyTo zoom.
   const MINI_ZOOM = { hamlet: 14, village: 13, town: 12, city: 11, ward: 12, constituency: 10, county: 9, region: 7, country: 5 }
@@ -289,8 +401,8 @@ export default function Locations() {
   // If Government tab is active but context switches to a named place, reset to Info.
   const NAMED_PLACES_GUARD = ['city', 'town', 'village', 'hamlet']
   useEffect(() => {
-    if (midTab === 'government' && NAMED_PLACES_GUARD.includes(locationType ?? '')) {
-      setMidTab('info')
+    if (midTab === 'civic' && NAMED_PLACES_GUARD.includes(locationType ?? '')) {
+      setMidTab('map')
     }
   }, [locationType])
 
@@ -307,6 +419,26 @@ export default function Locations() {
 
   // Nomis population — active when ward or constituency is selected (places use Wikidata via content hook)
   const { population: gssPopulation } = usePopulation(wardGss ?? conGss)
+
+  // GSS codes for pending ward/constituency (not in path, set via ConstituencyPane selection)
+  const pendingWardGss = useMemo(() => {
+    if (!pendingWard || !wards) return null
+    return wards.find(w => w.ward === pendingWard)?.ward_gss ?? null
+  }, [pendingWard, wards])
+
+  const pendingConGss = useMemo(() => {
+    if (!pendingConstituency || !wards) return null
+    return wards.find(w => w.constituency === pendingConstituency)?.con_gss ?? null
+  }, [pendingConstituency, wards])
+
+  // School geo scope — pending values take priority as they are more specific.
+  const schoolLocationScope = useMemo(() => {
+    if (pendingWardGss) return { scope: 'ward',         gss: pendingWardGss }
+    if (wardGss)        return { scope: 'ward',         gss: wardGss }
+    if (pendingConGss)  return { scope: 'constituency', gss: pendingConGss }
+    if (conGss)         return { scope: 'constituency', gss: conGss }
+    return null
+  }, [wardGss, conGss, pendingWardGss, pendingConGss])
 
   // ── Context coordinates for MiniMap ─────────────────────────────────────
   const contextCoords = useMemo(() => {
@@ -395,11 +527,128 @@ export default function Locations() {
   // mapExpand is driven by viewMode, not midTab.
   const mapExpand = viewMode === 'explore'
 
-  // Pane header label — geographic scope (county > region > country > UK).
-  // Excludes constituency/ward — places and constituencies are scoped to county.
   const scopeLabel = county ?? region ?? country ?? 'UK'
 
+  const focusSchool = loadedSchools.find(s => s.urn === focusSchoolUrn) ?? null
+
+  function handleFocusSchool(urn)  { setFocusSchoolUrn(urn) }
+
+  // Toggle follow/save for a school. Updates local state and persists to
+  // user_follows (logged-in) or ukcp_saves localStorage (anon).
+  function handleToggleSchool(urn) {
+    const isFollowing = selectedSchoolUrns.includes(urn)
+    setSelectedSchoolUrns(prev =>
+      isFollowing ? prev.filter(u => u !== urn) : [...prev, urn]
+    )
+
+    const school     = loadedSchools.find(s => s.urn === urn)
+    const entityName = school?.name ?? null
+
+    if (session?.access_token) {
+      const headers = { Authorization: `Bearer ${session.access_token}` }
+      if (isFollowing) {
+        fetch(`${API_BASE}/api/follows/school/${urn}`, { method: 'DELETE', headers })
+          .catch(() => {})
+      } else {
+        fetch(`${API_BASE}/api/follows`, {
+          method:  'POST',
+          headers: { ...headers, 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ entity_type: 'school', entity_id: urn, entity_name: entityName }),
+        }).catch(() => {})
+      }
+    } else {
+      try {
+        const saves = JSON.parse(localStorage.getItem(SAVES_KEY) ?? '[]')
+        const next  = isFollowing
+          ? saves.filter(s => !(s.entity_type === 'school' && s.entity_id === urn))
+          : [...saves, {
+              entity_type: 'school',
+              entity_id:   urn,
+              entity_name: entityName,
+              saved_at:    new Date().toISOString(),
+            }]
+        localStorage.setItem(SAVES_KEY, JSON.stringify(next))
+      } catch {}
+    }
+  }
+  function handleNetworkSelect(slug) { setActiveNetwork(slug); setFocusSchoolUrn(null) }
+  function handleNetworkBack()       { setActiveNetwork(null) }
+
+  const TAB_NAV_TABS = ['groups', 'news', 'traders', 'civic']
+  const showTabNav   = tabNavMode && TAB_NAV_TABS.includes(midTab)
+
+  const locationNav = {
+    left: (
+      <PlacesCard
+        grouped={grouped}
+        scopeKey={scopeKey}
+        onPlaceSelect={handleLeftPlaceSelect}
+        paneTitle={`Places in ${scopeLabel}`}
+        focusPlace={pendingPlace}
+        onWalkerModeChange={setWalkerMode}
+      />
+    ),
+    right: (
+      <ConstituencyPane
+        containment={containment}
+        path={path}
+        hierarchy={hierarchy}
+        wards={wards}
+        select={handleSelect}
+        selectMany={handleSelectMany}
+        paneTitle={`Constituencies with wards in ${scopeLabel}`}
+        onWalkerModeChange={(active) => setRightWalkerMode(active)}
+        walkerMode={rightWalkerMode}
+        onConstituencyPending={(name) => { setPendingConstituency(name); setPendingWard(null) }}
+        onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}
+        pendingConstituency={pendingConstituency}
+        pendingWard={pendingWard}
+      />
+    ),
+  }
+
+  let activeLeftPane, activeRightPane
+
+  if (activeNetwork === 'at-the-school-gates' && midTab === 'groups') {
+    activeLeftPane = (
+      <SchoolsLeftNav
+        selectedUrns={selectedSchoolUrns}
+        focusUrn={focusSchoolUrn}
+        onFocusSchool={handleFocusSchool}
+        onToggleSchool={handleToggleSchool}
+        onBack={handleNetworkBack}
+        locationScope={schoolLocationScope}
+        onSchoolsChange={setLoadedSchools}
+      />
+    )
+    activeRightPane = (
+      <SchoolsRightNav
+        focusSchool={focusSchool}
+        selectedUrns={selectedSchoolUrns}
+        onToggleSchool={handleToggleSchool}
+        session={session}
+      />
+    )
+  } else {
+    activeLeftPane = showTabNav
+      ? midTab === 'groups'  ? <GroupsLeftNav  filter={groupsFilter} onFilterChange={setGroupsFilter} />
+      : midTab === 'news'    ? <NewsLeftNav />
+      : midTab === 'traders' ? <TradersLeftNav />
+      : midTab === 'civic'   ? <CivicLeftNav   locationType={contentContext?.type} locationSlug={contentContext?.slug} />
+      : locationNav.left
+      : locationNav.left
+
+    activeRightPane = showTabNav
+      ? midTab === 'groups'  ? <GroupsRightNav  locationType={contentContext?.type} locationSlug={contentContext?.slug} onNetworkSelect={handleNetworkSelect} />
+      : midTab === 'news'    ? <NewsRightNav />
+      : midTab === 'traders' ? <TradersRightNav />
+      : midTab === 'civic'   ? <CivicRightNav   locationType={contentContext?.type} locationSlug={contentContext?.slug} />
+      : locationNav.right
+      : locationNav.right
+  }
+
   return (
+    <>
     <PageLayout
       header={
         <SiteHeader
@@ -419,16 +668,7 @@ export default function Locations() {
           bannerImage={thumbnail}
         />
       }
-      leftPane={
-        <PlacesCard
-          grouped={grouped}
-          scopeKey={scopeKey}
-          onPlaceSelect={handleLeftPlaceSelect}
-          paneTitle={`Places in ${scopeLabel}`}
-          focusPlace={pendingPlace}
-          onWalkerModeChange={setWalkerMode}
-        />
-      }
+      leftPane={activeLeftPane}
       midPane={
         <MidPaneTabs
           activeTab={midTab}
@@ -436,14 +676,18 @@ export default function Locations() {
           locationType={locationType}
           viewMode={viewMode}
           onToggleExpand={handleToggleExpand}
+          tabNavMode={tabNavMode}
+          onToggleTabNav={() => setTabNavMode(v => !v)}
           onPlaceSelect={handlePlaceSelect}
           onGeoSelect={handleSelect}
           newsPane={<NewsStub />}
-          groupsPane={<GroupsTab locationType={contentContext?.type} locationSlug={contentContext?.slug} />}
-          postsPane={<PostsTab  locationType={contentContext?.type} locationSlug={contentContext?.slug} />}
-          peoplePane={<PeopleStub />}
-          governmentPane={<GovernmentStub />}
-          committeePane={<CommitteeTab locationType={contentContext?.type} locationSlug={contentContext?.slug} />}
+          groupsPane={
+            activeNetwork === 'at-the-school-gates'
+              ? <SchoolGatesMid focusSchool={focusSchool} selectedUrns={selectedSchoolUrns} />
+              : <GroupsTab locationType={contentContext?.type} locationSlug={contentContext?.slug} filter={groupsFilter} />
+          }
+          tradersPane={<LocalTradersStub />}
+          civicPane={<CommitteeTab locationType={contentContext?.type} locationSlug={contentContext?.slug} />}
           mapPane={
             <MidPaneMap
               places={places}
@@ -492,25 +736,36 @@ export default function Locations() {
           }
         />
       }
-      rightPane={
-        <ConstituencyPane
-          containment={containment}
-          path={path}
-          hierarchy={hierarchy}
-          wards={wards}
-          select={handleSelect}
-          selectMany={handleSelectMany}
-          paneTitle={`Constituencies with wards in ${scopeLabel}`}
-          onWalkerModeChange={(active) => setRightWalkerMode(active)}
-          walkerMode={rightWalkerMode}
-          onConstituencyPending={(name) => { setPendingConstituency(name); setPendingWard(null) }}
-          onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}
-          pendingConstituency={pendingConstituency}
-          pendingWard={pendingWard}
-        />
-      }
+      rightPane={activeRightPane}
       footer={<Footer />}
       mapExpand={mapExpand}
     />
+    {!snapshotReady && (
+      <div role="status" aria-live="polite" style={restoringScrim}>
+        <span style={restoringText}>Restoring session…</span>
+      </div>
+    )}
+    </>
   )
+}
+
+// Brief overlay shown while the session snapshot loads. Blocks input so a
+// fast user click cannot land before the snapshot hook is ready to persist.
+const restoringScrim = {
+  position:        'fixed',
+  inset:           0,
+  background:      'rgba(255, 255, 255, 0.65)',
+  display:         'flex',
+  alignItems:      'center',
+  justifyContent:  'center',
+  zIndex:          1000,
+  pointerEvents:   'auto',
+}
+const restoringText = {
+  fontSize:   13,
+  color:      '#495057',
+  background: '#fff',
+  padding:    '8px 14px',
+  borderRadius: 4,
+  boxShadow:  '0 1px 3px rgba(0,0,0,0.1)',
 }

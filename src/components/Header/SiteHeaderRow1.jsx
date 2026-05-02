@@ -4,31 +4,27 @@
  *
  * Layout:
  *   Left zone  — UKCP logo + wordmark (hotlink to site home "/").
- *   Right zone — two icon clusters separated by a small spacer:
- *                  Feature nav: My Home | Location Selector | My Vote
- *                  Utility:     Profile | Help | Settings
+ *   Right zone — single cluster: My Home | People | Help | Profile | Settings | Log in/out
  *
  * Behaviour:
- *   Logo + wordmark navigate to "/" (Site Home) — Tooltip: "Site Home".
- *   Each icon has a Tooltip and navigates to its respective route.
- *   Location Selector also fires onWalkerToggle (when on /locations this
- *   toggles the walker; from other pages navigate is the primary action).
- *   If loading is true, a Mantine Loader (size="xs") renders adjacent to the
- *   Location Selector icon within the feature nav cluster.
+ *   Logo navigates to "/" (Locations, the site home).
+ *   Profile icon always visible — navigates to /profile.
+ *   Log in/out is at the far right end.
+ *   Log in navigates to /login.
  *
  * Standards:
  *   No inline styles. No sx prop. Layout via Mantine Group. Visual styles via
  *   CSS module. Row height is the ROW1_HEIGHT constant — no hardcoded px value.
  */
 
-import { Box, Group, Text, ActionIcon, Loader, Image, Tooltip, Button } from '@mantine/core'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { Box, Group, Text, ActionIcon, Image, Tooltip, Button } from '@mantine/core'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
+import { useUserState } from '../../context/UserStateContext.jsx'
 import UKCPLogo from '../../assets/UKCPlogo.png'
 import {
   IconHome,
-  IconMapPin,
-  IconThumbUp,
+  IconUsers,
   IconUser,
   IconHelp,
   IconSettings,
@@ -40,24 +36,19 @@ import classes from './SiteHeaderRow1.module.css'
  * Renders the permanent Row 1 nav bar for the UKCP site header.
  *
  * @param {object}   props
- * @param {Function} [props.onWalkerToggle] - Called when the Location Selector
- *                                            icon is clicked; toggles the walker
- *                                            when already on /locations.
- * @param {boolean}  props.loading          - When true, renders a Loader adjacent
- *                                            to the Location Selector icon.
+ * @param {Function} [props.onWalkerToggle] - Unused. Retained for caller compatibility.
+ * @param {boolean}  [props.loading]        - Unused. Retained for caller compatibility.
  * @returns {JSX.Element}
  */
 export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
   const navigate = useNavigate()
-  const { pathname } = useLocation()
   const { session, user, profile, signOut } = useAuth()
+  const { scopeLabel, activeNetworkLabel }  = useUserState()
 
-  function handleLocationSelector() {
-    // Only navigate if not already on /locations — re-navigating the same route
-    // can trigger a component remount which briefly removes the fixed nav bar.
-    if (pathname !== '/locations') navigate('/locations')
-    if (onWalkerToggle) onWalkerToggle()
-  }
+  // profile shape (Section 3): { user, follows, joined_groups, recent_posts, claims, ... }
+  const displayName = profile?.user?.display_name
+                   || user?.email?.split('@')[0]
+                   || 'Guest'
 
   return (
     <Box h={ROW1_HEIGHT} className={`${classes.row1} ${classes.row}`}>
@@ -79,81 +70,66 @@ export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
           </Group>
         </Tooltip>
 
-        {/* Right zone — feature nav cluster + utility cluster */}
-        <Group gap="md" align="center">
+        {/* Identity strip — who · where · mode. Hidden on small screens. */}
+        <Box className={classes.identityStrip} visibleFrom="sm" aria-label="Current context">
+          <span className={classes.who}>{displayName}</span>
+          {scopeLabel && <span className={classes.where}>{scopeLabel}</span>}
+          {activeNetworkLabel && <span className={classes.network}>{activeNetworkLabel}</span>}
+        </Box>
 
-          {/* Feature nav: My Home, Location Selector (with optional loader), My Vote */}
-          <Group gap="xs" align="center">
+        {/* Right zone — My Home | People | Help | Profile | Settings | Log in/out */}
+        <Group gap="xs" align="center">
 
-            <Tooltip label="My Home" position="bottom" withArrow>
-              <ActionIcon variant="subtle" aria-label="My Home" onClick={() => navigate('/myhome')}>
-                <IconHome size={24} />
-              </ActionIcon>
-            </Tooltip>
+          <Tooltip label="My Home" position="bottom" withArrow>
+            <ActionIcon variant="subtle" aria-label="My Home" onClick={() => navigate('/myhome')}>
+              <IconHome size={24} />
+            </ActionIcon>
+          </Tooltip>
 
-            {loading && <Loader size="xs" />}
+          <Tooltip label="People" position="bottom" withArrow>
+            <ActionIcon variant="subtle" aria-label="People" onClick={() => navigate('/people')}>
+              <IconUsers size={24} />
+            </ActionIcon>
+          </Tooltip>
 
-            <Tooltip label="Location Selector" position="bottom" withArrow>
-              <ActionIcon variant="subtle" aria-label="Location Selector" onClick={handleLocationSelector}>
-                <IconMapPin size={24} />
-              </ActionIcon>
-            </Tooltip>
+          <Tooltip label="Help" position="bottom" withArrow>
+            <ActionIcon variant="subtle" aria-label="Help" onClick={() => navigate('/help')}>
+              <IconHelp size={24} />
+            </ActionIcon>
+          </Tooltip>
 
-            <Tooltip label="My Vote" position="bottom" withArrow>
-              <ActionIcon variant="subtle" aria-label="My Vote" onClick={() => navigate('/myvote')}>
-                <IconThumbUp size={24} />
-              </ActionIcon>
-            </Tooltip>
+          <Tooltip label="Profile" position="bottom" withArrow>
+            <ActionIcon
+              variant="subtle"
+              aria-label="Profile"
+              onClick={() => {
+                if (!session) {
+                  try { sessionStorage.setItem('ukcp_login_redirect', '/profile') } catch {}
+                  navigate('/login')
+                } else {
+                  navigate('/profile')
+                }
+              }}
+            >
+              <IconUser size={24} />
+            </ActionIcon>
+          </Tooltip>
 
-          </Group>
+          <Tooltip label="Settings" position="bottom" withArrow>
+            <ActionIcon variant="subtle" aria-label="Settings" onClick={() => navigate('/settings')}>
+              <IconSettings size={24} />
+            </ActionIcon>
+          </Tooltip>
 
-          {/* Utility: Profile/auth, Help, Settings */}
-          <Group gap="xs" align="center">
-
-            {session ? (
-              <Group gap={4} align="center">
-                <Tooltip label="Profile" position="bottom" withArrow>
-                  <ActionIcon variant="subtle" aria-label="Profile" onClick={() => navigate('/profile')}>
-                    <IconUser size={24} />
-                  </ActionIcon>
-                </Tooltip>
-                <Text size="xs" c="dimmed" hiddenFrom="sm">
-                  {profile?.display_name || user?.email?.split('@')[0] || 'Account'}
-                </Text>
-                <Button
-                  size="compact-xs"
-                  variant="subtle"
-                  color="gray"
-                  onClick={signOut}
-                >
-                  Log out
-                </Button>
-              </Group>
-            ) : (
-              <Button
-                size="compact-sm"
-                variant="light"
-                color="green"
-                leftSection={<IconUser size={16} />}
-                onClick={() => navigate('/')}
-              >
-                Log in
-              </Button>
-            )}
-
-            <Tooltip label="Help" position="bottom" withArrow>
-              <ActionIcon variant="subtle" aria-label="Help" onClick={() => navigate('/help')}>
-                <IconHelp size={24} />
-              </ActionIcon>
-            </Tooltip>
-
-            <Tooltip label="Settings" position="bottom" withArrow>
-              <ActionIcon variant="subtle" aria-label="Settings" onClick={() => navigate('/settings')}>
-                <IconSettings size={24} />
-              </ActionIcon>
-            </Tooltip>
-
-          </Group>
+          {session ? (
+            <Button size="compact-xs" variant="subtle" color="gray" onClick={signOut}>
+              Log out
+            </Button>
+          ) : (
+            <Button size="compact-sm" variant="light" color="green" onClick={() => navigate('/login')}>
+              Log in
+            </Button>
+          )}
 
         </Group>
       </Box>

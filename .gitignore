@@ -18,3 +18,7 @@ dex-creds.env
 live-service-conns.txt
 cert.pem
 key.pem
+playwright-report/
+test-results/
+.playwright/
+dex-instructions/dex-creds.md

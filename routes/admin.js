@@ -2,22 +2,28 @@
  * @file routes/admin.js
  * @description Admin routes for geo-content and user management.
  *
- * PATCH /api/admin/geo-content/:key             -- Updates geo-content.json on disk.
- * PATCH /api/admin/geo-content-mongo/:type/:slug -- Upserts geo_content in MongoDB.
- * GET   /api/admin/users                         -- Paginated user list.
- * PATCH /api/admin/users/:id                     -- Update editable user fields.
- * DELETE /api/admin/users/:supabaseId/auth       -- Hard-delete from Supabase auth.
+ * All routes in this file are Tier 2: requireAuth + requireRole('admin').
+ *
+ * PATCH /api/admin/geo-content/:key                -- Updates geo-content.json on disk.
+ * PATCH /api/admin/geo-content-mongo/:type/:slug   -- Upserts geo_content in MongoDB.
+ * GET   /api/admin/users                           -- Paginated user list.
+ * PATCH /api/admin/users/:id                       -- Update editable user fields.
+ * PUT   /api/admin/users/:supabaseId/claims        -- Set Supabase app_metadata claims
+ *                                                     (platform_role, affiliated_roles,
+ *                                                     display_name, registration_complete)
+ *                                                     and mirror to Mongo.
+ * DELETE /api/admin/users/:supabaseId/auth         -- Hard-delete from Supabase auth.
  */
 
-import { Router }                            from 'express'
-import { ObjectId }                          from 'mongodb'
+import { Router }                                  from 'express'
+import { ObjectId }                                from 'mongodb'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
-import { fileURLToPath }                     from 'url'
-import { dirname, join }                     from 'path'
-import { geoContent, usersCol }              from '../db/mongo.js'
-import { supabaseAdmin }                     from '../middleware/auth.js'
-import { ALLOWED_CONTENT_TYPES }             from '../config/constants.js'
-import { contentCacheBust }                  from '../cache/contentCache.js'
+import { fileURLToPath }                           from 'url'
+import { dirname, join }                           from 'path'
+import { geoContent, usersCol }                    from '../db/mongo.js'
+import { supabaseAdmin, requireAuth, requireRole } from '../middleware/auth.js'
+import { ALLOWED_CONTENT_TYPES }                   from '../config/constants.js'
+import { contentCacheBust }                        from '../cache/contentCache.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
@@ -27,6 +33,11 @@ const GEO_CONTENT_SRC  = join(ROOT_DIR, 'public', 'data', 'geo-content.json')
 const GEO_CONTENT_DIST = join(ROOT_DIR, 'dist',   'data', 'geo-content.json')
 
 const router = Router()
+
+// Every route on this router is admin-only.
+router.use(requireAuth, requireRole('admin'))
+
+const PLATFORM_ROLES = new Set(['citizen', 'affiliated', 'admin'])
 
 const GEO_CONTENT_MONGO_EDITABLE = new Set([
   'summary', 'extract', 'thumbnail', 'wikiUrl', 'geoData',
@@ -154,6 +165,77 @@ router.patch('/admin/users/:id', async (req, res) => {
     console.error('[admin/users] patch error:', e.message)
     return res.status(500).json({ error: e.message })
   }
+})
+
+// ── PUT /api/admin/users/:supabaseId/claims ───────────────────────────────────
+// Writes platform claims to Supabase app_metadata (server-controlled, JWT-carried).
+// Mirrors the same fields onto the Mongo users record so reads stay consistent
+// without round-tripping to Supabase.
+
+router.put('/admin/users/:supabaseId/claims', async (req, res) => {
+  const { supabaseId } = req.params
+  const body = req.body ?? {}
+
+  const platform_role         = body.platform_role
+  const affiliated_roles      = body.affiliated_roles
+  const display_name          = body.display_name
+  const registration_complete = body.registration_complete
+
+  if (!PLATFORM_ROLES.has(platform_role)) {
+    return res.status(400).json({ error: `platform_role must be one of: ${[...PLATFORM_ROLES].join(', ')}` })
+  }
+  if (affiliated_roles !== undefined && !Array.isArray(affiliated_roles)) {
+    return res.status(400).json({ error: 'affiliated_roles must be an array of strings' })
+  }
+  if (affiliated_roles && affiliated_roles.some(r => typeof r !== 'string')) {
+    return res.status(400).json({ error: 'affiliated_roles must be an array of strings' })
+  }
+
+  const claims = {
+    platform_role,
+    affiliated_roles:      affiliated_roles ?? [],
+    display_name:          typeof display_name === 'string' ? display_name : '',
+    registration_complete: !!registration_complete,
+  }
+
+  try {
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(supabaseId, {
+      app_metadata: claims,
+    })
+    if (error) {
+      console.error('[admin/users/claims] supabase update error:', error.message)
+      return res.status(502).json({ error: error.message })
+    }
+  } catch (e) {
+    console.error('[admin/users/claims] supabase update threw:', e.message)
+    return res.status(502).json({ error: e.message })
+  }
+
+  // Mirror to Mongo. Best-effort -- Supabase is the source of truth for claims.
+  const col = usersCol()
+  if (col) {
+    try {
+      await col.updateOne(
+        { supabase_id: supabaseId },
+        {
+          $set: {
+            platform_role:         claims.platform_role,
+            affiliated_roles:      claims.affiliated_roles,
+            registration_complete: claims.registration_complete,
+            updated_at:            new Date(),
+            // Only mirror display_name if a non-empty value was supplied --
+            // avoids overwriting an existing display_name with ''.
+            ...(claims.display_name ? { display_name: claims.display_name } : {}),
+          },
+        }
+      )
+    } catch (e) {
+      console.error('[admin/users/claims] mongo mirror error:', e.message)
+    }
+  }
+
+  console.log(`[admin/users/claims] set: ${supabaseId} -> ${claims.platform_role}`)
+  return res.json({ ok: true })
 })
 
 // ── DELETE /api/admin/users/:supabaseId/auth ──────────────────────────────────

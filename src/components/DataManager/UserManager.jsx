@@ -13,6 +13,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import API_BASE from '../../config.js'
+import { useAuth } from '../../context/AuthContext.jsx'
 import {
   TextInput, Select, Checkbox, Button, Stack, Group, Text, Title,
   ScrollArea, Divider, Badge, Alert, Loader, Paper,
@@ -23,7 +24,13 @@ const VISIBILITY_OPTS  = [
   { value: 'anonymous', label: 'Anonymous' },
   { value: 'named',     label: 'Named' },
 ]
-const STATUS_COLOUR = { deleted: 'red', active: 'green' }
+const PLATFORM_ROLES   = [
+  { value: 'citizen',    label: 'Citizen' },
+  { value: 'affiliated', label: 'Affiliated' },
+  { value: 'admin',      label: 'Admin' },
+]
+const AFFILIATED_ROLE_OPTIONS = ['content_manager', 'proctor']
+const STATUS_COLOUR    = { deleted: 'red', active: 'green' }
 
 function userLabel(u) {
   return u.display_name || u.email || u.supabase_id
@@ -35,6 +42,11 @@ function StatusBadge({ u }) {
 }
 
 export default function UserManager() {
+  const { session } = useAuth()
+  const authHeaders = session?.access_token
+    ? { Authorization: `Bearer ${session.access_token}` }
+    : {}
+
   const [search,   setSearch]   = useState('')
   const [page,     setPage]     = useState(0)
   const [total,    setTotal]    = useState(0)
@@ -43,15 +55,18 @@ export default function UserManager() {
   const [form,     setForm]     = useState(null)
   const [loading,  setLoading]  = useState(false)
   const [saving,   setSaving]   = useState(false)
+  const [savingClaims, setSavingClaims] = useState(false)
   const [msg,      setMsg]      = useState(null)  // {type:'ok'|'err', text}
 
   const LIMIT = 50
 
   const fetchUsers = useCallback(async (q, pg) => {
+    if (!session?.access_token) return  // wait for auth before hitting protected admin route
     setLoading(true)
     try {
       const res = await fetch(
-        `${API_BASE}/api/admin/users?q=${encodeURIComponent(q)}&page=${pg}&limit=${LIMIT}`
+        `${API_BASE}/api/admin/users?q=${encodeURIComponent(q)}&page=${pg}&limit=${LIMIT}`,
+        { headers: { Authorization: `Bearer ${session.access_token}` } }
       )
       if (!res.ok) throw new Error(await res.text())
       const data = await res.json()
@@ -62,9 +77,9 @@ export default function UserManager() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [session?.access_token])
 
-  useEffect(() => { fetchUsers(search, page) }, [search, page])
+  useEffect(() => { fetchUsers(search, page) }, [search, page, fetchUsers])
 
   function selectUser(u) {
     setSelected(u)
@@ -83,7 +98,7 @@ export default function UserManager() {
     try {
       const res = await fetch(`${API_BASE}/api/admin/users/${selected.id}`, {
         method:  'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders },
         body: JSON.stringify({
           display_name:            form.display_name,
           username:                form.username,
@@ -109,6 +124,34 @@ export default function UserManager() {
     }
   }
 
+  async function handleSaveClaims() {
+    if (!selected?.supabase_id || !form) return
+    setSavingClaims(true)
+    setMsg(null)
+    try {
+      const res = await fetch(
+        `${API_BASE}/api/admin/users/${selected.supabase_id}/claims`,
+        {
+          method:  'PUT',
+          headers: { 'Content-Type': 'application/json', ...authHeaders },
+          body: JSON.stringify({
+            platform_role:         form.platform_role         ?? 'citizen',
+            affiliated_roles:      Array.isArray(form.affiliated_roles) ? form.affiliated_roles : [],
+            display_name:          form.display_name          ?? '',
+            registration_complete: !!form.registration_complete,
+          }),
+        }
+      )
+      if (!res.ok) throw new Error((await res.json()).error)
+      setMsg({ type: 'ok', text: 'Claims saved (Supabase + Mongo).' })
+      fetchUsers(search, page)
+    } catch (e) {
+      setMsg({ type: 'err', text: e.message })
+    } finally {
+      setSavingClaims(false)
+    }
+  }
+
   async function handleSoftDelete() {
     if (!selected) return
     if (!window.confirm(`Set status to 'deleted' for ${userLabel(selected)}?`)) return
@@ -117,7 +160,7 @@ export default function UserManager() {
     try {
       const res = await fetch(`${API_BASE}/api/admin/users/${selected.id}`, {
         method:  'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders },
         body: JSON.stringify({ status: 'deleted', is_active: false }),
       })
       if (!res.ok) throw new Error((await res.json()).error)
@@ -140,7 +183,7 @@ export default function UserManager() {
     try {
       const res = await fetch(
         `${API_BASE}/api/admin/users/${selected.supabase_id}/auth`,
-        { method: 'DELETE' }
+        { method: 'DELETE', headers: { ...authHeaders } }
       )
       if (!res.ok) throw new Error((await res.json()).error)
       setMsg({ type: 'ok', text: 'Deleted from Supabase auth. Mongo record retained.' })
@@ -149,6 +192,14 @@ export default function UserManager() {
     } finally {
       setSaving(false)
     }
+  }
+
+  function toggleAffiliatedRole(role) {
+    setForm(f => {
+      const cur = Array.isArray(f.affiliated_roles) ? f.affiliated_roles : []
+      const next = cur.includes(role) ? cur.filter(r => r !== role) : [...cur, role]
+      return { ...f, affiliated_roles: next }
+    })
   }
 
   return (
@@ -256,6 +307,42 @@ export default function UserManager() {
               onChange={e => fieldSet('is_suspended', e.currentTarget.checked)}
             />
             <Text size="xs" c="dimmed">Status field: {form.status ?? 'not set'}</Text>
+
+            <Divider label="Roles (Supabase claims)" labelPosition="left" />
+            <Text size="xs" c="dimmed">
+              Writes to Supabase app_metadata and mirrors to Mongo. Save separately
+              from the field changes above.
+            </Text>
+            <Select
+              size="xs"
+              label="Platform role"
+              data={PLATFORM_ROLES}
+              value={form.platform_role ?? 'citizen'}
+              onChange={v => fieldSet('platform_role', v)}
+            />
+            <Stack gap={2}>
+              <Text size="xs" fw={500}>Affiliated roles</Text>
+              {AFFILIATED_ROLE_OPTIONS.map(role => (
+                <Checkbox
+                  key={role}
+                  size="xs"
+                  label={role}
+                  checked={Array.isArray(form.affiliated_roles) && form.affiliated_roles.includes(role)}
+                  onChange={() => toggleAffiliatedRole(role)}
+                />
+              ))}
+            </Stack>
+            <Checkbox
+              size="xs"
+              label="Registration complete"
+              checked={!!form.registration_complete}
+              onChange={e => fieldSet('registration_complete', e.currentTarget.checked)}
+            />
+            <Group gap="xs">
+              <Button size="xs" color="violet" loading={savingClaims} onClick={handleSaveClaims}>
+                Save claims
+              </Button>
+            </Group>
 
             {msg && (
               <Alert color={msg.type === 'ok' ? 'green' : 'red'} size="xs">{msg.text}</Alert>

@@ -197,6 +197,7 @@ export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle
         }
       </div>
 
+
     </div>
   )
 }
