@@ -14,14 +14,14 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  gap: 2px;
+  gap: 1px;
 }
 
 .optionsRow {
   display: flex;
   align-items: center;
   gap: var(--mantine-spacing-sm);
-  min-height: 40px;
+  min-height: 30px;
 }
 
 .levelLabel {
@@ -36,12 +36,12 @@
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 3px 6px;
+  gap: 2px 5px;
   align-items: center;
 }
 
 .optionsWrapScroll {
-  max-height: 36px;
+  max-height: 30px;
   overflow-y: auto;
 }
 
@@ -61,5 +61,5 @@
 }
 
 .crumbRow {
-  min-height: 24px;
+  min-height: 20px;
 }

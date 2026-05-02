@@ -33,27 +33,16 @@
  *   onMarkerClick — callback(payload) — optional
  */
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { MARKER_STYLE, PLACE_TYPES, POLITICAL_TYPES, MapTypeToggle } from './Map/MapTypeToggle.jsx'
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-const UK_DEFAULT = { center: [54.5, -3.5], zoom: 5 }
-
-const ALL_TYPES        = ['City', 'Town', 'Village', 'Hamlet', 'Constituency', 'Ward']
-const PLACE_TYPES      = ['City', 'Town', 'Village', 'Hamlet']
-const POLITICAL_TYPES  = ['Constituency', 'Ward']
+const UK_DEFAULT       = { center: [54.5, -3.5], zoom: 5 }
+const ALL_TYPES        = [...PLACE_TYPES, ...POLITICAL_TYPES]
 const SETTLEMENT_TYPES = new Set(PLACE_TYPES)
-
-const MARKER_STYLE = {
-  City:         { radius: 8, color: '#1864ab', fillColor: '#1971c2', fillOpacity: 0.85 },
-  Town:         { radius: 5, color: '#2f9e44', fillColor: '#37b24d', fillOpacity: 0.80 },
-  Village:      { radius: 4, color: '#e67700', fillColor: '#f08c00', fillOpacity: 0.75 },
-  Hamlet:       { radius: 3, color: '#868e96', fillColor: '#adb5bd', fillOpacity: 0.70 },
-  Constituency: { radius: 7, color: '#862e9c', fillColor: '#ae3ec9', fillOpacity: 0.20 },
-  Ward:         { radius: 3, color: '#0c8599', fillColor: '#22b8cf', fillOpacity: 0.65 },
-}
 
 /**
  * Maps nav level → CSV field name for filtering.
@@ -137,55 +126,75 @@ function computeBounds(points) {
   )
 }
 
-// ── Toggle button ─────────────────────────────────────────────────────────────
+// ── Content layer definitions ─────────────────────────────────────────────────
+// available:false = stub toggle (greyed, not interactive) until data is wired.
 
-function TypeToggle({ type, active, onToggle }) {
-  const s = MARKER_STYLE[type]
+const CONTENT_LAYER_DEFS = [
+  { id: 'schools',    label: 'Schools',    color: '#c92a2a', fill: '#ff6b6b', available: true  },
+  { id: 'committees', label: 'Committees', color: '#1864ab', fill: '#4dabf7', available: false },
+  { id: 'groups',     label: 'Groups',     color: '#2f9e44', fill: '#69db7c', available: false },
+  { id: 'traders',    label: 'Traders',    color: '#e67700', fill: '#ffa94d', available: false },
+  { id: 'news',       label: 'News',       color: '#862e9c', fill: '#da77f2', available: false },
+]
+
+function ContentLayerToggle({ def, active, onToggle }) {
+  const isOn = active && def.available
   return (
     <button
-      onClick={() => onToggle(type)}
-      title={active ? `Hide ${type}s` : `Show ${type}s`}
+      onClick={e => { e.stopPropagation(); if (def.available) onToggle(def.id) }}
+      title={def.available ? (isOn ? `Hide ${def.label}` : `Show ${def.label}`) : `${def.label} coming soon`}
       style={{
-        display:      'flex',
-        alignItems:   'center',
-        gap:          '5px',
-        padding:      '3px 10px 3px 7px',
+        display:    'flex',
+        alignItems: 'center',
+        gap:        '5px',
+        padding:    '3px 10px 3px 7px',
         borderRadius: '20px',
-        border:       `1.5px solid ${active ? s.color : '#ced4da'}`,
-        background:   active ? s.fillColor : '#f1f3f5',
-        color:        active ? '#fff' : '#adb5bd',
-        cursor:       'pointer',
-        fontSize:     '12px',
-        fontWeight:   500,
-        transition:   'all 0.15s ease',
-        userSelect:   'none',
+        border:     `1.5px solid ${isOn ? def.color : '#ced4da'}`,
+        background: isOn ? def.fill : 'rgba(241,243,245,0.85)',
+        color:      isOn ? '#fff' : '#adb5bd',
+        cursor:     def.available ? 'pointer' : 'default',
+        fontSize:   '12px',
+        fontWeight: 500,
+        transition: 'all 0.15s ease',
+        userSelect: 'none',
+        opacity:    def.available ? 1 : 0.45,
       }}
     >
       <svg width="10" height="10" style={{ flexShrink: 0 }}>
-        <circle
-          cx="5" cy="5" r={Math.min(s.radius * 0.55, 4.5)}
-          fill={active ? '#fff' : '#ced4da'}
-          stroke={active ? 'rgba(255,255,255,0.6)' : '#ced4da'}
+        <rect x="1" y="1" width="8" height="8" rx="2"
+          fill={isOn ? '#fff' : '#ced4da'}
+          stroke={isOn ? 'rgba(255,255,255,0.6)' : '#ced4da'}
           strokeWidth="1"
         />
       </svg>
-      {type}
+      {def.label}
     </button>
   )
 }
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function MidPaneMap({
   places, wards, path, pendingPlace, onMarkerClick, flyTo, invalidateTrigger,
   activeConstituency,
   activeWard,
+  headerMode = false,
+  onMapClick,
+  // Shared nav filter state -- owned by useNavFilters in Locations.jsx
+  visibleTypes,
+  onToggleType,
+  // Content mode props
+  contentMode = false,
+  schools = [],
+  layers = {},
+  onLayerToggle,
+  // centerOn: { lat, lng, zoom } -- content map centers here instead of fitBounds
+  centerOn = null,
 }) {
   const containerRef    = useRef(null)
   const mapRef          = useRef(null)
   const layerRef        = useRef(null)
   const pendingLayerRef  = useRef(null)  // separate layer for pendingPlace gold marker
   const politicalLayerRef = useRef(null) // separate layer for selected constituency/ward highlight
+  const schoolsLayerRef  = useRef(null)  // content mode: school markers
   const markersDataRef  = useRef([])    // [{ marker, baseRadius }] — read by zoomend
   const prevPathRef     = useRef(null)  // track path changes to gate fitBounds
 
@@ -193,18 +202,6 @@ export default function MidPaneMap({
   // without needing the markers effect to re-run when the callback identity changes.
   const onMarkerClickRef = useRef(onMarkerClick)
   useEffect(() => { onMarkerClickRef.current = onMarkerClick }, [onMarkerClick])
-
-  const [visibleTypes, setVisibleTypes] = useState({
-    City: true, Town: false, Village: false, Hamlet: false, Constituency: false, Ward: false,
-  })
-
-  const toggleType = useCallback((type) => {
-    setVisibleTypes(prev => {
-      const next = { ...prev, [type]: !prev[type] }
-      if (Object.values(next).every(v => !v)) return prev
-      return next
-    })
-  }, [])
 
   // Constituency centroids — computed once from wards.
   // Adds .constituency field so filterByLevel can target it directly.
@@ -245,7 +242,9 @@ export default function MidPaneMap({
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
 
-    const map = L.map(containerRef.current).setView(UK_DEFAULT.center, UK_DEFAULT.zoom)
+    const map = L.map(containerRef.current, {
+      scrollWheelZoom: !contentMode,  // content map is a display, not a navigator
+    }).setView(UK_DEFAULT.center, UK_DEFAULT.zoom)
     mapRef.current = map
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -396,14 +395,19 @@ export default function MidPaneMap({
     layerRef.current = group
 
     if (pathChanged) {
-      if (!allPoints.length) {
+      if (contentMode && centerOn && !isNaN(+centerOn.lat) && !isNaN(+centerOn.lng)) {
+        // Content map: pin to the selected location at a tight, readable zoom.
+        map.setView([+centerOn.lat, +centerOn.lng], centerOn.zoom)
+      } else if (!allPoints.length) {
         map.setView(UK_DEFAULT.center, UK_DEFAULT.zoom)
       } else if (allPoints.length === 1) {
-        // Single point — fitBounds doesn't work well; use setView at a sensible zoom
-        map.setView([+allPoints[0].lat, +allPoints[0].lng], 12)
+        const singleZoom = headerMode ? 8 : 12
+        map.setView([+allPoints[0].lat, +allPoints[0].lng], singleZoom)
       } else {
         const bounds = computeBounds(allPoints)
-        if (bounds) map.fitBounds(bounds, { padding: [24, 24] })
+        // Header stays broad -- cap zoom so you always see country context.
+        const maxZoom = headerMode ? 10 : 16
+        if (bounds) map.fitBounds(bounds, { padding: [24, 24], maxZoom })
       }
     }
 
@@ -412,7 +416,8 @@ export default function MidPaneMap({
   // ── FlyTo — triggered by MiniMap thumbnail click ────────────────────────────
   useEffect(() => {
     if (!flyTo || !mapRef.current) return
-    mapRef.current.flyTo([flyTo.lat, flyTo.lng], flyTo.zoom, { duration: 0.8 })
+    if (isNaN(+flyTo.lat) || isNaN(+flyTo.lng)) return
+    mapRef.current.flyTo([+flyTo.lat, +flyTo.lng], flyTo.zoom, { duration: 0.8 })
   }, [flyTo])
 
   // ── invalidateTrigger — called after container resize (e.g. map-expand mode) ─
@@ -509,8 +514,84 @@ export default function MidPaneMap({
     map.flyTo([lat, lng], zoom, { duration: 0.6 })
   }, [activeConstituency, activeWard, wards, constituencyCentroids])
 
+  // ── Content mode: schools layer ──────────────────────────────────────────────
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !contentMode) return
+
+    if (schoolsLayerRef.current) {
+      map.removeLayer(schoolsLayerRef.current)
+      schoolsLayerRef.current = null
+    }
+
+    if (!layers.schools || !Array.isArray(schools) || !schools.length) return
+
+    const group = L.layerGroup()
+    const zoom  = map.getZoom()
+
+    for (const school of schools) {
+      // School coordinates are GeoJSON: location.coordinates = [lng, lat]
+      const coords = school.location?.coordinates
+      if (!coords || coords.length < 2) continue
+      const lng = +coords[0]
+      const lat = +coords[1]
+      if (isNaN(lat) || isNaN(lng)) continue
+
+      const name      = school.name ?? 'School'
+      const sublabel  = [school.phase, school.type_group].filter(Boolean).join(' - ') || 'School'
+      const baseRadius = 5
+
+      const marker = L.circleMarker([lat, lng], {
+        radius:      scaledRadius(baseRadius, zoom),
+        color:       '#c92a2a',
+        fillColor:   '#ff6b6b',
+        fillOpacity: 0.75,
+        weight:      1.5,
+      })
+
+      marker.bindTooltip(
+        `<strong>${name}</strong><br/><span style="color:#868e96;font-size:11px">${sublabel}</span>`,
+        { direction: 'top', sticky: false, offset: L.point(0, -8) }
+      )
+
+      marker.on('mouseover', function () {
+        this.setStyle({ fillOpacity: 1.0, weight: 2.5 })
+        this.openTooltip()
+      })
+      marker.on('mouseout', function () {
+        this.setStyle({ fillOpacity: 0.75, weight: 1.5 })
+        this.closeTooltip()
+      })
+
+      marker.addTo(group)
+    }
+
+    group.addTo(map)
+    schoolsLayerRef.current = group
+  }, [contentMode, schools, layers.schools])
+
   const { value } = resolveLevel(path)
 
+  if (headerMode) {
+    // ── Header mode — map fills container, click triggers nav switch ──────────
+    return (
+      <div
+        style={{ position: 'relative', width: '100%', height: '100%', cursor: 'pointer' }}
+        onClick={onMapClick}
+      >
+        <style>{`
+          .leaflet-container { cursor: pointer !important; }
+          .leaflet-interactive { cursor: pointer !important; }
+        `}</style>
+        <div
+          ref={containerRef}
+          style={{ width: '100%', height: '100%', borderRadius: 0, overflow: 'hidden' }}
+        />
+      </div>
+    )
+  }
+
+  // ── Standard / Content mode — content layer toggles (contentMode only) then map ──
   return (
     <div style={{
       position:      'absolute',
@@ -519,42 +600,6 @@ export default function MidPaneMap({
       flexDirection: 'column',
       padding:       '4px',
     }}>
-      {/* Toggle bar */}
-      <div style={{
-        flexShrink:     0,
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent: 'space-between',
-        gap:            '6px',
-        padding:        '4px 0 8px',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-          {value && value !== 'UK' && (
-            <span style={{ fontSize: '12px', color: '#868e96', marginRight: '2px' }}>
-              {value}
-            </span>
-          )}
-          {PLACE_TYPES.map(type => (
-            <TypeToggle
-              key={type}
-              type={type}
-              active={visibleTypes[type]}
-              onToggle={toggleType}
-            />
-          ))}
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          {POLITICAL_TYPES.map(type => (
-            <TypeToggle
-              key={type}
-              type={type}
-              active={visibleTypes[type]}
-              onToggle={toggleType}
-            />
-          ))}
-        </div>
-      </div>
-
       <style>{`
         .leaflet-container { cursor: default !important; }
         .leaflet-interactive { cursor: pointer !important; }

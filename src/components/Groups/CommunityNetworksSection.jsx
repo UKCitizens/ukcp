@@ -17,7 +17,7 @@ import CommunityNetworkCard from './CommunityNetworkCard.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
-const VALID_TIERS = ['ward', 'constituency', 'county', 'city', 'town', 'village', 'hamlet']
+const VALID_TIERS = ['ward', 'constituency', 'county', 'city', 'town', 'village', 'hamlet', 'region', 'country']
 const NETWORK_MODE_SLUGS = new Set(['at-the-school-gates'])
 
 export default function CommunityNetworksSection({ locationType, locationSlug, session, onNetworkSelect }) {
@@ -81,10 +81,10 @@ export default function CommunityNetworksSection({ locationType, locationSlug, s
     }
   }
 
-  if (!locationType || !VALID_TIERS.includes(locationType)) {
+  if (!locationType || !locationSlug) {
     return (
       <div style={wrap}>
-        <p style={dim}>Community Networks are available at ward, constituency, and county level.</p>
+        <p style={dim}>Navigate to a location to see Community Networks.</p>
       </div>
     )
   }
@@ -235,9 +235,12 @@ function NetworkCard({ nationalGroup, chapter, isMember, session, onJoin, onLeav
       {showLocalPosts && chapter && (
         <div style={feedPanel}>
           <PostsTab
-            locationType={chapter.location_scope.type}
-            locationSlug={chapter.location_scope.slug}
-            collectiveRef={{ collection: 'network_chapters', id: String(chapter._id) }}
+            origin={{
+              entity_type: 'network_chapter',
+              entity_id:   String(chapter._id),
+              entity_name: chapter.name,
+              geo_scope:   null,  // server back-fills from chapter.location_scope -> places
+            }}
           />
         </div>
       )}
@@ -251,7 +254,7 @@ function NetworkCard({ nationalGroup, chapter, isMember, session, onJoin, onLeav
           {feedPosts.map(post => (
             <div key={post._id} style={feedPost}>
               <p style={feedPostMeta}>
-                {post.location_scope?.slug?.replace(/_/g, ' ') ?? 'Unknown location'}
+                {post.origin?.entity_name ?? 'Unknown chapter'}
                 {' -- '}
                 {new Date(post.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
               </p>

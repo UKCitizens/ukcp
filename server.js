@@ -40,6 +40,7 @@ import communityNetworksRouter         from './routes/communityNetworks.js'
 import schoolsRouter                   from './routes/schools.js'
 import sessionRouter                   from './routes/session.js'
 import followsRouter                   from './routes/follows.js'
+import peopleRouter                    from './routes/people.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
@@ -62,7 +63,7 @@ app.use(express.static(join(__dirname, 'dist')))
 
 app.use('/api', contentRouter)
 app.use('/api', placesRouter)
-app.use('/api', adminRouter)
+app.use('/api/admin', adminRouter)
 app.use('/api', authRouter)
 app.use('/api', profileRouter)
 app.use('/api/groups',  groupsRouter)
@@ -72,6 +73,7 @@ app.use('/api/community-networks', communityNetworksRouter)
 app.use('/api/schools',           schoolsRouter)
 app.use('/api', sessionRouter)
 app.use('/api/follows', followsRouter)
+app.use('/api/people',  peopleRouter)
 
 // ── SPA catch-all ─────────────────────────────────────────────────────────────
 // Any unmatched route returns index.html -- React Router handles client-side nav.

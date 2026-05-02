@@ -1,70 +1,68 @@
 /**
  * @file SiteHeaderRow2.jsx
- * @description Row 2 of the UKCP site header -- the location context banner.
+ * @description Row 2 of the UKCP site header -- nav map banner strip.
  *
- * Five-slot image strip. Each slot is 20% of the row width, full row height.
- * Slot 2 (middle, zero-indexed) is the primary image slot and carries the
- * location label overlay. Slots 0, 1, 3, 4 show placeholder grey until
- * content is assigned via the bannerImages prop.
+ * Three zones:
+ *   Left  (20%) -- emblem/flag for current location. Shows location label
+ *                  until emblem content is wired from geo-content.
+ *   Centre (60%) -- MidPaneMap in headerMode. Always-visible navigation map.
+ *                   Clicking fires onMapClick (switches side panes to location
+ *                   navigator mode).
+ *   Right  (20%) -- content image (Wikipedia thumbnail or location photo).
  *
  * Props:
- *   pendingPlace  -- place clicked in left pane ({ name, place_type })
+ *   pendingPlace  -- place object or null
  *   path          -- navigation path array
- *   bannerImage   -- single image URL (legacy / Wikipedia thumbnail).
- *                    Used as slot 2 when bannerImages is not provided.
- *   bannerImages  -- array of 5 image URLs [slot0..slot4]. Overrides bannerImage.
- *                    Pass null for slots with no image yet.
- *
- * Standards: no sx prop. Row height is ROW2_HEIGHT constant.
+ *   bannerImage   -- content image URL for the right slot
+ *   navMapProps   -- props object spread directly into MidPaneMap
+ *   onMapClick    -- () => void  called when user clicks the centre map
  */
 
+import MidPaneMap from '../MidPaneMap.jsx'
 import { ROW2_HEIGHT } from './HEADER_ROWS.js'
 import classes from './SiteHeaderRow2.module.css'
 
 function resolveLabel(pendingPlace, path) {
   if (pendingPlace?.name) return pendingPlace.name
-  if (path.length > 0)    return path[path.length - 1].value
+  if (path?.length > 0)   return path[path.length - 1].value
   return 'UK'
 }
 
-function slotBackground(url) {
-  if (!url) return undefined
-  const isLocal = url.startsWith('/')
-  return {
-    backgroundImage:    isLocal
-      ? `url(${url})`
-      : `linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)), url(${url})`,
-    backgroundSize:     'cover',
-    backgroundPosition: 'center center',
-  }
-}
-
-export default function SiteHeaderRow2({ pendingPlace, path, bannerImage, bannerImages }) {
+export default function SiteHeaderRow2({ pendingPlace, path, bannerImage, navMapProps, onMapClick }) {
   const label = resolveLabel(pendingPlace, path)
-
-  // Resolve 5-slot array. bannerImages prop takes precedence; falls back to
-  // placing bannerImage in the middle slot (index 2).
-  const slots = bannerImages ?? [null, null, bannerImage ?? null, null, null]
 
   return (
     <div
       style={{ height: ROW2_HEIGHT, display: 'flex', width: '100%', overflow: 'hidden' }}
       className={classes.row}
     >
-      {slots.map((url, i) => {
-        const isMiddle = i === 2
-        return (
-          <div
-            key={i}
-            className={[classes.slot, url ? '' : classes.slotEmpty].join(' ')}
-            style={slotBackground(url)}
-          >
-            {isMiddle && (
-              <span className={classes.contextLabel}>{label}</span>
-            )}
-          </div>
-        )
-      })}
+      {/* Left -- emblem/flag zone (20%) */}
+      <div className={`${classes.slot} ${classes.slotEmblem}`}>
+        <span className={classes.emblemLabel}>{label}</span>
+      </div>
+
+      {/* Centre -- navigation map (60%) */}
+      <div className={classes.slotMap}>
+        {navMapProps ? (
+          <MidPaneMap
+            {...navMapProps}
+            headerMode
+            onMapClick={onMapClick}
+          />
+        ) : (
+          <div className={classes.slotEmpty} style={{ width: '100%', height: '100%' }} />
+        )}
+      </div>
+
+      {/* Right -- content image (20%) */}
+      <div
+        className={`${classes.slot} ${bannerImage ? classes.slotContent : classes.slotEmpty}`}
+        style={bannerImage ? {
+          backgroundImage:    `linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url(${bannerImage})`,
+          backgroundSize:     'cover',
+          backgroundPosition: 'center center',
+        } : undefined}
+      />
     </div>
   )
 }

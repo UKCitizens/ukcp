@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
   if (!type || !slug) {
     return res.status(400).json({ error: 'type and slug are required' })
   }
-  const VALID_TIERS = ['ward', 'constituency', 'county', 'city', 'town', 'village', 'hamlet']
+  const VALID_TIERS = ['ward', 'constituency', 'county', 'city', 'town', 'village', 'hamlet', 'region', 'country']
   if (!VALID_TIERS.includes(type)) {
     return res.status(400).json({ error: `type must be one of: ${VALID_TIERS.join(', ')}` })
   }
@@ -101,20 +101,36 @@ router.get('/:ngId/feed', async (req, res) => {
 })
 
 // GET /api/community-networks/chapter-by-institution?type=school&id=100045
+// Find-or-create: provisions a chapter on first access so SchoolGatesMid never 404s.
 router.get('/chapter-by-institution', async (req, res) => {
   const col = networkChaptersCol()
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
   const { type, id } = req.query
   if (!type || !id) return res.status(400).json({ error: 'type and id required' })
   try {
-    const chapter = await col.findOne(
+    const INSTITUTION_NETWORK_MAP = {
+      school: 'at-the-school-gates',
+    }
+    const networkSlug = INSTITUTION_NETWORK_MAP[type]
+    if (!networkSlug) return res.status(400).json({ error: 'Unknown institution type' })
+
+    const result = await col.findOneAndUpdate(
       { institution_type: type, institution_id: id },
-      { projection: { _id: 1 } }
+      {
+        $setOnInsert: {
+          institution_type: type,
+          institution_id:   id,
+          network_slug:     networkSlug,
+          status:           'active',
+          created_at:       new Date(),
+        },
+      },
+      { upsert: true, returnDocument: 'after', projection: { _id: 1 } }
     )
-    if (!chapter) return res.status(404).json({ error: 'Chapter not found' })
-    res.json({ chapter_id: chapter._id })
+    res.json({ chapter_id: result._id })
   } catch (err) {
-    res.status(500).json({ error: 'Failed to find chapter' })
+    console.error('chapter-by-institution error', err)
+    res.status(500).json({ error: 'Failed to find or create chapter' })
   }
 })
 

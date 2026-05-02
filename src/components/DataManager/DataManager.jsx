@@ -39,6 +39,7 @@ const FIELDS = [
   { key: 'f14',       label: 'Environment',           input: 'textarea', hint: 'Environment and designations paragraph' },
   { key: '_qid',      label: 'Wikidata QID',          input: 'text',     hint: 'e.g. Q145 — used for population lookups' },
   { key: 'seed_text', label: 'Seed text',             input: 'textarea', hint: 'Source text used for AI seeding (reference)' },
+  { key: 'b1',        label: 'Banner Image URL',      input: 'text',     hint: 'https:// — right-slot banner image in header Row 2' },
 ]
 
 // Fields that count toward the completeness score.

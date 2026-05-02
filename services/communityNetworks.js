@@ -218,13 +218,15 @@ export async function getNationalFeed(nationalGroupId, filters = {}, page = 1, l
   const chapters = await ncCol.find(chapterQuery, { projection: { _id: 1 } }).toArray()
   if (!chapters.length) return { posts: [], total: 0 }
 
-  const chapterIds = chapters.map(c => c._id)
+  // Posts use the new schema: origin.entity_type='network_chapter' and entity_id
+  // is stored as a string. Translate chapter ObjectIds accordingly.
+  const chapterIds = chapters.map(c => String(c._id))
 
   const postQuery = {
-    'collective_ref.collection': 'network_chapters',
-    'collective_ref.id':         { $in: chapterIds },
-    status:                       'published',
-    national_feed_suppressed:     { $ne: true },
+    'origin.entity_type':     'network_chapter',
+    'origin.entity_id':       { $in: chapterIds },
+    status:                   'active',
+    national_feed_suppressed: { $ne: true },
   }
   if (filters.date_from) {
     postQuery.created_at = { $gte: new Date(filters.date_from) }

@@ -4,6 +4,8 @@
  *
  * All routes in this file are Tier 2: requireAuth + requireRole('admin').
  *
+ * Router mounted at /api/admin -- all routes below are relative to that prefix.
+ *
  * PATCH /api/admin/geo-content/:key                -- Updates geo-content.json on disk.
  * PATCH /api/admin/geo-content-mongo/:type/:slug   -- Upserts geo_content in MongoDB.
  * GET   /api/admin/users                           -- Paginated user list.
@@ -42,6 +44,7 @@ const PLATFORM_ROLES = new Set(['citizen', 'affiliated', 'admin'])
 const GEO_CONTENT_MONGO_EDITABLE = new Set([
   'summary', 'extract', 'thumbnail', 'wikiUrl', 'geoData',
   'notable_facts', 'category_tags', 'gather_status',
+  'b1',
 ])
 
 const USER_EDITABLE = new Set([
@@ -54,7 +57,7 @@ const USER_EDITABLE = new Set([
 // Merges field updates into geo-content.json on disk.
 // Writes to public/data/ (source) and dist/data/ (served) if both exist.
 
-router.patch('/admin/geo-content/:key', (req, res) => {
+router.patch('/geo-content/:key', (req, res) => {
   const { key }   = req.params
   const updates   = req.body
   if (!updates || typeof updates !== 'object' || Array.isArray(updates)) {
@@ -84,7 +87,7 @@ router.patch('/admin/geo-content/:key', (req, res) => {
 // Upserts a geo_content document in MongoDB.
 // Busts the in-memory content cache so edits surface immediately.
 
-router.patch('/admin/geo-content-mongo/:type/:slug', async (req, res) => {
+router.patch('/geo-content-mongo/:type/:slug', async (req, res) => {
   const { type, slug } = req.params
   if (!ALLOWED_CONTENT_TYPES.has(type)) {
     return res.status(400).json({ error: 'Invalid content type' })
@@ -117,7 +120,7 @@ router.patch('/admin/geo-content-mongo/:type/:slug', async (req, res) => {
 
 // ── GET /api/admin/users ──────────────────────────────────────────────────────
 
-router.get('/admin/users', async (req, res) => {
+router.get('/users', async (req, res) => {
   const col = usersCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   try {
@@ -143,7 +146,7 @@ router.get('/admin/users', async (req, res) => {
 
 // ── PATCH /api/admin/users/:id ────────────────────────────────────────────────
 
-router.patch('/admin/users/:id', async (req, res) => {
+router.patch('/users/:id', async (req, res) => {
   const col = usersCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   let oid
@@ -172,7 +175,7 @@ router.patch('/admin/users/:id', async (req, res) => {
 // Mirrors the same fields onto the Mongo users record so reads stay consistent
 // without round-tripping to Supabase.
 
-router.put('/admin/users/:supabaseId/claims', async (req, res) => {
+router.put('/users/:supabaseId/claims', async (req, res) => {
   const { supabaseId } = req.params
   const body = req.body ?? {}
 
@@ -242,7 +245,7 @@ router.put('/admin/users/:supabaseId/claims', async (req, res) => {
 // Hard-deletes from Supabase auth. Mongo record is untouched --
 // caller should set status:'deleted' via PATCH before calling this.
 
-router.delete('/admin/users/:supabaseId/auth', async (req, res) => {
+router.delete('/users/:supabaseId/auth', async (req, res) => {
   const { supabaseId } = req.params
   try {
     const { error } = await supabaseAdmin.auth.admin.deleteUser(supabaseId)

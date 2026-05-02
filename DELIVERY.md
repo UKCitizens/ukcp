@@ -436,3 +436,32 @@ LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:09:59 GMT
 LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:21:19 GMTDT 2026 (Auth Section 3 -- Profile page)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:25:48 GMTDT 2026 (Auth Section 4 -- Login redirect)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 01:42:42 GMTDT 2026 (Auth Section 4 fix -- post-login default reverted to /locations, sprint-32 10/10)
+
+DEPLOY -- 0fe668a pushed to master, Railway auto-deploy triggered, PRG:29-38 -- Sat May  2 15:58:05 GMTDT 2026
+LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 15:58:06 GMTDT 2026 (deploy 0fe668a)
+
+LIVE INSTANCE RESTARTED -- :3443 serving build completed Sat May  2 16:49:41 GMTDT 2026 (post sprint -- Sections 1-4 shipped; Tier 0 GET regression discovered, see PRG:39, awaiting Phil)
+HOTFIX APPLIED -- Admin router regression fixed (server.js mount /api -> /api/admin, routes/admin.js prefixes stripped). Rebuild + smoke test required. See PRG:124.
+
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-02 16:18:56
+
+---
+
+# Sprint PRG:41 -- News Tab Shell
+
+**Date:** 2 May 2026
+**Spec:** dex-instructions/dex-instructions-news-tab.md
+
+## Files delivered
+- src/components/News/NewsTab.jsx — created (three-zone shell: Local / Regional / National, placeholder cards)
+- src/pages/Locations.jsx — NewsStub replaced with NewsTab; TradersStub import left in place (traders sprint pending)
+
+## Build
+BUILD COMPLETE -- News Tab Shell (6970 modules, 0 errors, 0 warnings) -- 2026-05-02
+BUILD COMPLETE -- Local Traders Shell (6970 modules, 0 errors, 0 warnings) -- 2026-05-02
+BUILD COMPLETE -- Civic Tab Restructure (0 errors, 0 warnings) -- 2026-05-02
+BUILD COMPLETE -- People Page (0 errors, 0 warnings) -- 2026-05-02
+BUILD COMPLETE -- Banner Image Wiring (0 errors, 0 warnings) -- 2026-05-02
+
+## FLAGS (pre-existing, non-imperative)
+- FLAG: ROW4_HEIGHT missing from src/components/Header/HEADER_ROWS.js -- SiteHeaderRow4.jsx crashes on import, cascades to MidPaneMap and SchoolsRightNav. Does not block build. Likely addressed in civic restructure sprint. No rollback required.

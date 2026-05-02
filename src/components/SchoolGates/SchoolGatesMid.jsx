@@ -5,7 +5,9 @@
  * Props: focusSchool, selectedUrns
  */
 import { useState, useEffect } from 'react'
-import PostsTab from '../Posts/PostsTab.jsx'
+import PostsTab             from '../Posts/PostsTab.jsx'
+import GeneralPostComposer  from '../Posts/GeneralPostComposer.jsx'
+import SchoolNoticeComposer from '../Posts/SchoolNoticeComposer.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -26,7 +28,7 @@ export default function SchoolGatesMid({ focusSchool, selectedUrns }) {
   if (!focusSchool) {
     return (
       <div style={empty}>
-        <p style={emptyMsg}>Select a school from the left to view its community.</p>
+        <p style={emptyMsg}>Select a school from the panel on the right to view its community.</p>
       </div>
     )
   }
@@ -59,15 +61,40 @@ export default function SchoolGatesMid({ focusSchool, selectedUrns }) {
           chapterId
             ? (
               <PostsTab
-                locationType="school"
-                locationSlug={focusSchool.urn}
-                collectiveRef={{ collection: 'network_chapters', id: chapterId }}
+                origin={{
+                  entity_type: 'school',
+                  entity_id:   String(focusSchool.urn),
+                  entity_name: focusSchool.name,
+                  geo_scope: {
+                    ward_gss:         focusSchool.ward_gss ?? null,
+                    constituency_gss: focusSchool.con_gss  ?? null,
+                    county_gss:       focusSchool.la_gss   ?? null,
+                    region:           null,
+                    country:          'England',
+                  },
+                }}
+                composerVariant={SchoolNoticeComposer}
               />
             )
             : <p style={loading}>Loading community...</p>
         )}
         {activeTab === 'notices' && (
-          <p style={{ ...loading, padding: 16 }}>School notices coming soon.</p>
+          <PostsTab
+            origin={{
+              entity_type: 'school',
+              entity_id:   String(focusSchool.urn),
+              entity_name: focusSchool.name,
+              geo_scope: {
+                ward_gss:         focusSchool.ward_gss ?? null,
+                constituency_gss: focusSchool.con_gss  ?? null,
+                county_gss:       focusSchool.la_gss   ?? null,
+                region:           null,
+                country:          'England',
+              },
+            }}
+            composerVariant={GeneralPostComposer}
+            reach="origin"
+          />
         )}
       </div>
     </div>

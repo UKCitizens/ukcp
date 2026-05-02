@@ -68,19 +68,25 @@ router.get('/profile', requireAuth, async (req, res) => {
         .sort({ joined_at: -1 }).toArray()
     : []
 
-  // Posts: only the named ones can be tied back to this user. Anonymous posts
-  // store author_user_id: null and are linked only by anon_token, so we can't
-  // count them per user from the post record alone.
-  let recent_posts = []
-  let post_count   = 0
+  // Posts: author.user_id is always stored (even on anon posts) so per-user
+  // counts are accurate; the named/anon split is reflected in display only.
+  let recent_posts     = []
+  let post_count       = 0
+  let anon_post_count  = 0
   if (pstCol) {
     recent_posts = await pstCol.find({
-      author_user_id: req.user._id,
-      status:         'published',
+      'author.user_id':      req.user._id,
+      'author.is_anonymous': false,
+      status:                'active',
     }).sort({ created_at: -1 }).limit(5).toArray()
     post_count = await pstCol.countDocuments({
-      author_user_id: req.user._id,
-      status:         'published',
+      'author.user_id': req.user._id,
+      status:           'active',
+    })
+    anon_post_count = await pstCol.countDocuments({
+      'author.user_id':      req.user._id,
+      'author.is_anonymous': true,
+      status:                'active',
     })
   }
 
@@ -90,7 +96,7 @@ router.get('/profile', requireAuth, async (req, res) => {
     joined_groups,
     recent_posts,
     post_count,
-    anon_post_count: 0,
+    anon_post_count,
     claims:          req.claims,
   })
 })

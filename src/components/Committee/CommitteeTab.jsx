@@ -117,9 +117,18 @@ export default function CommitteeTab({ locationType, locationSlug }) {
 
       {/* Post feed + composer */}
       <PostsTab
-        locationType="constituency"
-        locationSlug={locationSlug}
-        collectiveRef={{ collection: 'committee_forums', id: String(forum._id) }}
+        origin={{
+          entity_type: 'committee',
+          entity_id:   String(forum._id),
+          entity_name: forum.committee?.name ?? forum.name,
+          geo_scope: {
+            ward_gss:         null,
+            constituency_gss: forum.con_gss ?? null,
+            county_gss:       null,
+            region:           forum.region  ?? null,
+            country:          forum.country ?? null,
+          },
+        }}
       />
 
       {/* Join modal */}

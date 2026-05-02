@@ -1,198 +1,121 @@
 /**
  * @file src/components/Posts/PostsTab.jsx
- * @description Posts tab panel. Displays a post feed for the current location
- *   and a compose form for logged-in users.
+ * @description Post feed for an origin entity. Fetches via /api/posts,
+ *   shows a composer (default GeneralPostComposer), renders posts as PostCard.
+ *   Paginated via a "Load more" button (not infinite scroll).
  *
  * Props:
- *   locationType  — geo node type (ward | constituency | county | region | country)
- *   locationSlug  — geo node slug (e.g. "Mossley_Hill")
- *   collectiveRef — optional { collection: string, id: string } — filters to a specific group
+ *   origin           -- { entity_type, entity_id, entity_name?, geo_scope? }, required.
+ *   composerVariant  -- React component with props { origin, onSuccess }, optional.
+ *   reach            -- string, optional. Filter feed by reach_effective.
  */
 
-import { useState, useEffect } from 'react'
-import { useAuth } from '../../context/AuthContext.jsx'
+import { useState, useEffect, useCallback } from 'react'
+import GeneralPostComposer from './GeneralPostComposer.jsx'
+import PostCard            from './PostCard.jsx'
 
-const API_BASE = import.meta.env.VITE_API_URL ?? ''
-
-/** Format a UTC date string as a relative timestamp. */
-function timeAgo(dateStr) {
-  const diff = Date.now() - new Date(dateStr).getTime()
-  const mins  = Math.floor(diff / 60000)
-  if (mins < 1)  return 'just now'
-  if (mins < 60) return `${mins}m ago`
-  const hrs = Math.floor(mins / 60)
-  if (hrs < 24)  return `${hrs}h ago`
-  return `${Math.floor(hrs / 24)}d ago`
-}
+const API_BASE   = import.meta.env.VITE_API_URL ?? ''
+const PAGE_LIMIT = 20
 
 /**
  * @param {{
- *   locationType:  string|null,
- *   locationSlug:  string|null,
- *   collectiveRef: { collection: string, id: string }|null
+ *   origin: { entity_type: string, entity_id: string, entity_name?: string, geo_scope?: object },
+ *   composerVariant?: import('react').ComponentType<{ origin: object, onSuccess: (post: object) => void }>,
+ *   reach?: string,
  * }} props
  */
-export default function PostsTab({ locationType, locationSlug, collectiveRef = null }) {
-  const { session } = useAuth()
-  const [posts,       setPosts]       = useState([])
-  const [loading,     setLoading]     = useState(false)
-  const [error,       setError]       = useState(null)
-  const [body,        setBody]        = useState('')
-  const [isAnon,      setIsAnon]      = useState(false)
-  const [submitting,  setSubmitting]  = useState(false)
-  const [submitError, setSubmitError] = useState(null)
+export default function PostsTab({
+  origin,
+  composerVariant: ComposerVariant = GeneralPostComposer,
+  reach,
+}) {
+  const [posts,   setPosts]   = useState([])
+  const [page,    setPage]    = useState(1)
+  const [total,   setTotal]   = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [error,   setError]   = useState(null)
 
-  useEffect(() => {
-    if (!locationType || !locationSlug) return
-    let cancelled = false
+  const entityType = origin?.entity_type
+  const entityId   = origin?.entity_id
+
+  const loadPage = useCallback(async (p) => {
+    if (!entityType || !entityId) return
     setLoading(true)
     setError(null)
-
-    let url = `${API_BASE}/api/posts?location_type=${encodeURIComponent(locationType)}&location_slug=${encodeURIComponent(locationSlug)}`
-    if (collectiveRef?.id) {
-      url += `&collective_id=${encodeURIComponent(collectiveRef.id)}&collective_col=${encodeURIComponent(collectiveRef.collection)}`
-    }
-
-    fetch(url)
-      .then(r => r.ok ? r.json() : Promise.reject(r.status))
-      .then(data => { if (!cancelled) { setPosts(data); setLoading(false) } })
-      .catch(() => { if (!cancelled) { setError('Failed to load posts'); setLoading(false) } })
-
-    return () => { cancelled = true }
-  }, [locationType, locationSlug, collectiveRef])
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    if (!body.trim() || !session?.access_token) return
-    setSubmitting(true)
-    setSubmitError(null)
-
-    const payload = {
-      post_type:      'standard',
-      body:           body.trim(),
-      is_anonymous:   isAnon,
-      location_scope: { type: locationType, slug: locationSlug },
-      collective_ref: collectiveRef ?? null,
-    }
-
     try {
-      const res = await fetch(`${API_BASE}/api/posts`, {
-        method:  'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization:  `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify(payload),
+      const params = new URLSearchParams({
+        entity_type: entityType,
+        entity_id:   String(entityId),
+        page:        String(p),
+        limit:       String(PAGE_LIMIT),
       })
-
-      if (!res.ok) {
-        const err = await res.json()
-        setSubmitError(err.error ?? 'Post failed')
-        setSubmitting(false)
-        return
-      }
-
-      const { _id, anon_token } = await res.json()
-      const newPost = {
-        _id,
-        body:           payload.body,
-        is_anonymous:   isAnon,
-        author:         isAnon ? 'Anonymous' : (session?.user?.email?.split('@')[0] ?? 'citizen'),
-        location_scope: { type: locationType, slug: locationSlug },
-        collective_ref: payload.collective_ref,
-        status:         'published',
-        created_at:     new Date().toISOString(),
-        anon_token,
-      }
-      setPosts(prev => [newPost, ...prev])
-      setBody('')
-      setIsAnon(false)
+      if (reach) params.set('reach', reach)
+      const res = await fetch(`${API_BASE}/api/posts?${params}`)
+      if (!res.ok) throw new Error(`fetch ${res.status}`)
+      const json = await res.json()
+      setPosts(prev => p === 1 ? json.posts : [...prev, ...json.posts])
+      setTotal(json.total ?? 0)
+      setPage(p)
     } catch {
-      setSubmitError('Network error — please try again')
+      setError('Failed to load posts')
     }
-    setSubmitting(false)
+    setLoading(false)
+  }, [entityType, entityId, reach])
+
+  // Reset and reload when origin changes.
+  useEffect(() => {
+    setPosts([])
+    setPage(1)
+    setTotal(0)
+    if (entityType && entityId) loadPage(1)
+  }, [entityType, entityId, loadPage])
+
+  function handleNew(post) {
+    setPosts(prev => [post, ...prev])
+    setTotal(t => t + 1)
   }
 
-  if (!locationType) {
-    return <div style={wrap}><p style={dim}>Select a location to view posts.</p></div>
+  function handleDeleted(postId) {
+    setPosts(prev => prev.filter(p => String(p._id) !== String(postId)))
+    setTotal(t => Math.max(t - 1, 0))
   }
+
+  if (!entityType || !entityId) {
+    return <div style={wrap}><p style={dim}>Select a context to view posts.</p></div>
+  }
+
+  const hasMore = posts.length < total
 
   return (
     <div style={wrap}>
-      {/* Compose */}
-      {session
-        ? (
-          <form onSubmit={handleSubmit} style={formStyle}>
-            <textarea
-              value={body}
-              onChange={e => setBody(e.target.value)}
-              placeholder="What's on your mind?"
-              maxLength={2000}
-              required
-              style={textarea}
-            />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 6 }}>
-              <label style={anonLabel}>
-                <input
-                  type="checkbox"
-                  checked={isAnon}
-                  onChange={e => setIsAnon(e.target.checked)}
-                  style={{ marginRight: 4 }}
-                />
-                Post anonymously
-              </label>
-              <button type="submit" disabled={submitting || !body.trim()} style={submitBtn}>
-                {submitting ? 'Posting…' : 'Post'}
-              </button>
-            </div>
-            {submitError && <p style={errText}>{submitError}</p>}
-          </form>
-        )
-        : (
-          <p style={{ ...dim, marginBottom: 16 }}>
-            <a href="/auth" style={{ color: '#1971c2' }}>Log in</a> to post.
-          </p>
-        )
-      }
+      <ComposerVariant origin={origin} onSuccess={handleNew} />
 
-      {/* Feed */}
-      {loading && <p style={dim}>Loading posts…</p>}
-      {error   && <p style={{ ...dim, color: '#c92a2a' }}>{error}</p>}
+      {loading && posts.length === 0 && <p style={dim}>Loading posts…</p>}
+      {error && <p style={errText}>{error}</p>}
+
       {!loading && !error && posts.length === 0 && (
-        <p style={dim}>No posts at this location yet. Be the first!</p>
+        <p style={dim}>No posts yet. Be the first.</p>
       )}
+
       {posts.map(post => (
-        <PostCard key={post._id} post={post} />
+        <PostCard key={post._id} post={post} onDeleted={handleDeleted} />
       ))}
+
+      {hasMore && (
+        <button
+          type="button"
+          onClick={() => loadPage(page + 1)}
+          disabled={loading}
+          style={loadMore}
+        >
+          {loading ? 'Loading…' : `Load more (${total - posts.length} remaining)`}
+        </button>
+      )}
     </div>
   )
 }
 
-/** @param {{ post: object }} props */
-function PostCard({ post }) {
-  return (
-    <div style={card}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: '#343a40' }}>{post.author}</span>
-        <span style={{ fontSize: 11, color: '#868e96' }}>{timeAgo(post.created_at)}</span>
-      </div>
-      <p style={{ fontSize: 13, color: '#212529', margin: 0, lineHeight: 1.5 }}>{post.body}</p>
-      <div style={{ marginTop: 6, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-        <span style={metaTag}>
-          {post.location_scope?.type} · {post.location_scope?.slug?.replace(/_/g, ' ')}
-        </span>
-        {post.collective_ref && <span style={metaTag}>Group post</span>}
-      </div>
-    </div>
-  )
-}
-
-const wrap      = { padding: 16 }
-const dim       = { fontSize: 13, color: '#868e96', margin: 0 }
-const formStyle = { marginBottom: 20, background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 6, padding: 12 }
-const textarea  = { width: '100%', minHeight: 72, padding: '8px 10px', fontSize: 13, border: '1px solid #dee2e6', borderRadius: 6, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }
-const anonLabel = { fontSize: 12, color: '#495057', display: 'flex', alignItems: 'center', cursor: 'pointer' }
-const submitBtn = { fontSize: 12, padding: '5px 14px', background: '#2f9e44', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }
-const errText   = { fontSize: 12, color: '#c92a2a', margin: '4px 0 0 0' }
-const card      = { border: '1px solid #dee2e6', borderRadius: 6, padding: 12, marginBottom: 10, background: '#fff' }
-const metaTag   = { fontSize: 11, color: '#868e96', background: '#f8f9fa', borderRadius: 4, padding: '2px 6px' }
+const wrap     = { padding: 16 }
+const dim      = { fontSize: 13, color: '#868e96', margin: 0 }
+const errText  = { fontSize: 12, color: '#c92a2a', margin: '4px 0 0 0' }
+const loadMore = { fontSize: 12, padding: '6px 12px', background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 4, cursor: 'pointer', marginTop: 12, display: 'block' }

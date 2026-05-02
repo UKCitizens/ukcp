@@ -55,6 +55,7 @@ function l0Read(type, slug) {
     party:       null,
     partyColour: null,
     population:  entry.f2 || null,
+    bannerImage: entry.b1 || null,
     // geoData carries all authored fields for rendering in LocationInfo.
     // Fields are included only when non-empty so the UI can check presence simply.
     geoData: {
@@ -165,6 +166,7 @@ export function useLocationContent(type, slug) {
   const [notable_facts, setNotableFacts]  = useState([])
   const [category_tags, setCategoryTags]  = useState([])
   const [gather_status, setGatherStatus]  = useState('none')
+  const [bannerImage,   setBannerImage]   = useState(null)
 
   useEffect(() => {
     let cancelled = false
@@ -189,6 +191,7 @@ export function useLocationContent(type, slug) {
       setNotableFacts([])
       setCategoryTags([])
       setGatherStatus('none')
+      setBannerImage(null)
       setError(null)
       setLoading(false)
       return
@@ -213,6 +216,7 @@ export function useLocationContent(type, slug) {
     setNotableFacts([])
     setCategoryTags([])
     setGatherStatus('none')
+    setBannerImage(null)
     setError(null)
 
     // L0: await geo-content.json load (no-op if already resolved), then check.
@@ -236,6 +240,7 @@ export function useLocationContent(type, slug) {
       setNotableFacts([])
       setCategoryTags([])
       setGatherStatus('none')
+      setBannerImage(l0.bannerImage ?? null)
       setLoading(false)
       setError(null)
       return
@@ -260,6 +265,7 @@ export function useLocationContent(type, slug) {
       setNotableFacts(cached.notable_facts ?? [])
       setCategoryTags(cached.category_tags ?? [])
       setGatherStatus(cached.gather_status ?? 'none')
+      setBannerImage(cached.b1 || null)
       setLoading(false)
       setError(null)
       return
@@ -292,6 +298,7 @@ export function useLocationContent(type, slug) {
         setNotableFacts(data.notable_facts ?? [])
         setCategoryTags(data.category_tags ?? [])
         setGatherStatus(data.gather_status ?? 'none')
+        setBannerImage(data.b1 || null)
         // Only cache to L1 if the data is substantive (no null-mpName MP stubs).
         const cacheable = data.contentType !== 'mp' || !!data.mpName
         if (cacheable) l1Write(type, slug, data)
@@ -308,5 +315,5 @@ export function useLocationContent(type, slug) {
     return () => { cancelled = true }
   }, [type, slug])
 
-  return { contentType, summary, extract, thumbnail, title, wikiUrl, mpName, party, partyColour, population, geoData, area, elevation, website, notable_facts, category_tags, gather_status, loading, error }
+  return { contentType, summary, extract, thumbnail, title, wikiUrl, mpName, party, partyColour, population, geoData, area, elevation, website, notable_facts, category_tags, gather_status, bannerImage, loading, error }
 }

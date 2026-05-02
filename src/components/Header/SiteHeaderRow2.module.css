@@ -1,23 +1,54 @@
 /**
  * SiteHeaderRow2.module.css
- * Five-slot banner strip for the UKCP location context banner (Row 2).
+ * Three-zone nav map banner strip for Row 2.
  */
 
 .row {
   border-bottom: 1px solid var(--mantine-color-dark-3);
 }
 
-/* Each of the 5 equal-width image slots */
 .slot {
-  flex: 1;
   height: 100%;
   position: relative;
-  background-size: cover;
-  background-position: center center;
-  background-color: var(--mantine-color-gray-2);
+  flex-shrink: 0;
 }
 
-/* Slot with no image assigned yet -- subtle diagonal stripe placeholder */
+/* Left -- emblem/flag zone (20%) */
+.slotEmblem {
+  width: 20%;
+  background-color: var(--mantine-color-gray-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--mantine-color-gray-4);
+}
+
+.emblemLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--mantine-color-gray-7);
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* Centre -- navigation map zone (60%) */
+.slotMap {
+  width: 60%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--mantine-color-gray-4);
+}
+
+/* Right -- content image zone (20%) */
+.slotContent {
+  width: 20%;
+  background-color: var(--mantine-color-gray-2);
+  background-size: cover;
+  background-position: center center;
+}
+
+/* Empty slot placeholder */
 .slotEmpty {
   background-image: repeating-linear-gradient(
     45deg,
@@ -26,26 +57,4 @@
     var(--mantine-color-gray-3) 6px,
     var(--mantine-color-gray-3) 12px
   );
-}
-
-/* Thin separator between slots */
-.slot + .slot {
-  border-left: 1px solid var(--mantine-color-gray-4);
-}
-
-/* Location label -- centred in the middle slot */
-.contextLabel {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #111111;
-  text-shadow:
-    0 0 6px rgba(255, 255, 255, 0.9),
-    0 0 14px rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.01em;
-  pointer-events: none;
 }

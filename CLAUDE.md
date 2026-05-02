@@ -439,6 +439,179 @@ Phil relies on :3000 as the stable review point. This step is not optional.
                      computed values, leftPane/rightPane props replaced, groupsFilter passed to GroupsTab.
                      Build: clean. :3000 restarted.
 
+[PRG:39] SPRINT-POST | Post Object + API + Composer. Status: code shipped (Sections 1-4),
+                     live HTTP verification blocked by pre-existing regression. 02 May 2026.
+                     Source: dex-instructions-post.md; design note Ali/post-design-note.md.
+                     Working ruleset agreed with Phil at session open (most-modern schema applied):
+                       1. Section 4 wires four real consumers (PostsTab + SchoolGatesMid + CommitteeTab
+                          + CommunityNetworksSection) plus services/communityNetworks.js read path,
+                          not the brief's three.
+                       2. POST handler back-fills geo_scope from entity for school / committee /
+                          network_chapter when caller-supplied scope is incomplete -- a Section-2
+                          amendment landed in Section 4 once chapter location_scope (slug-only)
+                          revealed the gap.
+                       3. Anon model tightens: author.user_id always stored, scrubbed only in GET.
+                       4. PRG:26 forum-join membership gate dropped from POST (reach + flagging now
+                          govern); /api/forums/:id/join postcode flow stays for the Join UX.
+                       5. Legacy 'title' dropped; 'national_feed_suppressed' kept as separate flag.
+                       6. Existing posts collection wiped (3 POC docs), legacy indexes replaced.
+                     Section 1 -- Collections + seed:
+                       db/mongo.js: postTypeConfigCol() accessor; replaced two legacy posts indexes
+                         with the brief's seven (kept national_feed_suppressed); unique index on
+                         post_type_config.post_type.
+                       scripts/reset-posts.js: one-shot drop of posts collection.
+                       scripts/seed-post-type-config.js: idempotent seed of 10 post_type configs.
+                       Atlas state confirmed: 9 posts indexes, 10 post_type_config rows.
+                     Section 2 -- API:
+                       routes/posts.js: full rewrite. Six routes:
+                         GET /api/posts/config (Tier 0)
+                         GET /api/posts (Tier 0, paginated, anon-scrubbed)
+                         POST /api/posts (Tier 1, validates body/post_type/origin, resolves+clamps
+                           reach, enforces affiliated_only, back-fills geo_scope from entity)
+                         PATCH /api/posts/:id/react (Tier 1, allowlisted reactions)
+                         POST /api/posts/:id/flag (Tier 1, auto-shadow at 5 flags)
+                         DELETE /api/posts/:id (Tier 1, author-or-admin, soft delete)
+                       Verified via direct DB test: GET filter on new shape returns inserts; anon
+                         scrub (user_id->null, display_name->'Anonymous') works on GET.
+                     Section 3 -- Composers + card:
+                       src/lib/postConfig.js: module-level cache for /api/posts/config.
+                       src/components/Posts/PostComposer.jsx: base composer (body, anon toggle,
+                         reach selector when user_override, char count, error surface).
+                       src/components/Posts/GeneralPostComposer.jsx: thin wrapper, general_comment.
+                       src/components/Posts/SchoolNoticeComposer.jsx: variant -- adds notice_category
+                         (Community/Event/Alert) into meta.
+                       src/components/Posts/PostCard.jsx: 4 reactions optimistic, flag, delete
+                         (author-or-admin gated via profile.user._id == post.author.user_id).
+                       Folder is src/components/Posts/ (existing plural) not Post/ (brief path)
+                         -- kept cohesion with the existing PostsTab.
+                     Section 4 -- Wire consumers:
+                       src/components/Posts/PostsTab.jsx: replaced. Props now { origin,
+                         composerVariant?, reach? }; Load-more pagination; new-post prepend;
+                         delete bubble.
+                       src/components/SchoolGates/SchoolGatesMid.jsx: passes school origin with
+                         GSS from focusSchool; Community tab uses SchoolNoticeComposer, Notices
+                         tab uses GeneralPostComposer (per brief).
+                       src/components/Committee/CommitteeTab.jsx: passes committee origin from
+                         forum doc (con_gss/region/country).
+                       src/components/Groups/CommunityNetworksSection.jsx: passes network_chapter
+                         origin (server back-fills GSS); national-feed inline render switched
+                         from post.location_scope.slug to post.origin.entity_name.
+                       services/communityNetworks.js getNationalFeed: query translated to
+                         origin.entity_type='network_chapter' / origin.entity_id=String(_id) /
+                         status='active'; national_feed_suppressed filter preserved.
+                       routes/profile.js: GET /api/profile post counts switched to
+                         author.user_id + author.is_anonymous + status='active' (anon_post_count
+                         is now real, not stubbed 0).
+                     Build: clean (6969 modules, 0 errors).
+                     Live HTTP smoke result on :3443 post-restart:
+                       FAIL -- every Tier 0 GET on routes mounted after server.js:65
+                       (adminRouter) returns 401 'Unauthorized'. Routes mounted before line 65
+                       (places, content) work. ROOT CAUSE: routes/admin.js:38 uses
+                       router.use(requireAuth, requireRole('admin')) which fires on every
+                       request entering the router; adminRouter is mounted at '/api', so it
+                       intercepts every /api/* request before later routers can match. Admin-
+                       claimed users (Phil) pass both gates and fall through, masking the bug.
+                       Anon and non-admin users see 401/403 across /api/groups, /api/posts,
+                       /api/forums, /api/community-networks, /api/schools.
+                       Regression introduced: PRG:35 (02 May 2026 morning).
+                       Why missed: PRG:35-38 smoke checked only /api/profile (Tier 1, expected
+                         401 anyway) and /api/admin/users (Tier 2, expected 401). Playwright
+                         (PRG:33) only hits /api/follows which is mounted at '/api/follows',
+                         not '/api', so it bypasses adminRouter entirely.
+                     Pipeline close: build done, :3443 restarted, DELIVERY.md appended.
+                     REGRESSION RESOLVED (02 May 2026, session 2): adminRouter remounted at
+                       '/api/admin' (was '/api'). Internal route declarations already used
+                       '/admin/X' paths so no internal renames needed. Spot check confirmed:
+                       Tier 0 GETs return 400 (param validation, no auth wall), /api/admin/users
+                       returns 401 (correct). Phil confirmed fix handled at session open.
+
+[PRG:40] SPRINT-GROUP-A | Group A Residual. Status: complete. 02 May 2026.
+                     Source: dex-instructions-group-a-residual.md.
+                     S1 -- Crumb fix:
+                       src/pages/Locations.jsx: crumbs useMemo now renders pendingConstituency
+                         and pendingWard as crumb items. clickable flag extended to include these.
+                         Verified in browser: UK > England > North West > Lancashire > Blackburn
+                         > Audley & Queen's Park all visible.
+                     S2 -- County scope:
+                       src/pages/Locations.jsx: countyGss useMemo added (ctyhistnm lookup on wards).
+                         schoolLocationScope extended with county fallback.
+                         schoolAvailableScopes built and passed as new availableScopes prop to SchoolsLeftNav.
+                     S3 -- School Gates scope selector:
+                       src/components/SchoolGates/SchoolsLeftNav.jsx: availableScopes prop added.
+                         selectedScope state with useEffect reset to deepest on navigation.
+                         Fetch useEffect now uses selectedScope not locationScope.
+                         Radio strip rendered above All/My toggle when 2+ scopes available.
+                     S4 -- Chapter lazy-create:
+                       routes/communityNetworks.js: chapter-by-institution replaced with
+                         findOneAndUpdate upsert. INSTITUTION_NETWORK_MAP maps type->network_slug.
+                         $setOnInsert provisions chapter on first access; idempotent on repeat.
+                       db/mongo.js: { institution_type, institution_id } unique sparse index added
+                         to network_chapters.
+                     Build: clean (6969 modules, 0 errors). :3443 restarted.
+
+[PRG:41] SPRINT-NEWS-TAB | News Tab Shell. Status: complete. 02 May 2026.
+                     Source: dex-instructions-news-tab.md.
+                     Created: src/components/News/NewsTab.jsx -- three-zone shell (Local/Regional/National),
+                       placeholder cards, empty state when no location set.
+                     Modified: src/pages/Locations.jsx -- NewsStub replaced with NewsTab.
+                     Build: clean (6970 modules, 0 errors).
+                     FLAG: ROW4_HEIGHT missing from HEADER_ROWS.js -- SiteHeaderRow4 crashes in dev,
+                       cascades to MidPaneMap/SchoolsRightNav. Does not block build. Non-imperative.
+
+[PRG:42] SPRINT-TRADERS | Local Traders Shell + Schema. Status: complete. 02 May 2026.
+                     Source: dex-instructions-traders-shell.md.
+                     Modified: db/mongo.js -- tradersCol() accessor + 6 traders indexes in connectMongo().
+                     Created: src/components/Traders/TradersTab.jsx -- category filter strip,
+                       placeholder cards, disabled Register CTA, empty state.
+                     Modified: src/pages/Locations.jsx -- LocalTradersStub replaced with TradersTab,
+                       TabStubs import removed entirely.
+                     Build: clean (6970 modules, 0 errors).
+
+[PRG:43] SPRINT-CIVIC | Civic Tab Restructure. Status: complete. 02 May 2026.
+                     Source: dex-instructions-civic-restructure.md.
+                     Section 1a skipped -- CommitteeTab PostsTab origin interface already updated in PRG:39.
+                     Created: src/components/Civic/CivicTab.jsx -- wraps CommitteeTab in three-tab
+                       panel (Committee Forum / Petitions / Civic Acts); Petitions + Civic Acts are
+                       ComingSoon placeholders.
+                     Modified: src/pages/Locations.jsx -- CommitteeTab import replaced with CivicTab,
+                       civicPane prop updated.
+                     Build: clean (0 errors, 0 warnings).
+
+[PRG:44] SPRINT-PEOPLE | People Page. Status: complete. 02 May 2026.
+                     Source: dex-instructions-people-page.md.
+                     Created: routes/people.js -- GET /api/people, Tier 0, safe fields only,
+                       scope/gss/q/page/limit params, public_id hex (never ObjectId).
+                     Modified: server.js -- peopleRouter mounted at /api/people.
+                     Modified: src/pages/People.jsx -- full implementation replacing StubPage.
+                       Search bar + SegmentedControl (Local disabled, All active) + UserCard list
+                       + pagination.
+                     FLAGS:
+                       Brief PageLayout/SiteHeader paths don't exist in codebase; Profile.jsx
+                         uses no wrapper -- People.jsx follows same pattern (inline, no wrapper).
+                       useSessionSnapshot does not expose snapshot data (input-only hook) --
+                         localGss = null, Local tab disabled per brief fallback instruction.
+                     Build: clean (0 errors, 0 warnings).
+
+[PRG:45] SPRINT-BANNER | Banner Image Wiring. Status: complete. 02 May 2026.
+                     Source: dex-instructions-banner-5slot.md.
+                     Modified: routes/admin.js -- 'b1' added to GEO_CONTENT_MONGO_EDITABLE.
+                     Modified: src/components/DataManager/DataManager.jsx -- b1 field added to
+                       FIELDS array (input:'text', hint:'right-slot banner image in header Row 2').
+                     Modified: src/hooks/useLocationContent.js -- bannerImage state added;
+                       b1 read in L0 (entry.b1), L1 (cached.b1), L2 (data.b1) paths;
+                       cleared in null/stale-clear paths; returned in hook return object.
+                     Modified: src/pages/Locations.jsx -- bannerImage destructured from hook;
+                       SiteHeader bannerImage prop changed from thumbnail to bannerImage.
+                     SiteHeader.jsx + SiteHeaderRow2 already had bannerImage prop -- no change needed.
+                     Build: clean (0 errors, 0 warnings).
+
+[PRG:46] SPRINT-PHONE-AUTH | Phone Second Factor (Auth Recovery). Status: DEFERRED. 02 May 2026.
+                     Source: dex-instructions-phone-auth.md (Phil removing file).
+                     Reason: requires Twilio (or equivalent) SMS provider configured in Supabase
+                       before any code can be tested. Phil to set up provider and re-brief when ready.
+                     Scope when resumed: phone enrolment in Profile.jsx + phone OTP sign-in on Home.jsx.
+                     shouldCreateUser:false -- recovery-only, not a registration path.
+
 [PRG:22] TEMPLATE  | Format for new entries:
                      [PRG:XX] TASK | Brief description. Status: in progress / complete / blocked.
                      Blocked entries must name the blocker explicitly.

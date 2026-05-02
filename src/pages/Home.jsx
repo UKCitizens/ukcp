@@ -7,14 +7,14 @@
  * session. First-time users are created automatically (shouldCreateUser:true).
  * No password required or stored.
  *
- * Bypass: active Supabase session -> /locations immediately (silent).
- * Anonymous access: available via "Continue without signing in" below the form.
+ * Login is mandatory. No anonymous bypass.
+ * After login, redirects to stored ukcp_login_redirect or /locations.
  */
 
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Stack, Title, Text, TextInput, Button, Alert, Anchor, Divider, Image,
+  Stack, Title, Text, TextInput, Button, Alert, Anchor, Image,
 } from '@mantine/core'
 import { supabase } from '../lib/supabase.js'
 import UKCPLogo from '../assets/UKCPlogo.png'
@@ -41,7 +41,10 @@ export default function Home() {
     // on /login is bounced out (AuthContext only navigates on SIGNED_IN).
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'INITIAL_SESSION' && session) {
-        navigate('/locations', { replace: true })
+        localStorage.removeItem('ukcp_session_snapshot')
+        const redirect = sessionStorage.getItem('ukcp_login_redirect')
+        sessionStorage.removeItem('ukcp_login_redirect')
+        navigate(redirect || '/locations', { replace: true })
         return
       }
       if (!session && !hasAuthParams) {
@@ -52,7 +55,9 @@ export default function Home() {
     if (!hasAuthParams) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session) {
-          navigate('/locations', { replace: true })
+          const redirect = sessionStorage.getItem('ukcp_login_redirect')
+          sessionStorage.removeItem('ukcp_login_redirect')
+          navigate(redirect || '/locations', { replace: true })
         } else {
           setChecking(false)
         }
@@ -121,16 +126,6 @@ export default function Home() {
         </Button>
       </Stack>
 
-      <Divider w="100%" label="or" labelPosition="center" />
-
-      <Button
-        variant="subtle"
-        color="gray"
-        fullWidth
-        onClick={() => navigate('/locations')}
-      >
-        Continue without signing in
-      </Button>
     </Stack>
   )
 }

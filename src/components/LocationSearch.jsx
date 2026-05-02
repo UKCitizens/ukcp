@@ -15,7 +15,7 @@ import API_BASE from '../config.js'
 
 const DEBOUNCE_MS = 300
 const MIN_CHARS   = 2
-const DROPDOWN_Z  = 100
+const DROPDOWN_Z  = 1000 // must exceed Leaflet's highest pane (~700) or dropdown hides behind map
 
 // Subtitle label for geo entries
 const GEO_LABELS = { country: 'Country', region: 'Region', county: 'County' }

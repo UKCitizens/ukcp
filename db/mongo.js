@@ -42,13 +42,24 @@ export async function connectMongo() {
     )
     await db.collection('network_chapters').createIndex({ tier: 1, slug: 1 })
     await db.collection('network_chapters').createIndex({ status: 1 })
+    await db.collection('network_chapters').createIndex(
+      { institution_type: 1, institution_id: 1 },
+      { unique: true, sparse: true }
+    )
     await db.collection('schools').createIndex({ urn:      1 }, { unique: true })
     await db.collection('schools').createIndex({ ward_gss: 1 })
     await db.collection('schools').createIndex({ con_gss:  1 })
     await db.collection('schools').createIndex({ la_gss:   1 })
     await db.collection('schools').createIndex({ location: '2dsphere' }, { sparse: true })
-    await db.collection('posts').createIndex({ 'collective_ref.id': 1, created_at: -1 })
+    await db.collection('posts').createIndex({ 'origin.entity_type': 1, 'origin.entity_id': 1 })
+    await db.collection('posts').createIndex({ 'origin.geo_scope.ward_gss':         1 })
+    await db.collection('posts').createIndex({ 'origin.geo_scope.constituency_gss': 1 })
+    await db.collection('posts').createIndex({ reach_effective:          1 })
+    await db.collection('posts').createIndex({ 'author.user_id':         1 })
+    await db.collection('posts').createIndex({ created_at:              -1 })
+    await db.collection('posts').createIndex({ status:                   1 })
     await db.collection('posts').createIndex({ national_feed_suppressed: 1 })
+    await db.collection('post_type_config').createIndex({ post_type: 1 }, { unique: true })
     await db.collection('user_session').createIndex({ user_id: 1 }, { unique: true })
     await db.collection('user_follows').createIndex({ user_id: 1, entity_type: 1 })
     await db.collection('user_follows').createIndex({ entity_type: 1, entity_id: 1 })
@@ -56,6 +67,12 @@ export async function connectMongo() {
       { user_id: 1, entity_type: 1, entity_id: 1 },
       { unique: true }
     )
+    await db.collection('traders').createIndex({ user_id: 1 }, { unique: true })
+    await db.collection('traders').createIndex({ 'location.ward_gss': 1 })
+    await db.collection('traders').createIndex({ 'location.con_gss': 1 })
+    await db.collection('traders').createIndex({ 'location.county_gss': 1 })
+    await db.collection('traders').createIndex({ status: 1 })
+    await db.collection('traders').createIndex({ category: 1 })
     console.log('MongoDB connected')
   } catch (err) {
     console.error('[mongo] connection failed -- continuing without MongoDB:', err.message)
@@ -87,6 +104,9 @@ export function groupMembershipsCol() { return db ? db.collection('group_members
 /** Returns the posts collection, or null if Mongo is unavailable. */
 export function postsCol()            { return db ? db.collection('posts')             : null }
 
+/** Returns the post_type_config collection, or null if Mongo is unavailable. */
+export function postTypeConfigCol()   { return db ? db.collection('post_type_config')  : null }
+
 /** Returns the committees collection, or null if Mongo is unavailable. */
 export function committeesCol()       { return db ? db.collection('committees')        : null }
 
@@ -107,3 +127,6 @@ export function sessionCol()         { return db ? db.collection('user_session')
 
 /** Returns the user_follows collection, or null if Mongo is unavailable. */
 export function followsCol()         { return db ? db.collection('user_follows')     : null }
+
+/** Returns the traders collection, or null if Mongo is unavailable. */
+export function tradersCol()         { return db ? db.collection('traders')          : null }
