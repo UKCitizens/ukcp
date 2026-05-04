@@ -20,6 +20,7 @@ import {
   getNationalFeed,
 } from '../services/communityNetworks.js'
 import { postsCol, networkChaptersCol } from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
@@ -39,7 +40,7 @@ async function optionalUserId(req) {
 }
 
 // GET /api/community-networks
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
   const { type, slug } = req.query
   if (!type || !slug) {
     return res.status(400).json({ error: 'type and slug are required' })
@@ -52,10 +53,10 @@ router.get('/', async (req, res) => {
   const userId = await optionalUserId(req)
   const data   = await getChaptersAtScope(type, slug, userId)
   res.json(data)
-})
+}))
 
 // POST /api/community-networks/chapters/:id/join
-router.post('/chapters/:id/join', requireAuth, async (req, res) => {
+router.post('/chapters/:id/join', requireAuth, asyncHandler(async (req, res) => {
   const { id } = req.params
   if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid chapter id' })
 
@@ -65,10 +66,10 @@ router.post('/chapters/:id/join', requireAuth, async (req, res) => {
   } catch (err) {
     res.status(err.status ?? 500).json({ error: err.message })
   }
-})
+}))
 
 // POST /api/community-networks/chapters/:id/leave
-router.post('/chapters/:id/leave', requireAuth, async (req, res) => {
+router.post('/chapters/:id/leave', requireAuth, asyncHandler(async (req, res) => {
   const { id } = req.params
   if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid chapter id' })
 
@@ -78,10 +79,10 @@ router.post('/chapters/:id/leave', requireAuth, async (req, res) => {
   } catch (err) {
     res.status(err.status ?? 500).json({ error: err.message })
   }
-})
+}))
 
 // GET /api/community-networks/:ngId/feed
-router.get('/:ngId/feed', async (req, res) => {
+router.get('/:ngId/feed', asyncHandler(async (req, res) => {
   const { ngId } = req.params
   if (!ObjectId.isValid(ngId)) return res.status(400).json({ error: 'Invalid national group id' })
 
@@ -98,11 +99,11 @@ router.get('/:ngId/feed', async (req, res) => {
     parseInt(limit, 10)
   )
   res.json(result)
-})
+}))
 
 // GET /api/community-networks/chapter-by-institution?type=school&id=100045
 // Find-or-create: provisions a chapter on first access so SchoolGatesMid never 404s.
-router.get('/chapter-by-institution', async (req, res) => {
+router.get('/chapter-by-institution', asyncHandler(async (req, res) => {
   const col = networkChaptersCol()
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
   const { type, id } = req.query
@@ -132,12 +133,12 @@ router.get('/chapter-by-institution', async (req, res) => {
     console.error('chapter-by-institution error', err)
     res.status(500).json({ error: 'Failed to find or create chapter' })
   }
-})
+}))
 
 // PATCH /api/community-networks/feed/:postId/suppress
 // Requires auth. In v1 any logged-in user can call this -- national moderator
 // role enforcement is deferred. Route is present for wiring completeness.
-router.patch('/feed/:postId/suppress', requireAuth, async (req, res) => {
+router.patch('/feed/:postId/suppress', requireAuth, asyncHandler(async (req, res) => {
   const { postId } = req.params
   if (!ObjectId.isValid(postId)) return res.status(400).json({ error: 'Invalid post id' })
 
@@ -157,6 +158,6 @@ router.patch('/feed/:postId/suppress', requireAuth, async (req, res) => {
 
   if (!result.matchedCount) return res.status(404).json({ error: 'Post not found' })
   res.json({ status: 'suppressed' })
-})
+}))
 
 export default router

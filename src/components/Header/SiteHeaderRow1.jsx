@@ -4,7 +4,7 @@
  *
  * Layout:
  *   Left zone  — UKCP logo + wordmark (hotlink to site home "/").
- *   Right zone — single cluster: My Home | People | Help | Profile | Settings | Log in/out
+ *   Right zone — single cluster: My Home | People | Help | Profile | Data Manager (admin only) | Log in/out
  *
  * Behaviour:
  *   Logo navigates to "/" (Locations, the site home).
@@ -42,7 +42,7 @@ import classes from './SiteHeaderRow1.module.css'
  */
 export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
   const navigate = useNavigate()
-  const { session, user, profile, signOut } = useAuth()
+  const { session, user, profile, claims, signOut } = useAuth()
   const { scopeLabel, activeNetworkLabel }  = useUserState()
 
   // profile shape (Section 3): { user, follows, joined_groups, recent_posts, claims, ... }
@@ -115,11 +115,13 @@ export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
             </ActionIcon>
           </Tooltip>
 
-          <Tooltip label="Settings" position="bottom" withArrow>
-            <ActionIcon variant="subtle" aria-label="Settings" onClick={() => navigate('/settings')}>
-              <IconSettings size={24} />
-            </ActionIcon>
-          </Tooltip>
+          {claims?.platform_role === 'admin' && (
+            <Tooltip label="Data Manager" position="bottom" withArrow>
+              <ActionIcon variant="subtle" aria-label="Data Manager" onClick={() => navigate('/settings')}>
+                <IconSettings size={24} />
+              </ActionIcon>
+            </Tooltip>
+          )}
 
           {session ? (
             <Button size="compact-xs" variant="subtle" color="gray" onClick={signOut}>

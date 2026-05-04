@@ -11,10 +11,11 @@
 import { Router }        from 'express'
 import { anonCookiesCol } from '../db/mongo.js'
 import { DEVICE_COOKIE_NAME } from '../config/constants.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
-router.get('/auth/check', async (req, res) => {
+router.get('/auth/check', asyncHandler(async (req, res) => {
   const token = req.cookies[DEVICE_COOKIE_NAME]
   if (!token) return res.json({ known: false })
   const col = anonCookiesCol()
@@ -25,6 +26,6 @@ router.get('/auth/check', async (req, res) => {
   } catch {
     return res.json({ known: false })
   }
-})
+}))
 
 export default router

@@ -31,6 +31,7 @@ export const supabaseAdmin = createClient(
  * document, and attaches it to req.user. Returns 401/503 on failure.
  */
 export async function requireAuth(req, res, next) {
+  try {
   const authHeader = req.headers.authorization
   if (!authHeader?.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Unauthorized' })
@@ -49,13 +50,17 @@ export async function requireAuth(req, res, next) {
   let user = await col.findOne({ supabase_id })
 
   if (!user) {
-    const email = sbUser.email ?? null
-    const now   = new Date()
+    const email        = sbUser.email ?? null
+    const now          = new Date()
+    // Prefer display_name from user_metadata (set during registration form submit).
+    // Fall back to email prefix so there is always a non-empty value.
+    const display_name = sbUser.user_metadata?.display_name?.trim() ||
+                         (email ? email.split('@')[0] : 'citizen')
 
     const doc = {
       supabase_id,
       email,
-      display_name:            email ? email.split('@')[0] : 'citizen',
+      display_name,
       username:                null,
       avatar_url:              null,
       bio:                     null,
@@ -72,20 +77,50 @@ export async function requireAuth(req, res, next) {
       updated_at:              now,
     }
 
-    const result = await col.insertOne(doc)
-    user = { ...doc, _id: result.insertedId }
+    try {
+      const result = await col.insertOne(doc)
+      user = { ...doc, _id: result.insertedId }
 
-    // Link the device cookie to the new user record.
-    const cookieCol = anonCookiesCol()
-    if (cookieCol && req.deviceToken) {
-      await cookieCol.updateOne(
-        { token: req.deviceToken, user_id: null },
-        { $set: { user_id: result.insertedId } }
-      )
-      await col.updateOne(
-        { _id: result.insertedId },
-        { $set: { device_cookie_id: req.deviceToken } }
-      )
+      // Link the device cookie to the new user record.
+      const cookieCol = anonCookiesCol()
+      if (cookieCol && req.deviceToken) {
+        await cookieCol.updateOne(
+          { token: req.deviceToken, user_id: null },
+          { $set: { user_id: result.insertedId } }
+        )
+        await col.updateOne(
+          { _id: result.insertedId },
+          { $set: { device_cookie_id: req.deviceToken } }
+        )
+      }
+
+      // If display_name came from user_metadata the user went through the proper
+      // registration form. Mark registration_complete immediately so the profile
+      // gate does not trigger. Fire-and-forget -- a failure here is non-fatal,
+      // the profile gate is the fallback.
+      if (sbUser.user_metadata?.display_name?.trim()) {
+        const existingMeta = sbUser.app_metadata ?? {}
+        supabaseAdmin.auth.admin.updateUserById(supabase_id, {
+          app_metadata: {
+            platform_role:         existingMeta.platform_role    ?? 'citizen',
+            affiliated_roles:      existingMeta.affiliated_roles ?? [],
+            display_name:          display_name,
+            registration_complete: true,
+          },
+        }).catch(e => console.error('[auth] auto registration_complete failed:', e.message))
+
+        await col.updateOne(
+          { _id: result.insertedId },
+          { $set: { registration_complete: true } }
+        )
+      }
+    } catch (err) {
+      if (err.code === 11000) {
+        // Race condition: concurrent request already created this user. Re-fetch.
+        user = await col.findOne({ supabase_id })
+      } else {
+        throw err
+      }
     }
   }
 
@@ -102,6 +137,9 @@ export async function requireAuth(req, res, next) {
   }
 
   next()
+  } catch (err) {
+    next(err)
+  }
 }
 
 /**

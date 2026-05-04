@@ -25,6 +25,9 @@ import {
 import { useAuth }     from '../context/AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import PostsTab        from '../components/Posts/PostsTab.jsx'
+import PageLayout      from '../components/PageLayout.jsx'
+import SiteHeader      from '../components/SiteHeader.jsx'
+import Footer          from '../components/Layout/Footer.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -294,27 +297,39 @@ export default function MyHome() {
     [contexts, selectedId]
   )
 
+  const header = (
+    <SiteHeader
+      onWalkerToggle={() => {}}
+      row2Visible={false}
+      row3Visible={false}
+      loading={false}
+      pendingPlace={null}
+      walkerOpen={false}
+      path={[]}
+      onDismiss={() => {}}
+      currentOptions={[]}
+      onSelect={() => {}}
+      crumbs={[]}
+      navDepth={0}
+    />
+  )
+
   if (loading) {
     return (
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 16px' }}>
-        <Text c="dimmed" size="sm">Loading...</Text>
-      </div>
+      <PageLayout
+        header={header}
+        midPane={<Text c="dimmed" size="sm">Loading...</Text>}
+        footer={<Footer />}
+      />
     )
   }
 
   if (!session || !profile) return null
 
   return (
-    <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 16px' }}>
-      <Stack gap="md">
-        <Title order={4} c="dimmed" fw={500}>My Home</Title>
-
-        <IdentityStrip
-          user={profile.user ?? {}}
-          follows={profile.follows ?? []}
-          joinedGroups={profile.joined_groups ?? []}
-        />
-
+    <PageLayout
+      header={header}
+      leftPane={
         <ControlBar
           reach={reach}
           onReachChange={setReach}
@@ -322,9 +337,21 @@ export default function MyHome() {
           selectedId={selectedId}
           onSelectContext={ctx => setSelectedId(ctx.entity_id)}
         />
-
-        <FeedZone context={selectedContext} reach={reach} />
-      </Stack>
-    </div>
+      }
+      midPane={
+        <Stack gap="md">
+          <Title order={4} c="dimmed" fw={500}>My Home</Title>
+          <FeedZone context={selectedContext} reach={reach} />
+        </Stack>
+      }
+      rightPane={
+        <IdentityStrip
+          user={profile.user ?? {}}
+          follows={profile.follows ?? []}
+          joinedGroups={profile.joined_groups ?? []}
+        />
+      }
+      footer={<Footer />}
+    />
   )
 }

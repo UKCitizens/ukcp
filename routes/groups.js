@@ -16,6 +16,7 @@ import {
   groupMembershipsCol,
   usersCol,
 } from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
@@ -36,7 +37,7 @@ async function optionalUserId(req) {
 }
 
 // GET /api/groups
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
   const { type, slug, kind } = req.query
   if (!type || !slug) {
     return res.status(400).json({ error: 'type and slug are required' })
@@ -82,10 +83,10 @@ router.get('/', async (req, res) => {
   }
 
   res.json(results)
-})
+}))
 
 // POST /api/groups/:kind/:id/join
-router.post('/:kind/:id/join', requireAuth, async (req, res) => {
+router.post('/:kind/:id/join', requireAuth, asyncHandler(async (req, res) => {
   const { kind, id } = req.params
 
   if (!['associations', 'spaces'].includes(kind)) {
@@ -130,10 +131,10 @@ router.post('/:kind/:id/join', requireAuth, async (req, res) => {
   await targetCol.updateOne({ _id: objectId }, { $inc: { member_count: 1 } })
 
   res.status(201).json({ status: 'joined' })
-})
+}))
 
 // GET /api/groups/:kind/:id/members
-router.get('/:kind/:id/members', requireAuth, async (req, res) => {
+router.get('/:kind/:id/members', requireAuth, asyncHandler(async (req, res) => {
   const { kind, id } = req.params
 
   if (!['associations', 'spaces'].includes(kind)) {
@@ -177,6 +178,6 @@ router.get('/:kind/:id/members', requireAuth, async (req, res) => {
   }
 
   res.json({ total, members })
-})
+}))
 
 export default router

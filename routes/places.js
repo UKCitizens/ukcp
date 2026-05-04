@@ -14,6 +14,7 @@ import { fileURLToPath }                   from 'url'
 import { dirname, join }                   from 'path'
 import { placesCol }                       from '../db/mongo.js'
 import { requireAuth, requireRole }        from '../middleware/auth.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
@@ -28,7 +29,7 @@ const PLACE_EDITABLE = new Set([
 
 // ── GET /api/places/search ────────────────────────────────────────────────────
 
-router.get('/places/search', async (req, res) => {
+router.get('/places/search', asyncHandler(async (req, res) => {
   try {
     const { q = '', limit = '10' } = req.query
     const term = q.trim()
@@ -71,7 +72,7 @@ router.get('/places/search', async (req, res) => {
     console.error('[places/search] error:', e.message)
     return res.status(500).json({ error: e.message })
   }
-})
+}))
 
 // ── Admin block (Tier 2: requireAuth + requireRole('admin')) ─────────────────
 //
@@ -82,7 +83,7 @@ const adminGuard = [requireAuth, requireRole('admin')]
 
 // ── GET /api/admin/places ─────────────────────────────────────────────────────
 
-router.get('/admin/places', ...adminGuard, async (req, res) => {
+router.get('/admin/places', ...adminGuard, asyncHandler(async (req, res) => {
   const col = placesCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   try {
@@ -107,11 +108,11 @@ router.get('/admin/places', ...adminGuard, async (req, res) => {
     console.error('[places] search error:', e.message)
     return res.status(500).json({ error: e.message })
   }
-})
+}))
 
 // ── GET /api/admin/places/corrections ────────────────────────────────────────
 
-router.get('/admin/places/corrections', ...adminGuard, async (req, res) => {
+router.get('/admin/places/corrections', ...adminGuard, asyncHandler(async (req, res) => {
   const col = placesCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   try {
@@ -128,11 +129,11 @@ router.get('/admin/places/corrections', ...adminGuard, async (req, res) => {
     console.error('[places] corrections error:', e.message)
     return res.status(500).json({ error: e.message })
   }
-})
+}))
 
 // ── PATCH /api/admin/places/:id ───────────────────────────────────────────────
 
-router.patch('/admin/places/:id', ...adminGuard, async (req, res) => {
+router.patch('/admin/places/:id', ...adminGuard, asyncHandler(async (req, res) => {
   const col = placesCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   const { id }  = req.params
@@ -156,6 +157,6 @@ router.patch('/admin/places/:id', ...adminGuard, async (req, res) => {
     console.error('[places] patch error:', e.message)
     return res.status(500).json({ error: e.message })
   }
-})
+}))
 
 export default router

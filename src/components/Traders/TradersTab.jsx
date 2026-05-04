@@ -98,4 +98,5 @@ const wrap        = { height: '100%', display: 'flex', flexDirection: 'column' }
 const filterStrip = { display: 'flex', gap: 4, padding: '8px 12px', borderBottom: '1px solid #f1f3f5', overflowX: 'auto', flexShrink: 0 }
 const filterBtn   = { fontSize: 11, padding: '3px 8px', border: '1px solid #dee2e6', borderRadius: 12, background: '#fff', color: '#495057', cursor: 'pointer', whiteSpace: 'nowrap' }
 const filterBtnActive = { background: '#0ca678', color: '#fff', borderColor: '#0ca678' }
+const empty           = { display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', padding: 24 }
 const content     = { overflowY: 'auto', flex: 1, padding: 12 }

@@ -8,12 +8,15 @@
  * snapshot reader is wired into this page (deferred, localGss = null).
  */
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth }     from '../context/AuthContext.jsx'
 import {
   TextInput, SegmentedControl, Text, Stack, Paper,
-  Group, Badge, Pagination, Center, Loader
+  Group, Badge, Pagination, Center, Loader, Title,
 } from '@mantine/core'
 import { IconSearch, IconUser } from '@tabler/icons-react'
+import PageLayout from '../components/PageLayout.jsx'
+import SiteHeader from '../components/SiteHeader.jsx'
+import Footer     from '../components/Layout/Footer.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -98,62 +101,80 @@ export default function People() {
 
   const totalPages = Math.ceil(total / 20)
 
+  const header = (
+    <SiteHeader
+      onWalkerToggle={() => {}}
+      row2Visible={false}
+      row3Visible={false}
+      loading={false}
+      pendingPlace={null}
+      walkerOpen={false}
+      path={[]}
+      onDismiss={() => {}}
+      currentOptions={[]}
+      onSelect={() => {}}
+      crumbs={[]}
+      navDepth={0}
+    />
+  )
+
   return (
-    <div style={wrap}>
-      <div style={controls}>
-        <TextInput
-          placeholder="Search by name..."
-          leftSection={<IconSearch size={14} />}
-          value={query}
-          onChange={e => setQuery(e.currentTarget.value)}
-          style={{ flex: 1, maxWidth: 320 }}
-          size="sm"
-        />
-        <SegmentedControl
-          value={scope}
-          onChange={setScope}
-          size="xs"
-          data={[
-            { label: 'Local', value: 'local', disabled: !localGss },
-            { label: 'All',   value: 'all' },
-          ]}
-        />
-      </div>
-
-      {!localGss && scope === 'local' && (
-        <Text size="xs" c="dimmed" mb="sm">
-          Navigate to a ward or constituency on the Locations page to enable Local view.
-        </Text>
-      )}
-
-      <Text size="xs" c="dimmed" mb="sm">
-        {total} member{total !== 1 ? 's' : ''} found
-      </Text>
-
-      {loading && <Center py="xl"><Loader size="sm" /></Center>}
-      {error   && <Text size="sm" c="red">{error}</Text>}
-      {!loading && !error && users.length === 0 && (
-        <Text size="sm" c="dimmed">No members found.</Text>
-      )}
-      {!loading && !error && (
-        <Stack gap={6}>
-          {users.map(u => <UserCard key={u.public_id} user={u} />)}
-        </Stack>
-      )}
-
-      {totalPages > 1 && (
-        <Center mt="md">
-          <Pagination
-            total={totalPages}
-            value={page}
-            onChange={p => fetchPeople(p)}
-            size="sm"
+    <PageLayout
+      header={header}
+      leftPane={
+        <Stack gap="sm">
+          <Title order={5} c="dimmed">Find people</Title>
+          <TextInput
+            placeholder="Search by name..."
+            leftSection={<IconSearch size={14} />}
+            value={query}
+            onChange={e => setQuery(e.currentTarget.value)}
+            size="xs"
           />
-        </Center>
-      )}
-    </div>
+          <SegmentedControl
+            value={scope}
+            onChange={setScope}
+            size="xs"
+            fullWidth
+            data={[
+              { label: 'Local', value: 'local', disabled: !localGss },
+              { label: 'All',   value: 'all' },
+            ]}
+          />
+          {!localGss && (
+            <Text size="xs" c="dimmed">
+              Navigate to a ward or constituency on Locations to enable Local view.
+            </Text>
+          )}
+        </Stack>
+      }
+      midPane={
+        <Stack gap="sm">
+          <Title order={4}>People</Title>
+          <Text size="xs" c="dimmed">{total} member{total !== 1 ? 's' : ''} found</Text>
+          {loading && <Center py="xl"><Loader size="sm" /></Center>}
+          {error   && <Text size="sm" c="red">{error}</Text>}
+          {!loading && !error && users.length === 0 && (
+            <Text size="sm" c="dimmed">No members found.</Text>
+          )}
+          {!loading && !error && (
+            <Stack gap={6}>
+              {users.map(u => <UserCard key={u.public_id} user={u} />)}
+            </Stack>
+          )}
+          {totalPages > 1 && (
+            <Center mt="md">
+              <Pagination
+                total={totalPages}
+                value={page}
+                onChange={p => fetchPeople(p)}
+                size="sm"
+              />
+            </Center>
+          )}
+        </Stack>
+      }
+      footer={<Footer />}
+    />
   )
 }
-
-const wrap     = { maxWidth: 680, margin: '0 auto', padding: '16px 16px 32px' }
-const controls = { display: 'flex', gap: 12, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }

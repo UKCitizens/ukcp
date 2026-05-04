@@ -197,6 +197,7 @@ export default function MidPaneMap({
   const schoolsLayerRef  = useRef(null)  // content mode: school markers
   const markersDataRef  = useRef([])    // [{ marker, baseRadius }] — read by zoomend
   const prevPathRef     = useRef(null)  // track path changes to gate fitBounds
+  const prevCenterOnRef = useRef(null)  // track centerOn changes to gate zoom for same-path place selects
 
   // Keep onMarkerClick in a ref so marker click closures always call the latest version
   // without needing the markers effect to re-run when the callback identity changes.
@@ -278,9 +279,13 @@ export default function MidPaneMap({
     }
     markersDataRef.current = []
 
-    const pathKey     = JSON.stringify(path)
-    const pathChanged = pathKey !== prevPathRef.current
+    const pathKey      = JSON.stringify(path)
+    const pathChanged  = pathKey !== prevPathRef.current
     prevPathRef.current = pathKey
+
+    const centerOnKey     = centerOn ? `${centerOn.lat},${centerOn.lng},${centerOn.zoom}` : null
+    const centerOnChanged = centerOnKey !== prevCenterOnRef.current
+    prevCenterOnRef.current = centerOnKey
 
     // Deepest nav level — controls political layer scope
     const { level: deepLevel, value: deepValue } = resolveLevel(path)
@@ -394,31 +399,33 @@ export default function MidPaneMap({
     group.addTo(map)
     layerRef.current = group
 
-    if (pathChanged) {
+    if (pathChanged || centerOnChanged) {
       if (contentMode && centerOn && !isNaN(+centerOn.lat) && !isNaN(+centerOn.lng)) {
         // Content map: pin to the selected location at a tight, readable zoom.
         map.setView([+centerOn.lat, +centerOn.lng], centerOn.zoom)
       } else if (!allPoints.length) {
         map.setView(UK_DEFAULT.center, UK_DEFAULT.zoom)
       } else if (allPoints.length === 1) {
-        const singleZoom = headerMode ? 8 : 12
+        const singleZoom = headerMode ? 6 : 12
         map.setView([+allPoints[0].lat, +allPoints[0].lng], singleZoom)
       } else {
         const bounds = computeBounds(allPoints)
-        // Header stays broad -- cap zoom so you always see country context.
-        const maxZoom = headerMode ? 10 : 16
+        // Header stays broad -- cap zoom so you always see county/region context.
+        const maxZoom = headerMode ? 7 : 16
         if (bounds) map.fitBounds(bounds, { padding: [24, 24], maxZoom })
       }
     }
 
-  }, [places, wards, constituencyCentroids, path, visibleTypes])
+  }, [places, wards, constituencyCentroids, path, centerOn, visibleTypes])
 
-  // ── FlyTo — triggered by MiniMap thumbnail click ────────────────────────────
+  // ── FlyTo — both maps fly to the selected place, but header caps zoom at 7
+  //    so it always shows county/region context while content map zooms tight.
   useEffect(() => {
     if (!flyTo || !mapRef.current) return
     if (isNaN(+flyTo.lat) || isNaN(+flyTo.lng)) return
-    mapRef.current.flyTo([+flyTo.lat, +flyTo.lng], flyTo.zoom, { duration: 0.8 })
-  }, [flyTo])
+    const zoom = headerMode ? Math.min(flyTo.zoom, 7) : flyTo.zoom
+    mapRef.current.flyTo([+flyTo.lat, +flyTo.lng], zoom, { duration: 0.8 })
+  }, [flyTo, headerMode])
 
   // ── invalidateTrigger — called after container resize (e.g. map-expand mode) ─
   useEffect(() => {

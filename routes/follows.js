@@ -19,11 +19,12 @@
 import { Router }     from 'express'
 import { requireAuth } from '../middleware/auth.js'
 import { followsCol }  from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
 // GET /api/follows?entity_type=school
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', requireAuth, asyncHandler(async (req, res) => {
   const entityType = req.query.entity_type
   if (!entityType) return res.status(400).json({ error: 'entity_type required' })
 
@@ -36,10 +37,10 @@ router.get('/', requireAuth, async (req, res) => {
     .toArray()
 
   res.json(rows)
-})
+}))
 
 // POST /api/follows
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, asyncHandler(async (req, res) => {
   const { entity_type, entity_id, entity_name, scope_gss, followed_at } = req.body ?? {}
   if (!entity_type || !entity_id) {
     return res.status(400).json({ error: 'entity_type and entity_id required' })
@@ -62,10 +63,10 @@ router.post('/', requireAuth, async (req, res) => {
   )
 
   res.status(201).json({ ok: true })
-})
+}))
 
 // DELETE /api/follows/:entity_type/:entity_id
-router.delete('/:entity_type/:entity_id', requireAuth, async (req, res) => {
+router.delete('/:entity_type/:entity_id', requireAuth, asyncHandler(async (req, res) => {
   const col = followsCol()
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
 
@@ -76,6 +77,6 @@ router.delete('/:entity_type/:entity_id', requireAuth, async (req, res) => {
   })
 
   res.json({ ok: true })
-})
+}))
 
 export default router

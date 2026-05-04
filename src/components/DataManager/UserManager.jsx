@@ -173,10 +173,10 @@ export default function UserManager() {
     }
   }
 
-  async function handleAuthDelete() {
+  async function handleHardDelete() {
     if (!selected?.supabase_id) return
     if (!window.confirm(
-      `Hard-delete ${userLabel(selected)} from Supabase auth? This cannot be undone. Mongo record stays.`
+      `Permanently delete ${userLabel(selected)}?\n\nRemoves from Supabase auth AND MongoDB. Cannot be undone. Re-registration with the same email will create a clean new account.`
     )) return
     setSaving(true)
     setMsg(null)
@@ -186,10 +186,11 @@ export default function UserManager() {
         { method: 'DELETE', headers: { ...authHeaders } }
       )
       if (!res.ok) throw new Error((await res.json()).error)
-      setMsg({ type: 'ok', text: 'Deleted from Supabase auth. Mongo record retained.' })
+      setSelected(null)
+      setForm(null)
+      fetchUsers(search, page)
     } catch (e) {
       setMsg({ type: 'err', text: e.message })
-    } finally {
       setSaving(false)
     }
   }
@@ -355,10 +356,10 @@ export default function UserManager() {
                 Save changes
               </Button>
               <Button size="xs" color="orange" variant="outline" loading={saving} onClick={handleSoftDelete}>
-                Set status: deleted
+                Suspend
               </Button>
-              <Button size="xs" color="red" variant="outline" loading={saving} onClick={handleAuthDelete}>
-                Delete from Supabase auth
+              <Button size="xs" color="red" loading={saving} onClick={handleHardDelete}>
+                Delete account
               </Button>
             </Group>
           </Stack>

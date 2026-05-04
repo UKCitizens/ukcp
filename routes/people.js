@@ -17,6 +17,7 @@
 
 import { Router } from 'express'
 import { usersCol } from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
@@ -38,7 +39,7 @@ const SCOPE_FIELD = {
   constituency: 'home_constituency_gss',
 }
 
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
   const usrCol = usersCol()
   if (!usrCol) return res.status(503).json({ error: 'Database unavailable' })
 
@@ -90,6 +91,6 @@ router.get('/', async (req, res) => {
     console.error('people route error', err)
     res.status(500).json({ error: 'Failed to load people' })
   }
-})
+}))
 
 export default router

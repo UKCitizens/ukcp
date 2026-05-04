@@ -18,7 +18,6 @@
  */
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase.js'
 import { mergeAnonData } from '../lib/mergeAnonData.js'
 
@@ -50,8 +49,6 @@ function claimsFromSession(session) {
 }
 
 export function AuthProvider({ children }) {
-  const navigate = useNavigate()
-
   const [session, setSession] = useState(null)
   const [user,    setUser]    = useState(null)
   const [claims,  setClaims]  = useState(DEFAULT_CLAIMS)
@@ -85,8 +82,7 @@ export function AuthProvider({ children }) {
       async (event, session) => {
         // Genuine sign-in: merge any anon localStorage state into the user
         // record before propagating session downstream. This guarantees the
-        // snapshot hook will read merged state, not pre-merge state, and
-        // works regardless of which page the magic-link redirect lands on.
+        // snapshot hook will read merged state, not pre-merge state.
         // INITIAL_SESSION (page reload with existing session) and
         // TOKEN_REFRESHED never trigger merge.
         if (event === 'SIGNED_IN' && session?.access_token) {
@@ -101,22 +97,9 @@ export function AuthProvider({ children }) {
           setProfile(null)
         }
 
-        // Post-sign-in redirect (Section 4b). Only on SIGNED_IN -- never on
-        // INITIAL_SESSION (page reload with an existing session) or
-        // TOKEN_REFRESHED. Honour any path the user stashed before being
-        // bounced to /login (e.g. clicked the profile icon while anon);
-        // otherwise come back to the site home (Locations).
-        if (event === 'SIGNED_IN' && session) {
-          let returnTo = '/locations'
-          try {
-            const stashed = sessionStorage.getItem('ukcp_login_redirect')
-            if (stashed) {
-              returnTo = stashed
-              sessionStorage.removeItem('ukcp_login_redirect')
-            }
-          } catch {}
-          navigate(returnTo, { replace: true })
-        }
+        // Navigation on sign-in is handled by LoginModal closing (session
+        // becomes non-null, RequireAuth renders children). No navigate call
+        // needed here -- the user is already on the correct route.
       }
     )
 

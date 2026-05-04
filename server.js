@@ -28,6 +28,7 @@ import { dirname, join }                     from 'path'
 
 import { connectMongo }                from './db/mongo.js'
 import { deviceCookieMiddleware }      from './middleware/deviceCookie.js'
+import { errorHandler }                from './middleware/errorHandler.js'
 import contentRouter                   from './routes/content.js'
 import placesRouter                    from './routes/places.js'
 import adminRouter                     from './routes/admin.js'
@@ -80,6 +81,32 @@ app.use('/api/people',  peopleRouter)
 
 app.get('*', (req, res) => {
   res.sendFile(join(__dirname, 'dist', 'index.html'))
+})
+
+// ── Central error handler ─────────────────────────────────────────────────────
+// Must be registered after all routes. Catches any error forwarded via next(err)
+// from route handlers wrapped with asyncHandler, or from sync throws in middleware.
+
+app.use(errorHandler)
+
+// ── Process-level safety net ──────────────────────────────────────────────────
+// Last-resort handlers. Log and survive -- do not crash the process.
+// These fire only if an error escapes all route-level handling (e.g. a route
+// handler that is not yet wrapped with asyncHandler).
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error(
+    `[${new Date().toISOString()}] UNHANDLED REJECTION`,
+    promise,
+    'reason:', reason
+  )
+})
+
+process.on('uncaughtException', (err) => {
+  console.error(
+    `[${new Date().toISOString()}] UNCAUGHT EXCEPTION`,
+    err.stack ?? err.message ?? err
+  )
 })
 
 // ── Start ─────────────────────────────────────────────────────────────────────

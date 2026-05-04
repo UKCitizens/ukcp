@@ -21,12 +21,13 @@ import { fetchWikiSummary }                    from '../services/wikipedia.js'
 import { wikidataPopulation, wikidataPopulationConstituency } from '../services/wikidata.js'
 import { fetchConstituencyMP }                 from '../services/parliament.js'
 import { fetchNomisPopulation }                from '../services/nomis.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
 // ── /api/content/:type/:slug ─────────────────────────────────────────────────
 
-router.get('/content/:type/:slug', async (req, res) => {
+router.get('/content/:type/:slug', asyncHandler(async (req, res) => {
   const { type, slug } = req.params
   if (!ALLOWED_CONTENT_TYPES.has(type)) {
     return res.status(400).json({ error: 'Invalid content type' })
@@ -145,7 +146,7 @@ router.get('/content/:type/:slug', async (req, res) => {
     console.error('[content proxy] fetch error:', err.message)
     return res.status(502).json({ error: 'Fetch failed' })
   }
-})
+}))
 
 // ── /api/population/:gss ─────────────────────────────────────────────────────
 
@@ -153,7 +154,7 @@ const popCache = new Map()
 const POP_TTL  = 30 * 24 * 60 * 60 * 1000
 const GSS_RE   = /^[ENSW]\d{8}$/
 
-router.get('/population/:gss', async (req, res) => {
+router.get('/population/:gss', asyncHandler(async (req, res) => {
   const { gss } = req.params
   if (!GSS_RE.test(gss)) return res.status(400).json({ error: 'Invalid GSS code' })
 
@@ -169,6 +170,6 @@ router.get('/population/:gss', async (req, res) => {
     console.error('[population proxy] error:', err.message)
     return res.status(err.status ?? 502).json({ error: err.message })
   }
-})
+}))
 
 export default router

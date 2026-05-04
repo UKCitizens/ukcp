@@ -26,6 +26,7 @@ import { geoContent, usersCol }                    from '../db/mongo.js'
 import { supabaseAdmin, requireAuth, requireRole } from '../middleware/auth.js'
 import { ALLOWED_CONTENT_TYPES }                   from '../config/constants.js'
 import { contentCacheBust }                        from '../cache/contentCache.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
@@ -87,7 +88,7 @@ router.patch('/geo-content/:key', (req, res) => {
 // Upserts a geo_content document in MongoDB.
 // Busts the in-memory content cache so edits surface immediately.
 
-router.patch('/geo-content-mongo/:type/:slug', async (req, res) => {
+router.patch('/geo-content-mongo/:type/:slug', asyncHandler(async (req, res) => {
   const { type, slug } = req.params
   if (!ALLOWED_CONTENT_TYPES.has(type)) {
     return res.status(400).json({ error: 'Invalid content type' })
@@ -116,11 +117,11 @@ router.patch('/geo-content-mongo/:type/:slug', async (req, res) => {
     console.error('[admin] geo-content-mongo patch error:', err.message)
     return res.status(500).json({ error: err.message })
   }
-})
+}))
 
 // ── GET /api/admin/users ──────────────────────────────────────────────────────
 
-router.get('/users', async (req, res) => {
+router.get('/users', asyncHandler(async (req, res) => {
   const col = usersCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   try {
@@ -142,11 +143,11 @@ router.get('/users', async (req, res) => {
     console.error('[admin/users] list error:', e.message)
     return res.status(500).json({ error: e.message })
   }
-})
+}))
 
 // ── PATCH /api/admin/users/:id ────────────────────────────────────────────────
 
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/:id', asyncHandler(async (req, res) => {
   const col = usersCol()
   if (!col) return res.status(503).json({ error: 'MongoDB unavailable' })
   let oid
@@ -168,14 +169,14 @@ router.patch('/users/:id', async (req, res) => {
     console.error('[admin/users] patch error:', e.message)
     return res.status(500).json({ error: e.message })
   }
-})
+}))
 
 // ── PUT /api/admin/users/:supabaseId/claims ───────────────────────────────────
 // Writes platform claims to Supabase app_metadata (server-controlled, JWT-carried).
 // Mirrors the same fields onto the Mongo users record so reads stay consistent
 // without round-tripping to Supabase.
 
-router.put('/users/:supabaseId/claims', async (req, res) => {
+router.put('/users/:supabaseId/claims', asyncHandler(async (req, res) => {
   const { supabaseId } = req.params
   const body = req.body ?? {}
 
@@ -239,26 +240,35 @@ router.put('/users/:supabaseId/claims', async (req, res) => {
 
   console.log(`[admin/users/claims] set: ${supabaseId} -> ${claims.platform_role}`)
   return res.json({ ok: true })
-})
+}))
 
 // ── DELETE /api/admin/users/:supabaseId/auth ──────────────────────────────────
-// Hard-deletes from Supabase auth. Mongo record is untouched --
-// caller should set status:'deleted' via PATCH before calling this.
+// Hard-deletes from both Supabase auth and MongoDB. Clean slate -- a re-registration
+// with the same email will create a fresh account with no orphaned records.
 
-router.delete('/users/:supabaseId/auth', async (req, res) => {
+router.delete('/users/:supabaseId/auth', asyncHandler(async (req, res) => {
   const { supabaseId } = req.params
-  try {
-    const { error } = await supabaseAdmin.auth.admin.deleteUser(supabaseId)
-    if (error) {
+
+  const { error } = await supabaseAdmin.auth.admin.deleteUser(supabaseId)
+  if (error) {
+    // "User not found" means the Supabase auth record is already gone (e.g. manually
+    // deleted via dashboard). Treat as already-deleted and continue to Mongo cleanup.
+    // Any other error is a genuine failure -- bail out.
+    if (!error.message?.toLowerCase().includes('not found')) {
       console.error('[admin/users] supabase delete error:', error.message)
       return res.status(502).json({ error: error.message })
     }
-    console.log(`[admin/users] supabase auth deleted: ${supabaseId}`)
-    return res.json({ ok: true })
-  } catch (e) {
-    console.error('[admin/users] auth delete error:', e.message)
-    return res.status(500).json({ error: e.message })
+    console.log(`[admin/users] supabase auth already gone: ${supabaseId}`)
   }
-})
+
+  const col = usersCol()
+  if (col) {
+    const result = await col.deleteOne({ supabase_id: supabaseId })
+    console.log(`[admin/users] mongo deleted: ${supabaseId} (${result.deletedCount} doc)`)
+  }
+
+  console.log(`[admin/users] hard delete complete: ${supabaseId}`)
+  return res.json({ ok: true })
+}))
 
 export default router

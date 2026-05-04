@@ -13,6 +13,7 @@
 
 import { Router } from 'express'
 import { schoolsCol } from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
@@ -26,7 +27,7 @@ const PROJECT = {
   ofsted: 1, location: 1, country: 1,
 }
 
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
   const col = schoolsCol()
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
 
@@ -62,6 +63,6 @@ router.get('/', async (req, res) => {
     console.error('schools route error', err)
     res.status(500).json({ error: 'Failed to load schools' })
   }
-})
+}))
 
 export default router

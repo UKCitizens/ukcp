@@ -9,14 +9,15 @@
  * All routes require a valid Supabase Bearer token (requireAuth middleware).
  */
 
-import { Router }      from 'express'
-import { requireAuth } from '../middleware/auth.js'
+import { Router }                      from 'express'
+import { requireAuth, supabaseAdmin } from '../middleware/auth.js'
 import {
   usersCol,
   followsCol,
   postsCol,
   groupMembershipsCol,
 } from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
@@ -45,7 +46,7 @@ function sanitiseUser(user) {
 }
 
 // GET /api/profile
-router.get('/profile', requireAuth, async (req, res) => {
+router.get('/profile', requireAuth, asyncHandler(async (req, res) => {
   const usrCol = usersCol()
   const folCol = followsCol()
   const memCol = groupMembershipsCol()
@@ -99,10 +100,10 @@ router.get('/profile', requireAuth, async (req, res) => {
     anon_post_count,
     claims:          req.claims,
   })
-})
+}))
 
 // PATCH /api/profile
-router.patch('/profile', requireAuth, async (req, res) => {
+router.patch('/profile', requireAuth, asyncHandler(async (req, res) => {
   const update = {}
   for (const field of PROFILE_EDITABLE) {
     if (req.body[field] !== undefined) update[field] = req.body[field]
@@ -121,11 +122,44 @@ router.patch('/profile', requireAuth, async (req, res) => {
 
   const col = usersCol()
   await col.updateOne({ _id: req.user._id }, { $set: update })
-  res.json({ ok: true })
-})
+
+  // First-time registration completion: if display_name is being set and the
+  // user is not yet marked complete, flip registration_complete in Supabase
+  // app_metadata and mirror to Mongo. Client must refreshSession() to pick up
+  // the updated JWT claims.
+  let registration_completed = false
+  const name = update.display_name?.trim()
+  if (name && !req.claims.registration_complete) {
+    const newClaims = {
+      platform_role:         req.claims.platform_role    ?? 'citizen',
+      affiliated_roles:      req.claims.affiliated_roles ?? [],
+      display_name:          name,
+      registration_complete: true,
+    }
+    try {
+      const { error } = await supabaseAdmin.auth.admin.updateUserById(
+        req.user.supabase_id,
+        { app_metadata: newClaims }
+      )
+      if (!error) {
+        await col.updateOne(
+          { _id: req.user._id },
+          { $set: { registration_complete: true, display_name: name } }
+        )
+        registration_completed = true
+      } else {
+        console.error('[profile] registration_complete update failed:', error.message)
+      }
+    } catch (e) {
+      console.error('[profile] registration_complete update threw:', e.message)
+    }
+  }
+
+  res.json({ ok: true, registration_completed })
+}))
 
 // PATCH /api/profile/preferences
-router.patch('/profile/preferences', requireAuth, async (req, res) => {
+router.patch('/profile/preferences', requireAuth, asyncHandler(async (req, res) => {
   const body = req.body ?? {}
   const $set = {}
 
@@ -151,6 +185,6 @@ router.patch('/profile/preferences', requireAuth, async (req, res) => {
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
   await col.updateOne({ _id: req.user._id }, { $set })
   res.json({ ok: true })
-})
+}))
 
 export default router

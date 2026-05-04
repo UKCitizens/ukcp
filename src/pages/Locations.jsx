@@ -60,7 +60,6 @@ import NewsTab                        from '../components/News/NewsTab.jsx'
 import TradersTab                     from '../components/Traders/TradersTab.jsx'
 import GroupsTab    from '../components/Groups/GroupsTab.jsx'
 import CivicTab from '../components/Civic/CivicTab.jsx'
-import GroupsLeftNav   from '../components/TabNavs/GroupsLeftNav.jsx'
 import GroupsRightNav  from '../components/TabNavs/GroupsRightNav.jsx'
 import NewsLeftNav     from '../components/TabNavs/NewsLeftNav.jsx'
 import NewsRightNav    from '../components/TabNavs/NewsRightNav.jsx'
@@ -70,7 +69,6 @@ import CivicLeftNav    from '../components/TabNavs/CivicLeftNav.jsx'
 import CivicRightNav   from '../components/TabNavs/CivicRightNav.jsx'
 import SchoolsLeftNav     from '../components/SchoolGates/SchoolsLeftNav.jsx'
 import SchoolGatesMid     from '../components/SchoolGates/SchoolGatesMid.jsx'
-import SchoolsRightNav    from '../components/SchoolGates/SchoolsRightNav.jsx'
 
 export default function Locations() {
   const { session, loading: authLoading } = useAuth()
@@ -88,7 +86,8 @@ export default function Locations() {
 
   const [groupsFilter,       setGroupsFilter]       = useState('all')
   const [activeNetwork,      setActiveNetwork]      = useState(null)
-  const [selectedSchoolUrns, setSelectedSchoolUrns] = useState([])
+  const [selectedSchoolUrns, setSelectedSchoolUrns] = useState([])  // persistent follows
+  const [activeSchoolUrns,   setActiveSchoolUrns]   = useState([])  // session-selected only
   const [focusSchoolUrn,     setFocusSchoolUrn]     = useState(null)
   const [loadedSchools,      setLoadedSchools]      = useState([])
   const [paneMode,           setPaneMode]           = useState('nav')  // 'nav' = location nav panes, 'tab' = tab-specific nav panes
@@ -522,6 +521,13 @@ export default function Locations() {
 
   function handleFocusSchool(urn)  { setFocusSchoolUrn(urn) }
 
+  // Toggle session-select for a school. No API call -- local state only.
+  function handleToggleActiveSchool(urn) {
+    setActiveSchoolUrns(prev =>
+      prev.includes(urn) ? prev.filter(u => u !== urn) : [...prev, urn]
+    )
+  }
+
   // Toggle follow/save for a school. Updates local state and persists to
   // user_follows (logged-in) or ukcp_saves localStorage (anon).
   function handleToggleSchool(urn) {
@@ -566,7 +572,7 @@ export default function Locations() {
   const TAB_NAV_TABS = ['groups', 'news', 'traders', 'civic']
   const showTabNav   = paneMode === 'tab' && TAB_NAV_TABS.includes(midTab)
 
-  // Nav map props -- passed to SiteHeaderRow2 via SiteHeader
+  // Nav map props -- passed to SiteHeaderRow2 via SiteHeader.
   const navMapProps = useMemo(() => ({
     places,
     wards,
@@ -701,24 +707,43 @@ export default function Locations() {
 
   let activeLeftPane, activeRightPane
 
+  // Groups right nav -- always the combined accordion panel (filters + networks + my schools).
+  const groupsRightNav = (
+    <GroupsRightNav
+      locationType={contentContext?.type}
+      locationSlug={contentContext?.slug}
+      onNetworkSelect={handleNetworkSelect}
+      filter={groupsFilter}
+      onFilterChange={setGroupsFilter}
+      activeNetwork={activeNetwork}
+      activeSchoolUrns={activeSchoolUrns}
+      followedSchoolUrns={selectedSchoolUrns}
+      loadedSchools={loadedSchools}
+      focusSchoolUrn={focusSchoolUrn}
+      onFocusSchool={handleFocusSchool}
+      onToggleFollow={handleToggleSchool}
+      session={session}
+    />
+  )
+
   if (activeNetwork === 'at-the-school-gates' && midTab === 'groups') {
-    activeLeftPane = null
-    activeRightPane = (
-      <SchoolsRightNav
-        onBack={handleNetworkBack}
-        focusSchool={focusSchool}
+    activeLeftPane = (
+      <SchoolsLeftNav
+        activeUrns={activeSchoolUrns}
+        followedUrns={selectedSchoolUrns}
         focusUrn={focusSchoolUrn}
         onFocusSchool={handleFocusSchool}
-        selectedUrns={selectedSchoolUrns}
-        onToggleSchool={handleToggleSchool}
-        session={session}
+        onToggleActive={handleToggleActiveSchool}
+        onToggleFollow={handleToggleSchool}
+        onBack={handleNetworkBack}
         proximity={schoolProximity}
         onSchoolsChange={setLoadedSchools}
       />
     )
+    activeRightPane = groupsRightNav
   } else {
     activeLeftPane = showTabNav
-      ? midTab === 'groups'  ? <GroupsLeftNav  filter={groupsFilter} onFilterChange={setGroupsFilter} />
+      ? midTab === 'groups'  ? null
       : midTab === 'news'    ? <NewsLeftNav />
       : midTab === 'traders' ? <TradersLeftNav />
       : midTab === 'civic'   ? <CivicLeftNav   locationType={contentContext?.type} locationSlug={contentContext?.slug} />
@@ -726,7 +751,7 @@ export default function Locations() {
       : locationNav.left
 
     activeRightPane = showTabNav
-      ? midTab === 'groups'  ? <GroupsRightNav  locationType={contentContext?.type} locationSlug={contentContext?.slug} onNetworkSelect={handleNetworkSelect} />
+      ? midTab === 'groups'  ? groupsRightNav
       : midTab === 'news'    ? <NewsRightNav />
       : midTab === 'traders' ? <TradersRightNav />
       : midTab === 'civic'   ? <CivicRightNav   locationType={contentContext?.type} locationSlug={contentContext?.slug} />

@@ -20,6 +20,7 @@ import {
   postsCol, postTypeConfigCol,
   schoolsCol, committeeForumsCol, networkChaptersCol, placesCol,
 } from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const REACH_HIERARCHY       = ['origin', 'ward', 'constituency', 'county', 'region', 'national']
 const REACTION_TYPES        = ['agree', 'disagree', 'support', 'flag_concern']
@@ -118,15 +119,15 @@ function clampReach(value, floor, ceiling) {
 }
 
 // GET /api/posts/config -- Tier 0
-router.get('/config', async (req, res) => {
+router.get('/config', asyncHandler(async (req, res) => {
   const cfgCol = postTypeConfigCol()
   if (!cfgCol) return res.status(503).json({ error: 'Database unavailable' })
   const configs = await cfgCol.find({}, { projection: { _id: 0 } }).toArray()
   res.json(configs)
-})
+}))
 
 // GET /api/posts -- Tier 0
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
   const { entity_type, entity_id, reach } = req.query
   const page  = Math.max(parseInt(req.query.page  ?? '1',  10), 1)
   const limit = Math.min(Math.max(parseInt(req.query.limit ?? '20', 10), 1), 50)
@@ -153,10 +154,10 @@ router.get('/', async (req, res) => {
     .toArray()
 
   res.json({ posts: posts.map(scrubAuthor), total, page, limit })
-})
+}))
 
 // POST /api/posts -- Tier 1
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, asyncHandler(async (req, res) => {
   const { post_type, body, origin, reach_set, is_anonymous, meta } = req.body
 
   if (typeof body !== 'string' || body.trim().length === 0) {
@@ -257,10 +258,10 @@ router.post('/', requireAuth, async (req, res) => {
 
   const result = await pstCol.insertOne(doc)
   res.status(201).json(scrubAuthor({ ...doc, _id: result.insertedId }))
-})
+}))
 
 // PATCH /api/posts/:id/react -- Tier 1
-router.patch('/:id/react', requireAuth, async (req, res) => {
+router.patch('/:id/react', requireAuth, asyncHandler(async (req, res) => {
   const { id }            = req.params
   const { reaction_type } = req.body
 
@@ -289,10 +290,10 @@ router.patch('/:id/react', requireAuth, async (req, res) => {
     return res.status(404).json({ error: 'Post not found or not active' })
   }
   res.json({ ok: true })
-})
+}))
 
 // POST /api/posts/:id/flag -- Tier 1
-router.post('/:id/flag', requireAuth, async (req, res) => {
+router.post('/:id/flag', requireAuth, asyncHandler(async (req, res) => {
   const { id } = req.params
   if (!ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'Invalid post id' })
@@ -320,10 +321,10 @@ router.post('/:id/flag', requireAuth, async (req, res) => {
     )
   }
   res.json({ ok: true })
-})
+}))
 
 // DELETE /api/posts/:id -- Tier 1
-router.delete('/:id', requireAuth, async (req, res) => {
+router.delete('/:id', requireAuth, asyncHandler(async (req, res) => {
   const { id } = req.params
   if (!ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'Invalid post id' })
@@ -346,6 +347,6 @@ router.delete('/:id', requireAuth, async (req, res) => {
     { $set: { status: 'removed', updated_at: new Date() } }
   )
   res.json({ ok: true })
-})
+}))
 
 export default router

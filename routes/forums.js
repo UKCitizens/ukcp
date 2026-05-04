@@ -20,6 +20,7 @@ import {
   usersCol,
 } from '../db/mongo.js'
 import { lookupPostcode } from '../services/postcodes.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
@@ -83,7 +84,7 @@ async function annotateMembership(forum, callerId) {
 }
 
 // GET /api/forums
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
   const { type, slug } = req.query
   if (!type || !slug) {
     return res.status(400).json({ error: 'type and slug are required' })
@@ -104,10 +105,10 @@ router.get('/', async (req, res) => {
   await annotateMembership(forum, callerId)
 
   res.json(forum)
-})
+}))
 
 // GET /api/forums/:id
-router.get('/:id', async (req, res) => {
+router.get('/:id', asyncHandler(async (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ error: 'Invalid id' })
   }
@@ -124,10 +125,10 @@ router.get('/:id', async (req, res) => {
   await annotateMembership(forum, callerId)
 
   res.json(forum)
-})
+}))
 
 // POST /api/forums/:id/join
-router.post('/:id/join', requireAuth, async (req, res) => {
+router.post('/:id/join', requireAuth, asyncHandler(async (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ error: 'Invalid id' })
   }
@@ -222,6 +223,6 @@ router.post('/:id/join', requireAuth, async (req, res) => {
 
   // 9. Confirm
   res.status(201).json({ message: 'Membership confirmed.', forumName: forum.name })
-})
+}))
 
 export default router

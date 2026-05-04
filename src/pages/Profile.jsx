@@ -21,8 +21,12 @@ import {
   TextInput, Select, Button, Stack, Title, Text,
   Alert, Badge, Group, Divider, Paper, List,
 } from '@mantine/core'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth }     from '../context/AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
+import { supabase }    from '../lib/supabase.js'
+import PageLayout      from '../components/PageLayout.jsx'
+import SiteHeader      from '../components/SiteHeader.jsx'
+import Footer          from '../components/Layout/Footer.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -60,6 +64,16 @@ export default function Profile() {
   const recentPosts    = profile?.recent_posts   ?? []
   const postCount      = profile?.post_count     ?? 0
 
+  const [profileTimeout, setProfileTimeout] = useState(false)
+
+  // If profile hasn't loaded within 8 seconds, surface an error rather than
+  // spinning forever. Almost always a silent fetchProfile failure server-side.
+  useEffect(() => {
+    if (user) return
+    const t = setTimeout(() => setProfileTimeout(true), 8000)
+    return () => clearTimeout(t)
+  }, [user])
+
   const [displayName, setDisplayName] = useState('')
   const [savingIdentity,    setSavingIdentity]    = useState(false)
   const [identityMsg,       setIdentityMsg]       = useState(null)
@@ -70,14 +84,7 @@ export default function Profile() {
   const [savingPrefs,       setSavingPrefs]       = useState(false)
   const [prefsMsg,          setPrefsMsg]          = useState(null)
 
-  // Auth gate -- stash intended return path so Section 4 redirect can land here.
-  useEffect(() => {
-    if (loading) return
-    if (!session) {
-      try { sessionStorage.setItem('ukcp_login_redirect', '/profile') } catch {}
-      navigate('/login')
-    }
-  }, [loading, session, navigate])
+  const isNewUser = !claims?.registration_complete
 
   // Hydrate form state from profile.
   useEffect(() => {
@@ -103,6 +110,14 @@ export default function Profile() {
         body: JSON.stringify({ display_name: displayName }),
       })
       if (!res.ok) throw new Error((await res.json()).error ?? 'Save failed')
+      // If this was a new user completing registration, refresh the session so the
+      // JWT picks up registration_complete=true (may already be set server-side),
+      // then navigate out regardless of whether the server set it this call.
+      if (isNewUser) {
+        await supabase.auth.refreshSession()
+        navigate('/locations', { replace: true })
+        return
+      }
       setIdentityMsg({ type: 'ok', text: 'Saved.' })
     } catch (e) {
       setIdentityMsg({ type: 'err', text: e.message })
@@ -137,7 +152,38 @@ export default function Profile() {
     }
   }
 
-  if (loading || !user) return <Text p="xl">Loading...</Text>
+  const shell = (left, mid, right) => (
+    <PageLayout
+      header={
+        <SiteHeader
+          onWalkerToggle={() => {}}
+          row2Visible={false}
+          row3Visible={false}
+          loading={false}
+          pendingPlace={null}
+          walkerOpen={false}
+          path={[]}
+          onDismiss={() => {}}
+          currentOptions={[]}
+          onSelect={() => {}}
+          crumbs={[]}
+          navDepth={0}
+        />
+      }
+      leftPane={left}
+      midPane={mid}
+      rightPane={right}
+      footer={<Footer />}
+    />
+  )
+
+  if (loading || !user) return shell(
+    null,
+    profileTimeout
+      ? <Alert color="red" maw={400}>Profile failed to load. Try signing out and back in.</Alert>
+      : <Text c="dimmed" size="sm">Loading...</Text>,
+    null
+  )
 
   const followedSchools = follows.filter(f => f.entity_type === 'school')
   const followedOther   = follows.filter(f => f.entity_type !== 'school')
@@ -149,79 +195,71 @@ export default function Profile() {
     network_chapters: 'Network chapter',
   }[k] ?? k)
 
-  return (
-    <Stack p="xl" maw={720} mx="auto" mt="xl" gap="lg">
+  return shell(
 
-      <Group justify="space-between" align="flex-start">
-        <Title order={2}>Your profile</Title>
-        <Button size="xs" variant="subtle" color="red" onClick={signOut}>Sign out</Button>
-      </Group>
+    /* ── Left: Preferences (function) ──────────────────────────────── */
+    <Stack gap="sm">
+      <Title order={5} c="dimmed">Preferences</Title>
+      <Select
+        label="Default landing page"
+        description="Where you arrive after signing in."
+        data={LOAD_PAGE_OPTIONS}
+        value={defaultLoadPage}
+        onChange={v => setDefaultLoadPage(v ?? 'locations')}
+        size="xs"
+      />
+      <Select
+        label="Default tab"
+        description="Tab opened on Locations when no session is restored."
+        data={TAB_OPTIONS}
+        value={defaultTab}
+        onChange={v => setDefaultTab(v ?? 'map')}
+        size="xs"
+      />
+      <Select
+        label="Posting mode"
+        description="Default for new posts."
+        data={VISIBILITY_OPTIONS}
+        value={defaultPostingMode}
+        onChange={v => setDefaultPostingMode(v ?? 'anonymous')}
+        size="xs"
+      />
+      {prefsMsg && (
+        <Alert color={prefsMsg.type === 'ok' ? 'green' : 'red'} py={6} px={8}>
+          {prefsMsg.text}
+        </Alert>
+      )}
+      <Button size="xs" loading={savingPrefs} onClick={savePreferences} fullWidth>
+        Save preferences
+      </Button>
+    </Stack>,
 
-      {/* ── 1. Identity ──────────────────────────────────────────────── */}
+    /* ── Mid: Footprint + Contributions + Roles (content) ──────────── */
+    <Stack gap="md">
+      <Title order={4}>Your profile</Title>
+
+      {/* Civic footprint */}
       <Paper p="md" withBorder>
         <Stack gap="sm">
-          <Title order={4}>Identity</Title>
-
-          <Group gap="xs">
-            <Badge color={ROLE_BADGE_COLOUR[claims?.platform_role] ?? 'gray'} variant="filled">
-              {claims?.platform_role ?? 'citizen'}
-            </Badge>
-            {claims?.affiliated_roles?.length > 0 && claims.affiliated_roles.map(r => (
-              <Badge key={r} color="violet" variant="light">{r}</Badge>
-            ))}
-            <Badge color={user.is_verified ? 'green' : 'gray'} variant="light">
-              {user.is_verified ? 'verified' : 'unverified'}
-            </Badge>
-          </Group>
-
-          <TextInput
-            label="Display name"
-            description="Shown on named posts. Not shown when posting anonymously."
-            value={displayName}
-            onChange={e => setDisplayName(e.target.value)}
-          />
-          <Text size="sm" c="dimmed">{user.email}</Text>
-          <Text size="xs" c="dimmed">Member since {formatDate(user.created_at)}</Text>
-
-          {identityMsg && (
-            <Alert color={identityMsg.type === 'ok' ? 'green' : 'red'}>{identityMsg.text}</Alert>
-          )}
-          <Group>
-            <Button size="xs" loading={savingIdentity} onClick={saveIdentity}>
-              Save identity
-            </Button>
-          </Group>
-        </Stack>
-      </Paper>
-
-      {/* ── 2. Civic footprint ──────────────────────────────────────── */}
-      <Paper p="md" withBorder>
-        <Stack gap="sm">
-          <Title order={4}>Civic footprint</Title>
-
+          <Title order={5}>Civic footprint</Title>
           {user.confirmed_location?.constituency ? (
             <Text size="sm">
-              Confirmed location:{' '}
-              <strong>{user.confirmed_location.ward ?? '--'}</strong>
+              Location: <strong>{user.confirmed_location.ward ?? '--'}</strong>
               {' / '}
               <strong>{user.confirmed_location.constituency}</strong>
             </Text>
           ) : (
-            <Text size="sm" c="dimmed">No confirmed location yet -- join a forum to set one.</Text>
+            <Text size="sm" c="dimmed">No confirmed location -- join a forum to set one.</Text>
           )}
-
           <Divider label="Followed schools" labelPosition="left" />
           {followedSchools.length === 0
             ? <Text size="sm" c="dimmed">None followed yet.</Text>
             : <List size="sm" spacing={2}>
                 {followedSchools.map(f => (
-                  <List.Item key={f._id ?? f.entity_id}>
-                    {f.entity_name ?? f.entity_id}
-                  </List.Item>
+                  <List.Item key={f._id ?? f.entity_id}>{f.entity_name ?? f.entity_id}</List.Item>
                 ))}
               </List>
           }
-
           <Divider label="Joined groups + forums" labelPosition="left" />
           {joinedGroups.length === 0
             ? <Text size="sm" c="dimmed">No memberships yet.</Text>
@@ -238,7 +276,6 @@ export default function Profile() {
                 ))}
               </List>
           }
-
           {followedOther.length > 0 && (
             <>
               <Divider label="Other follows" labelPosition="left" />
@@ -254,28 +291,21 @@ export default function Profile() {
         </Stack>
       </Paper>
 
-      {/* ── 3. Contributions ────────────────────────────────────────── */}
+      {/* Contributions */}
       <Paper p="md" withBorder>
         <Stack gap="sm">
-          <Title order={4}>Contributions</Title>
-
+          <Title order={5}>Contributions</Title>
           <Group gap="lg">
-            <Text size="sm">
-              Named posts: <strong>{postCount}</strong>
-            </Text>
-            <Text size="sm" c="dimmed">
-              Anonymous posts: not attributable to your account
-            </Text>
+            <Text size="sm">Named posts: <strong>{postCount}</strong></Text>
+            <Text size="sm" c="dimmed">Anonymous posts: not attributable</Text>
           </Group>
-
           {recentPosts.length === 0
             ? <Text size="sm" c="dimmed">No posts yet.</Text>
             : <List size="sm" spacing={4}>
                 {recentPosts.map(p => (
                   <List.Item key={String(p._id)}>
                     <Text size="sm" lineClamp={2}>
-                      {p.title ? <strong>{p.title} -- </strong> : null}
-                      {p.body}
+                      {p.title ? <strong>{p.title} -- </strong> : null}{p.body}
                     </Text>
                     <Text size="xs" c="dimmed">
                       {formatDate(p.created_at)} · {p.location_scope?.type}/{p.location_scope?.slug}
@@ -287,18 +317,18 @@ export default function Profile() {
         </Stack>
       </Paper>
 
-      {/* ── 4. Roles ────────────────────────────────────────────────── */}
+      {/* Roles */}
       <Paper p="md" withBorder>
         <Stack gap="xs">
-          <Title order={4}>Roles</Title>
+          <Title order={5}>Roles</Title>
           <Text size="sm">
-            Platform role:{' '}
+            Platform:{' '}
             <Badge color={ROLE_BADGE_COLOUR[claims?.platform_role] ?? 'gray'} variant="filled">
               {claims?.platform_role ?? 'citizen'}
             </Badge>
           </Text>
           <Text size="sm">
-            Affiliated roles:{' '}
+            Affiliated:{' '}
             {claims?.affiliated_roles?.length
               ? claims.affiliated_roles.map(r => (
                   <Badge key={r} color="violet" variant="light" mr={4}>{r}</Badge>
@@ -306,50 +336,57 @@ export default function Profile() {
               : <Text span c="dimmed" size="sm">none</Text>
             }
           </Text>
-          <Text size="xs" c="dimmed">
-            Roles are server-controlled. Contact an admin to change them.
-          </Text>
+          <Text size="xs" c="dimmed">Roles are server-controlled.</Text>
         </Stack>
       </Paper>
+    </Stack>,
 
-      {/* ── 5. Preferences ──────────────────────────────────────────── */}
-      <Paper p="md" withBorder>
-        <Stack gap="sm">
-          <Title order={4}>Preferences</Title>
-
-          <Select
-            label="Default landing page"
-            description="Where you arrive after signing in."
-            data={LOAD_PAGE_OPTIONS}
-            value={defaultLoadPage}
-            onChange={v => setDefaultLoadPage(v ?? 'locations')}
-          />
-          <Select
-            label="Default tab on Locations"
-            description="The tab opened when no saved session is restored."
-            data={TAB_OPTIONS}
-            value={defaultTab}
-            onChange={v => setDefaultTab(v ?? 'map')}
-          />
-          <Select
-            label="Default posting mode"
-            description="Whether new posts default to named or anonymous."
-            data={VISIBILITY_OPTIONS}
-            value={defaultPostingMode}
-            onChange={v => setDefaultPostingMode(v ?? 'anonymous')}
-          />
-
-          {prefsMsg && (
-            <Alert color={prefsMsg.type === 'ok' ? 'green' : 'red'}>{prefsMsg.text}</Alert>
-          )}
-          <Group>
-            <Button size="xs" loading={savingPrefs} onClick={savePreferences}>
-              Save preferences
-            </Button>
-          </Group>
-        </Stack>
-      </Paper>
-
+    /* ── Right: Identity + status ───────────────────────────────────── */
+    <Stack gap="sm">
+      {isNewUser && (
+        <Alert color="blue" mb="xs">
+          Choose a display name to complete your registration.
+        </Alert>
+      )}
+      <Title order={5} c="dimmed">Identity</Title>
+      <Group gap="xs" wrap="wrap">
+        <Badge color={ROLE_BADGE_COLOUR[claims?.platform_role] ?? 'gray'} variant="filled">
+          {claims?.platform_role ?? 'citizen'}
+        </Badge>
+        <Badge color={user.is_verified ? 'green' : 'gray'} variant="light">
+          {user.is_verified ? 'verified' : 'unverified'}
+        </Badge>
+        {claims?.affiliated_roles?.map(r => (
+          <Badge key={r} color="violet" variant="light">{r}</Badge>
+        ))}
+      </Group>
+      <TextInput
+        label="Display name"
+        description="Shown on named posts."
+        value={displayName}
+        onChange={e => setDisplayName(e.target.value)}
+        size="xs"
+      />
+      <Text size="xs" c="dimmed">{user.email}</Text>
+      <Text size="xs" c="dimmed">Member since {formatDate(user.created_at)}</Text>
+      {identityMsg && (
+        <Alert color={identityMsg.type === 'ok' ? 'green' : 'red'} py={6} px={8}>
+          {identityMsg.text}
+        </Alert>
+      )}
+      <Button
+        size="xs"
+        loading={savingIdentity}
+        onClick={saveIdentity}
+        fullWidth
+        disabled={!displayName.trim()}
+      >
+        {isNewUser ? 'Complete registration' : 'Save'}
+      </Button>
+      <Divider mt="xs" />
+      <Button size="xs" variant="subtle" color="red" onClick={signOut} fullWidth>
+        Sign out
+      </Button>
     </Stack>
   )
 }

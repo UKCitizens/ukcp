@@ -1,36 +1,41 @@
 /**
- * @file app.jsx
+ * @file App.jsx
  * @description Root component. Owns routing only.
- * Add routes here as pages are built out.
- * No data fetching, no state, no layout — those belong in pages and components.
+ *
+ * Auth is handled by LoginModal -- a Mantine Modal overlay that shows when
+ * there is no active session. No redirect-to-login pattern. Users stay on
+ * their current route; the modal closes automatically on SIGNED_IN.
+ *
+ * RequireAuth renders null (not a redirect) while auth resolves or when
+ * there is no session -- the modal handles the gate visually.
  */
 
 import { useEffect, useRef } from 'react'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from './context/AuthContext.jsx'
-import Home        from './pages/Home.jsx'
-import Locations   from './pages/Locations.jsx'
-import MyHome      from './pages/MyHome.jsx'
-import People      from './pages/People.jsx'
-import Profile     from './pages/Profile.jsx'
-import Register    from './pages/Register.jsx'
-import Help        from './pages/Help.jsx'
-import Settings    from './pages/Settings.jsx'
+import { useAuth }    from './context/AuthContext.jsx'
+import LoginModal     from './components/LoginModal.jsx'
+import Locations      from './pages/Locations.jsx'
+import MyHome         from './pages/MyHome.jsx'
+import People         from './pages/People.jsx'
+import Profile        from './pages/Profile.jsx'
+import Register       from './pages/Register.jsx'
+import Help           from './pages/Help.jsx'
+import Settings       from './pages/Settings.jsx'
 
 /**
- * Guards protected routes. Unauthenticated users are redirected to /login.
- * Stores the intended path in sessionStorage so Home.jsx can restore it post-login.
- * Returns null while auth is resolving to avoid a flash redirect.
+ * Renders children only when a session is active. Returns null otherwise --
+ * LoginModal handles the visual gate, so no redirect is needed.
  */
 function RequireAuth({ children }) {
-  const { session, loading } = useAuth()
+  const { session, loading, claims } = useAuth()
   const location = useLocation()
 
-  if (loading) return null
+  if (loading || !session) return null
 
-  if (!session) {
-    sessionStorage.setItem('ukcp_login_redirect', location.pathname)
-    return <Navigate to="/login" replace />
+  // New user gate: force profile completion before accessing any route.
+  // /profile itself is exempt to avoid a redirect loop.
+  if (!claims.registration_complete && location.pathname !== '/profile') {
+    return <Navigate to="/profile" replace />
   }
 
   return children
@@ -38,14 +43,13 @@ function RequireAuth({ children }) {
 
 /**
  * Routes a logged-in user to their preferred landing page on first paint
- * if they arrived at "/" or "/locations" with no specific intent. Fires once
- * per mount; never overrides an explicit click into a different route.
+ * if they arrived at "/" or "/locations" with no specific intent.
  */
 function DefaultLandingRedirect() {
   const { profile, loading } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const fired = useRef(false)
+  const navigate  = useNavigate()
+  const location  = useLocation()
+  const fired     = useRef(false)
 
   useEffect(() => {
     if (loading || fired.current) return
@@ -60,17 +64,13 @@ function DefaultLandingRedirect() {
   return null
 }
 
-/**
- * App root — declares all client-side routes.
- * "/login" is the entry point. All other routes are protected by RequireAuth.
- * @returns {JSX.Element}
- */
 export default function App() {
   return (
     <>
+      <LoginModal />
       <DefaultLandingRedirect />
       <Routes>
-        <Route path="/login"     element={<Home />}     />
+        <Route path="/login"     element={<Navigate to="/" replace />} />
         <Route path="/register"  element={<Register />} />
         <Route path="/"          element={<RequireAuth><Locations /></RequireAuth>} />
         <Route path="/locations" element={<RequireAuth><Locations /></RequireAuth>} />

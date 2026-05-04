@@ -40,7 +40,9 @@ export default function Home() {
     // We still need an INITIAL_SESSION listener so a logged-in user landing
     // on /login is bounced out (AuthContext only navigates on SIGNED_IN).
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'INITIAL_SESSION' && session) {
+      // Handle both initial load with existing session AND cross-tab sign-in
+      // (magic link completes in a new tab -- original tab must navigate away too).
+      if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session) {
         localStorage.removeItem('ukcp_session_snapshot')
         const redirect = sessionStorage.getItem('ukcp_login_redirect')
         sessionStorage.removeItem('ukcp_login_redirect')
@@ -82,6 +84,10 @@ export default function Home() {
     if (sbError) {
       setError(sbError.message)
     } else {
+      // Best-effort: close this tab so the magic link opens as the only window.
+      // window.close() only works if the tab was programmatically opened;
+      // if the browser blocks it, fall through to the "Check your email" screen.
+      window.close()
       setSent(true)
     }
   }
@@ -111,11 +117,13 @@ export default function Home() {
         No password required.
       </Text>
 
-      <Stack component="form" onSubmit={handleSubmit} gap="sm" w="100%">
+      <Stack component="form" onSubmit={handleSubmit} autoComplete="on" gap="sm" w="100%">
         {error && <Alert color="red" size="sm">{error}</Alert>}
         <TextInput
           label="Email address"
           type="email"
+          name="email"
+          autoComplete="email"
           placeholder="you@example.com"
           value={email}
           onChange={e => setEmail(e.target.value)}

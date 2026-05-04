@@ -169,13 +169,36 @@
 /* ── Responsive breakpoints ─────────────────────────────────────────────── */
 
 /**
- * Narrow tablet / large phone (768px–899px) — hide left column only.
- * Covers phones in landscape and small tablets in portrait.
- * Standard tablet landscape (iPad 1024px+) shows all three columns.
+ * Narrow tablet / large phone (768px–899px) — stack all three columns vertically.
+ * Left col stacks above mid, right col stacks below. No pane is hidden.
  */
-@media (max-width: 899px) {
-  .leftCol {
-    display: none;
+@media (min-width: 768px) and (max-width: 899px) {
+  .midZone {
+    flex-direction: column;
+    align-items: stretch;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .leftCol,
+  .midCol,
+  .rightCol {
+    width: 100%;
+    flex-shrink: 0;
+  }
+  .leftCol,
+  .rightCol {
+    height: auto;
+  }
+  .leftCol .column,
+  .rightCol .column {
+    height: auto;
+    min-height: 0;
+    overflow-y: visible;
+  }
+  .midCol {
+    height: 60vw;
+    min-height: 280px;
+    max-height: 420px;
   }
 }
 

@@ -13,6 +13,7 @@
 import { Router }     from 'express'
 import { requireAuth } from '../middleware/auth.js'
 import { sessionCol }  from '../db/mongo.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
@@ -26,15 +27,15 @@ const ALLOWED_FIELDS = [
 ]
 
 // GET /api/session/snapshot
-router.get('/session/snapshot', requireAuth, async (req, res) => {
+router.get('/session/snapshot', requireAuth, asyncHandler(async (req, res) => {
   const col = sessionCol()
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
   const doc = await col.findOne({ user_id: req.user._id })
   res.json(doc)
-})
+}))
 
 // PATCH /api/session/snapshot
-router.patch('/session/snapshot', requireAuth, async (req, res) => {
+router.patch('/session/snapshot', requireAuth, asyncHandler(async (req, res) => {
   const col = sessionCol()
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
 
@@ -50,6 +51,6 @@ router.patch('/session/snapshot', requireAuth, async (req, res) => {
   )
 
   res.json({ ok: true })
-})
+}))
 
 export default router

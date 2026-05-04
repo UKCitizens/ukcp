@@ -11,6 +11,7 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import API_BASE from '../config.js'
 
 const DEBOUNCE_MS = 300
@@ -74,7 +75,9 @@ export default function LocationSearch({ onPlaceSelect, onGeoSelect }) {
 
   useEffect(() => {
     const handler = (e) => {
-      if (!inputRef.current?.closest('[data-locSearch]')?.contains(e.target)) setOpen(false)
+      const inInput = inputRef.current?.closest('[data-locSearch]')?.contains(e.target)
+      const inList  = listRef.current?.contains(e.target)
+      if (!inInput && !inList) setOpen(false)
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
@@ -119,46 +122,48 @@ export default function LocationSearch({ onPlaceSelect, onGeoSelect }) {
         }}
       />
 
-      {open && (
-        <div
-          ref={listRef}
-          style={{
-            position:     'absolute',
-            top:          '100%',
-            left:         0,
-            right:        0,
-            marginTop:    2,
-            background:   '#fff',
-            border:       '1px solid #dee2e6',
-            borderRadius: 4,
-            boxShadow:    '0 4px 12px rgba(0,0,0,0.12)',
-            zIndex:       DROPDOWN_Z,
-            maxHeight:    320,
-            overflowY:    'auto',
-          }}
-        >
-          {results.map((r, i) => (
-            <div
-              key={r.resultType === 'geo' ? `geo:${r.level}:${r.value}` : r.id}
-              onMouseDown={() => handleSelect(r)}
-              onMouseEnter={() => setActive(i)}
-              style={{
-                padding:      '6px 10px',
-                cursor:       'pointer',
-                background:   i === active ? '#f1f3f5' : 'transparent',
-                borderBottom: i < results.length - 1 ? '1px solid #f1f3f5' : 'none',
-              }}
-            >
-              <div style={{ fontSize: 13, fontWeight: 500, color: '#212529', lineHeight: 1.3 }}>
-                {r.name}
+      {open && createPortal((() => {
+        const rect = inputRef.current ? inputRef.current.getBoundingClientRect() : null
+        return (
+          <div
+            ref={listRef}
+            style={{
+              position:     'fixed',
+              top:          rect ? rect.bottom + 2 : 0,
+              left:         rect ? rect.left       : 0,
+              width:        rect ? rect.width      : 180,
+              background:   '#fff',
+              border:       '1px solid #dee2e6',
+              borderRadius: 4,
+              boxShadow:    '0 4px 12px rgba(0,0,0,0.12)',
+              zIndex:       DROPDOWN_Z,
+              maxHeight:    320,
+              overflowY:    'auto',
+            }}
+          >
+            {results.map((r, i) => (
+              <div
+                key={r.resultType === 'geo' ? `geo:${r.level}:${r.value}` : r.id}
+                onMouseDown={() => handleSelect(r)}
+                onMouseEnter={() => setActive(i)}
+                style={{
+                  padding:      '6px 10px',
+                  cursor:       'pointer',
+                  background:   i === active ? '#f1f3f5' : 'transparent',
+                  borderBottom: i < results.length - 1 ? '1px solid #f1f3f5' : 'none',
+                }}
+              >
+                <div style={{ fontSize: 13, fontWeight: 500, color: '#212529', lineHeight: 1.3 }}>
+                  {r.name}
+                </div>
+                <div style={{ fontSize: 11, color: '#868e96', lineHeight: 1.3 }}>
+                  {subtitle(r)}
+                </div>
               </div>
-              <div style={{ fontSize: 11, color: '#868e96', lineHeight: 1.3 }}>
-                {subtitle(r)}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )
+      })(), document.body)}
     </div>
   )
 }
