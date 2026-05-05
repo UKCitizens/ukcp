@@ -69,6 +69,7 @@ import CivicLeftNav    from '../components/TabNavs/CivicLeftNav.jsx'
 import CivicRightNav   from '../components/TabNavs/CivicRightNav.jsx'
 import SchoolsLeftNav     from '../components/SchoolGates/SchoolsLeftNav.jsx'
 import SchoolGatesMid     from '../components/SchoolGates/SchoolGatesMid.jsx'
+import MobileNavPanel     from '../components/Layout/MobileNavPanel.jsx'
 
 export default function Locations() {
   const { session, loading: authLoading } = useAuth()
@@ -621,85 +622,107 @@ export default function Locations() {
     { id: 'news',       label: 'News',       color: '#862e9c', fill: '#da77f2', available: false },
   ]
 
+  // ── Mobile nav panel section content ────────────────────────────────────
+  // Extracted so the same ReactNode can be passed to both the desktop pane
+  // wrapper (locationNav) and MobileNavPanel sections below.
+
+  const navLeftSection1 = (
+    <div style={{ padding: '8px 10px', display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+      {PLACE_TYPES.map(type => (
+        <MapTypeToggle key={type} type={type} active={visibleTypes[type]} onToggle={toggleNavFilter} />
+      ))}
+    </div>
+  )
+
+  const navLeftSection2 = (
+    <PlacesCard
+      grouped={grouped}
+      scopeKey={scopeKey}
+      onPlaceSelect={handleLeftPlaceSelect}
+      paneTitle={`Places in ${scopeLabel}`}
+      focusPlace={pendingPlace}
+      onWalkerModeChange={setWalkerMode}
+    />
+  )
+
+  const navRightSection1 = (
+    <div style={{ padding: '8px 10px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+        {POLITICAL_TYPES.map(type => (
+          <MapTypeToggle key={type} type={type} active={visibleTypes[type]} onToggle={toggleNavFilter} />
+        ))}
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6, paddingTop: 6, borderTop: '1px solid #f8f9fa' }}>
+        {CONTENT_LAYER_DEFS.map(def => {
+          const isOn = !!layers[def.id] && def.available
+          return (
+            <button
+              key={def.id}
+              onClick={() => def.available && toggleLayer(def.id)}
+              title={def.available ? (isOn ? `Hide ${def.label} on map` : `Show ${def.label} on map`) : `${def.label} coming soon`}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 4,
+                padding: '2px 8px 2px 6px', borderRadius: 20,
+                border: `1.5px solid ${isOn ? def.color : '#ced4da'}`,
+                background: isOn ? def.fill : 'rgba(241,243,245,0.85)',
+                color: isOn ? '#fff' : '#adb5bd',
+                cursor: def.available ? 'pointer' : 'default',
+                fontSize: 11, fontWeight: 500,
+                opacity: def.available ? 1 : 0.45,
+                userSelect: 'none',
+              }}
+            >
+              <svg width="8" height="8" style={{ flexShrink: 0 }}>
+                <rect x="0.5" y="0.5" width="7" height="7" rx="1.5"
+                  fill={isOn ? '#fff' : '#ced4da'}
+                  stroke={isOn ? 'rgba(255,255,255,0.6)' : '#ced4da'}
+                  strokeWidth="1"
+                />
+              </svg>
+              {def.label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+
+  const navRightSection2 = (
+    <ConstituencyPane
+      containment={containment}
+      path={path}
+      hierarchy={hierarchy}
+      wards={wards}
+      select={handleSelect}
+      selectMany={handleSelectMany}
+      paneTitle={`Constituencies with wards in ${scopeLabel}`}
+      onWalkerModeChange={(active) => setRightWalkerMode(active)}
+      walkerMode={rightWalkerMode}
+      onConstituencyPending={(name) => { setPendingConstituency(name); setPendingWard(null) }}
+      onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}
+      pendingConstituency={pendingConstituency}
+      pendingWard={pendingWard}
+    />
+  )
+
   const locationNav = {
     left: (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        {/* Place type filter strip */}
-        <div style={{ flexShrink: 0, padding: '8px 10px', borderBottom: '1px solid #f1f3f5', display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-          {PLACE_TYPES.map(type => (
-            <MapTypeToggle key={type} type={type} active={visibleTypes[type]} onToggle={toggleNavFilter} />
-          ))}
+        <div style={{ flexShrink: 0, borderBottom: '1px solid #f1f3f5' }}>
+          {navLeftSection1}
         </div>
         <div style={{ flex: 1, overflow: 'auto' }}>
-          <PlacesCard
-            grouped={grouped}
-            scopeKey={scopeKey}
-            onPlaceSelect={handleLeftPlaceSelect}
-            paneTitle={`Places in ${scopeLabel}`}
-            focusPlace={pendingPlace}
-            onWalkerModeChange={setWalkerMode}
-          />
+          {navLeftSection2}
         </div>
       </div>
     ),
     right: (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        {/* Political type filter strip + content layer includes */}
-        <div style={{ flexShrink: 0, padding: '8px 10px', borderBottom: '1px solid #f1f3f5' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {POLITICAL_TYPES.map(type => (
-              <MapTypeToggle key={type} type={type} active={visibleTypes[type]} onToggle={toggleNavFilter} />
-            ))}
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6, paddingTop: 6, borderTop: '1px solid #f8f9fa' }}>
-            {CONTENT_LAYER_DEFS.map(def => {
-              const isOn = !!layers[def.id] && def.available
-              return (
-                <button
-                  key={def.id}
-                  onClick={() => def.available && toggleLayer(def.id)}
-                  title={def.available ? (isOn ? `Hide ${def.label} on map` : `Show ${def.label} on map`) : `${def.label} coming soon`}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    padding: '2px 8px 2px 6px', borderRadius: 20,
-                    border: `1.5px solid ${isOn ? def.color : '#ced4da'}`,
-                    background: isOn ? def.fill : 'rgba(241,243,245,0.85)',
-                    color: isOn ? '#fff' : '#adb5bd',
-                    cursor: def.available ? 'pointer' : 'default',
-                    fontSize: 11, fontWeight: 500,
-                    opacity: def.available ? 1 : 0.45,
-                    userSelect: 'none',
-                  }}
-                >
-                  <svg width="8" height="8" style={{ flexShrink: 0 }}>
-                    <rect x="0.5" y="0.5" width="7" height="7" rx="1.5"
-                      fill={isOn ? '#fff' : '#ced4da'}
-                      stroke={isOn ? 'rgba(255,255,255,0.6)' : '#ced4da'}
-                      strokeWidth="1"
-                    />
-                  </svg>
-                  {def.label}
-                </button>
-              )
-            })}
-          </div>
+        <div style={{ flexShrink: 0, borderBottom: '1px solid #f1f3f5' }}>
+          {navRightSection1}
         </div>
         <div style={{ flex: 1, overflow: 'auto' }}>
-          <ConstituencyPane
-            containment={containment}
-            path={path}
-            hierarchy={hierarchy}
-            wards={wards}
-            select={handleSelect}
-            selectMany={handleSelectMany}
-            paneTitle={`Constituencies with wards in ${scopeLabel}`}
-            onWalkerModeChange={(active) => setRightWalkerMode(active)}
-            walkerMode={rightWalkerMode}
-            onConstituencyPending={(name) => { setPendingConstituency(name); setPendingWard(null) }}
-            onWardPending={(con, w) => { setPendingConstituency(con); setPendingWard(w) }}
-            pendingConstituency={pendingConstituency}
-            pendingWard={pendingWard}
-          />
+          {navRightSection2}
         </div>
       </div>
     ),
@@ -757,6 +780,73 @@ export default function Locations() {
       : midTab === 'civic'   ? <CivicRightNav   locationType={contentContext?.type} locationSlug={contentContext?.slug} />
       : locationNav.right
       : locationNav.right
+  }
+
+  // ── Mobile nav panel ─────────────────────────────────────────────────────
+  // Computed after activeLeftPane/activeRightPane so tab-specific pane content
+  // is available. Passed to PageLayout which slots it above midCol on mobile.
+  let mobilePanelEl = null
+
+  if (activeNetwork === 'at-the-school-gates' && midTab === 'groups') {
+    mobilePanelEl = (
+      <MobileNavPanel
+        leftLabel="Schools Near You"
+        leftSections={[{ label: 'School List', content: activeLeftPane, defaultOpen: true }]}
+        rightLabel="Groups"
+        rightSections={[{ label: 'Filters & Networks', content: activeRightPane, defaultOpen: true }]}
+      />
+    )
+  } else if (paneMode === 'nav' || midTab === 'map') {
+    mobilePanelEl = (
+      <MobileNavPanel
+        leftLabel={`Places in ${scopeLabel}`}
+        leftSections={[
+          { label: 'Place Filters', content: navLeftSection1, defaultOpen: true },
+          { label: 'Places',        content: navLeftSection2, defaultOpen: true },
+        ]}
+        rightLabel="Explore"
+        rightSections={[
+          { label: 'Map Layers',     content: navRightSection1, defaultOpen: true },
+          { label: 'Constituencies', content: navRightSection2, defaultOpen: true },
+        ]}
+      />
+    )
+  } else if (midTab === 'groups') {
+    mobilePanelEl = (
+      <MobileNavPanel
+        leftLabel={null}
+        leftSections={null}
+        rightLabel="Groups"
+        rightSections={[{ label: 'Filters & Networks', content: activeRightPane, defaultOpen: true }]}
+      />
+    )
+  } else if (midTab === 'news') {
+    mobilePanelEl = (
+      <MobileNavPanel
+        leftLabel="News"
+        leftSections={[{ label: 'Sources', content: activeLeftPane, defaultOpen: true }]}
+        rightLabel="News"
+        rightSections={[{ label: 'Options', content: activeRightPane, defaultOpen: true }]}
+      />
+    )
+  } else if (midTab === 'traders') {
+    mobilePanelEl = (
+      <MobileNavPanel
+        leftLabel="Traders"
+        leftSections={[{ label: 'Filter', content: activeLeftPane, defaultOpen: true }]}
+        rightLabel="Traders"
+        rightSections={[{ label: 'Options', content: activeRightPane, defaultOpen: true }]}
+      />
+    )
+  } else if (midTab === 'civic') {
+    mobilePanelEl = (
+      <MobileNavPanel
+        leftLabel="Civic"
+        leftSections={[{ label: 'Navigation', content: activeLeftPane, defaultOpen: true }]}
+        rightLabel="Civic"
+        rightSections={[{ label: 'Options', content: activeRightPane, defaultOpen: true }]}
+      />
+    )
   }
 
   return (
@@ -846,6 +936,7 @@ export default function Locations() {
       rightPane={activeRightPane}
       footer={<Footer />}
       mapExpand={mapExpand}
+      mobilePanel={mobilePanelEl}
     />
     </>
   )

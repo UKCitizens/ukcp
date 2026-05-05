@@ -185,6 +185,8 @@ Phil relies on :3000 as the stable review point. This step is not optional.
                      Issue 2: graceful not-found already in admin.js:257. Zero orphans confirmed.
                      Orphan flag: uucp99@gmail.com in Supabase only (unconfirmed) -- not auto-deleted.
 
+[PRG:49] SPRINT-MOBILE-NAV-PANEL | MobileNavPanel replaces two-drawer approach. MobileNavPanel.jsx + MobileNavPanel.module.css created. PageLayout.jsx stripped of drawer/state logic, mobilePanel prop added. Locations.jsx sections extracted, mobilePanelEl computed per tab. complete. 05 May 2026.
+
 [PRG:46] SPRINT-PHONE-AUTH | Phone Second Factor. Status: DEFERRED. 02 May 2026.
                      Blocker: requires Twilio (or equivalent) SMS provider in Supabase first.
                      Scope when resumed: phone enrolment in Profile.jsx + OTP sign-in on Home.jsx.

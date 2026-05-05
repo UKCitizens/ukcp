@@ -25,6 +25,7 @@
 | 2026-05-04 | PRG:48 — Auth diagnosis (no code changes; SMTP config required from Phil) | PASS 6969 |
 | 2026-05-05 | Mobile Drawer Nav — PageLayout.jsx + PageLayout.module.css; IconLayers → IconAdjustments | PASS 6969 |
 | 2026-05-05 | Mobile buttons — ActionIcon+Tooltip → Button with icon+label (IconMapPin / IconFilter) | PASS |
+| 2026-05-05 | Mobile Nav Panel — MobileNavPanel.jsx replaces two-drawer approach; green/blue collapsible bars per pane | PASS 6971 |
 
 ---
 
@@ -42,3 +43,4 @@ LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-03 (asyncHandle
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-04 (auth diagnosis sprint)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile drawer nav)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile button labels)
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile nav panel sprint PRG:49)

@@ -1,0 +1,70 @@
+/**
+ * MobileNavPanel.module.css
+ * Styles for the unified UKCP mobile navigation panel.
+ * Desktop: hidden. Mobile (<768px): full-width collapsible panel.
+ */
+
+.mobileNavPanel {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobileNavPanel {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+}
+
+/* Main pane bar — 28px slim accent header */
+.panelBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 28px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* Section sub-header — 24px, neutral */
+.sectionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 24px;
+  padding: 0 10px 0 14px;
+  border: none;
+  border-bottom: 1px solid #e9ecef;
+  background: #f8f9fa;
+  color: #495057;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.chevron {
+  display: inline-block;
+  transition: transform 0.15s ease;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.section {
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Section body — no extra padding, pane content carries its own */
+.sectionContent {
+  overflow: hidden;
+}
