@@ -18,9 +18,9 @@
  *   footerZone — flex-shrink 0, 48px height. Always visible at bottom of frame.
  *
  * Responsive column behaviour:
- *   Desktop  (≥1200px): left (16.667%) | mid (flex 1) | right (16.667%)
- *   Tablet   (768–1199px): left hidden | mid (flex 1) | right (16.667%)
- *   Mobile   (<768px): left hidden | mid (100%) | right hidden
+ *   Desktop  (≥1200px): left (21.667%) | mid (flex 1) | right (21.667%)
+ *   Tablet   (768–899px): all three columns stack vertically
+ *   Mobile   (<768px): drawers for left/right panes, mid takes full width
  *
  * headerHeight prop is accepted but unused — retained for call-site compatibility
  * with Locations.jsx. Height is now driven automatically by header content.
@@ -28,7 +28,10 @@
  * No hardcoded colours, no inline styles. All visual rules in PageLayout.module.css.
  */
 
-import { Paper } from '@mantine/core'
+import { useState } from 'react'
+import { Paper, Drawer, Button, Group } from '@mantine/core'
+import { useMediaQuery } from '@mantine/hooks'
+import { IconMapPin, IconFilter } from '@tabler/icons-react'
 import PageBackground from './Layout/PageBackground.jsx'
 import classes from './PageLayout.module.css'
 
@@ -36,18 +39,52 @@ import classes from './PageLayout.module.css'
  * Renders the UKCP application shell.
  *
  * @param {object}          props
- * @param {React.ReactNode} props.header       - Header zone content.
+ * @param {React.ReactNode} props.header         - Header zone content.
  * @param {number}          [props.headerHeight] - Unused; retained for compat.
- * @param {React.ReactNode} props.leftPane     - Left column content.
- * @param {React.ReactNode} props.midPane      - Main centre column content.
- * @param {React.ReactNode} props.rightPane    - Right column content.
- * @param {React.ReactNode} props.footer       - Footer zone content.
+ * @param {React.ReactNode} props.leftPane       - Left column / top drawer content.
+ * @param {React.ReactNode} props.midPane        - Main centre column content.
+ * @param {React.ReactNode} props.rightPane      - Right column / bottom drawer content.
+ * @param {React.ReactNode} props.footer         - Footer zone content.
+ * @param {boolean}         [props.mapExpand]    - Collapses header/footer for map view.
  * @returns {JSX.Element}
  */
 export default function PageLayout({ header, headerHeight, leftPane, midPane, rightPane, footer, mapExpand }) {
+  const [leftOpen,  setLeftOpen]  = useState(false)
+  const [rightOpen, setRightOpen] = useState(false)
+  const isMobile = useMediaQuery('(max-width: 767px)')
+
   return (
     <div className={classes.pageOuter}>
       <PageBackground />
+
+      {/* Mobile drawers — rendered outside pageFrame so they overlay the full viewport */}
+      {isMobile && (
+        <>
+          <Drawer
+            position="top"
+            size="65%"
+            opened={leftOpen}
+            onClose={() => setLeftOpen(false)}
+            title="Places"
+            withCloseButton={true}
+            zIndex={300}
+          >
+            {leftPane}
+          </Drawer>
+
+          <Drawer
+            position="bottom"
+            size="50%"
+            opened={rightOpen}
+            onClose={() => setRightOpen(false)}
+            title="Filters"
+            withCloseButton={true}
+            zIndex={300}
+          >
+            {rightPane}
+          </Drawer>
+        </>
+      )}
 
       <div className={`${classes.pageFrame}${mapExpand ? ` ${classes.mapExpand}` : ''}`}>
 
@@ -59,26 +96,63 @@ export default function PageLayout({ header, headerHeight, leftPane, midPane, ri
         {/* Mid zone — scrollable area between header and footer */}
         <div className={classes.midZone}>
 
-          {/* Left column — hidden on tablet and mobile */}
-          <div className={classes.leftCol}>
-            <Paper p="md" className={classes.column}>
-              {leftPane}
-            </Paper>
-          </div>
+          {isMobile ? (
+            <>
+              {/* Mobile control bar — triggers drawers */}
+              <Group justify="space-between" pb="xs">
+                <Button
+                  variant="filled"
+                  color="blue"
+                  size="sm"
+                  leftSection={<IconMapPin size={16} />}
+                  aria-label="Open places browser"
+                  onClick={() => setLeftOpen(true)}
+                >
+                  Places
+                </Button>
+                <Button
+                  variant="filled"
+                  color="blue"
+                  size="sm"
+                  leftSection={<IconFilter size={16} />}
+                  aria-label="Open filters"
+                  onClick={() => setRightOpen(true)}
+                >
+                  Filters
+                </Button>
+              </Group>
 
-          {/* Mid column — main content area */}
-          <div className={classes.midCol}>
-            <Paper p="md" className={classes.column}>
-              {midPane}
-            </Paper>
-          </div>
+              {/* Mid column — full width on mobile */}
+              <div className={classes.midCol}>
+                <Paper p="md" className={classes.column}>
+                  {midPane}
+                </Paper>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Left column — hidden on tablet and mobile */}
+              <div className={classes.leftCol}>
+                <Paper p="md" className={classes.column}>
+                  {leftPane}
+                </Paper>
+              </div>
 
-          {/* Right column — hidden on mobile */}
-          <div className={classes.rightCol}>
-            <Paper p="md" className={classes.column}>
-              {rightPane}
-            </Paper>
-          </div>
+              {/* Mid column — main content area */}
+              <div className={classes.midCol}>
+                <Paper p="md" className={classes.column}>
+                  {midPane}
+                </Paper>
+              </div>
+
+              {/* Right column — hidden on mobile */}
+              <div className={classes.rightCol}>
+                <Paper p="md" className={classes.column}>
+                  {rightPane}
+                </Paper>
+              </div>
+            </>
+          )}
 
         </div>
 

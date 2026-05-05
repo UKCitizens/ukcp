@@ -203,9 +203,8 @@
 }
 
 /**
- * Mobile (<768px) — stack all three columns vertically.
- * midZone becomes a scrollable vertical column.
- * Each column goes full width with auto height.
+ * Mobile (<768px) — left and right columns are replaced by Drawers (see PageLayout.jsx).
+ * midZone is a single scrollable column; midCol takes full width.
  * Mid column gets a fixed height so MidPaneMap (absolute-positioned) renders.
  */
 @media (max-width: 767px) {
@@ -215,24 +214,9 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
-  .leftCol,
-  .midCol,
-  .rightCol {
+  .midCol {
     width: 100%;
     flex-shrink: 0;
-  }
-  .leftCol,
-  .rightCol {
-    display: block;
-    height: auto;
-  }
-  .leftCol .column,
-  .rightCol .column {
-    height: auto;
-    min-height: 0;
-    overflow-y: visible;
-  }
-  .midCol {
     height: 60vw;
     min-height: 280px;
     max-height: 420px;

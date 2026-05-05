@@ -23,11 +23,14 @@
 | 2026-05-02 | PRG:40-45 — Group A residual, News, Traders, Civic, People, Banner | PASS 6970 |
 | 2026-05-03 | PRG:47 — asyncHandler on all 13 route handlers | PASS 6971 |
 | 2026-05-04 | PRG:48 — Auth diagnosis (no code changes; SMTP config required from Phil) | PASS 6969 |
+| 2026-05-05 | Mobile Drawer Nav — PageLayout.jsx + PageLayout.module.css; IconLayers → IconAdjustments | PASS 6969 |
+| 2026-05-05 | Mobile buttons — ActionIcon+Tooltip → Button with icon+label (IconMapPin / IconFilter) | PASS |
 
 ---
 
 ## FLAGS (pre-existing, non-imperative)
 - ROW4_HEIGHT missing from HEADER_ROWS.js — SiteHeaderRow4.jsx crashes on import in dev, cascades to MidPaneMap/SchoolsRightNav. Does not block build.
+- Chunk size advisory — index-*.js bundle is ~954kB minified (284kB gzip), exceeds Rollup's 500kB warning threshold. Pre-existing; not introduced by mobile drawer sprint. Consider code-splitting via dynamic import() if bundle growth becomes a concern.
 
 ## Outstanding actions
 - SMTP: Supabase → Settings → Auth → SMTP: host smtp.resend.com, port 465, username resend, password = RESEND_TOKEN.
@@ -37,3 +40,5 @@
 DEPLOYED -- commit acce018 pushed to GitHub (master). Railway auto-deploy triggered. PRG:39->PRG:45. 2026-05-03 00:58
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-03 (asyncHandler sprint)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-04 (auth diagnosis sprint)
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile drawer nav)
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile button labels)
