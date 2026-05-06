@@ -84,6 +84,7 @@ export default function ConstituencyPane({
   onConstituencyPending,
   pendingConstituency,
   pendingWard,
+  filterText = '',
 }) {
   const [activeLetter, setActiveLetter] = useState(null)
 
@@ -150,6 +151,35 @@ export default function ConstituencyPane({
       <div className={classes.root}>
         {paneTitle && <div className={classes.paneTitle}>{paneTitle}</div>}
         <p className={classes.empty}>No constituency data available.</p>
+      </div>
+    )
+  }
+
+  // filterText search mode — bypass A-Z, show flat filtered list
+  const searchTerm = filterText.trim().toLowerCase()
+  if (searchTerm) {
+    const searchResults = allConstituencies.filter(c =>
+      c.name.toLowerCase().includes(searchTerm)
+    )
+    return (
+      <div className={classes.root}>
+        {paneTitle && <div className={classes.paneTitle}>{paneTitle}</div>}
+        <div className={classes.listArea}>
+          <div className={classes.constList}>
+            {searchResults.length === 0
+              ? <p className={classes.empty}>No constituencies match.</p>
+              : searchResults.map(c => (
+                  <button
+                    key={c.id}
+                    className={[classes.constBtn, c.name === activeConstituency ? classes.constBtnActive : ''].join(' ')}
+                    onClick={() => select('constituency', c.name)}
+                  >
+                    {c.name}
+                  </button>
+                ))
+            }
+          </div>
+        </div>
       </div>
     )
   }

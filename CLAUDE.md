@@ -217,6 +217,10 @@ Phil relies on :3000 as the stable review point. This step is not optional.
 
 [PRG:55] SPRINT-NEARBY-PLACES | Nearby places context. GeoJSON location field added to 54,209 place docs (bulkWrite migration). 2dsphere index on places collection. routes/nearby.js (ward + constituency endpoints). GET /api/places/:id/nearby in routes/places.js. useNearby hook (localStorage cache, 30-day TTL). LocationInfo.jsx wired for place/ward/constituency. dotenvx local/Atlas split noted -- migration run direct to Atlas URI. complete. 06 May 2026.
 
+[PRG:57] SPRINT-MAP-OVERLAY-CONTROLS | Map overlay controls + pane search bars. MapOverlayControls.jsx created (left: place-type pills, right: political toggles + layer pills). MidPaneMap.jsx: overlayControls prop added, zoom moved to bottomleft. Locations.jsx: navLeftSection1/navRightSection1 removed, locationNav updated with LocationSearch (left) + constituency text filter (right). navRightSection2 inlined. MidPaneTabs: LocationSearch removed from tab strip. ConstituencyPane: filterText prop added. complete. 06 May 2026.
+
+[PRG:56] SPRINT-MOBILE-SIDE-DRAWER | Mobile side drawer. MobileDrawerWrapper.jsx + MobileDrawerWrapper.module.css created. PageLayout.jsx: mobilePanel prop removed, MobileDrawerWrapper wraps midCol content. PageLayout.module.css: mobilePanelSlot rules removed. Locations.jsx: mobilePanelEl block + MobileNavPanel import removed. MobileNavPanel.jsx + .module.css deleted. complete. 06 May 2026.
+
 [PRG:46] SPRINT-PHONE-AUTH | Phone Second Factor. Status: DEFERRED. 02 May 2026.
                      Blocker: requires Twilio (or equivalent) SMS provider in Supabase first.
                      Scope when resumed: phone enrolment in Profile.jsx + OTP sign-in on Home.jsx.

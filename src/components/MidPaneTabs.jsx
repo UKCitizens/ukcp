@@ -27,8 +27,6 @@
  *   session        -- Supabase session or null (gates auth-required tabs)
  */
 
-import LocationSearch from './LocationSearch.jsx'
-
 const TAB_HEIGHT   = 36
 const ACTIVE_COLOR = '#2f9e44'
 const BORDER_COLOR = '#dee2e6'
@@ -85,7 +83,6 @@ function MapPlaceholder() {
 export default function MidPaneTabs({
   infoPane, newsPane, groupsPane, tradersPane, civicPane, mapPane,
   activeTab, onTabChange, locationType, viewMode, onToggleExpand,
-  onPlaceSelect, onGeoSelect,
   session,
 }) {
   const expanded     = viewMode === 'explore'
@@ -130,8 +127,6 @@ export default function MidPaneTabs({
         zIndex:       10,
         overflow:     'visible',
       }}>
-        {onPlaceSelect && <LocationSearch onPlaceSelect={onPlaceSelect} onGeoSelect={onGeoSelect} />}
-
         <div style={{ display: 'flex', alignItems: 'flex-end', overflowX: 'auto', flex: 1, paddingLeft: 4 }}>
           {tabs.map(t => (
             <button key={t.id} style={tabStyle(t.id)} onClick={() => onTabChange(t.id)}>

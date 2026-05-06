@@ -188,6 +188,8 @@ export default function MidPaneMap({
   onLayerToggle,
   // centerOn: { lat, lng, zoom } -- content map centers here instead of fitBounds
   centerOn = null,
+  // Overlay controls rendered above map tiles (e.g. MapOverlayControls)
+  overlayControls = null,
 }) {
   const containerRef    = useRef(null)
   const mapRef          = useRef(null)
@@ -245,7 +247,9 @@ export default function MidPaneMap({
 
     const map = L.map(containerRef.current, {
       scrollWheelZoom: !contentMode,  // content map is a display, not a navigator
+      zoomControl: false,
     }).setView(UK_DEFAULT.center, UK_DEFAULT.zoom)
+    L.control.zoom({ position: 'bottomleft' }).addTo(map)
     mapRef.current = map
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -611,10 +615,13 @@ export default function MidPaneMap({
         .leaflet-container { cursor: default !important; }
         .leaflet-interactive { cursor: pointer !important; }
       `}</style>
-      <div
-        ref={containerRef}
-        style={{ flex: 1, minHeight: 0, borderRadius: '4px', overflow: 'hidden' }}
-      />
+      <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+        <div
+          ref={containerRef}
+          style={{ width: '100%', height: '100%', borderRadius: '4px', overflow: 'hidden' }}
+        />
+        {overlayControls}
+      </div>
     </div>
   )
 }

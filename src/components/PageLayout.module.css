@@ -203,17 +203,11 @@
 }
 
 /**
- * mobilePanelSlot — hidden on desktop (flex row), visible on mobile (flex column).
- * Sits above midCol in the column flow when mobile nav panel is active.
- */
-.mobilePanelSlot {
-  display: none;
-}
-
-/**
- * Mobile (<768px) — leftCol/rightCol hidden; mobilePanelSlot + midCol visible.
- * midZone switches to column direction. Mid column gets a fixed height so
- * MidPaneMap (absolute-positioned) renders correctly.
+ * Mobile (<768px) — leftCol/rightCol hidden; midCol fills full width.
+ * MobileDrawerWrapper inside midCol provides left/right content via
+ * side-edge drawer handles. midZone switches to column direction.
+ * Mid column gets a fixed height so MidPaneMap (absolute-positioned)
+ * renders correctly.
  */
 @media (max-width: 767px) {
   .midZone {
@@ -221,11 +215,6 @@
     align-items: stretch;
     overflow-y: auto;
     overflow-x: hidden;
-  }
-  .mobilePanelSlot {
-    display: block;
-    width: 100%;
-    flex-shrink: 0;
   }
   .leftCol,
   .rightCol {

@@ -59,3 +59,11 @@ LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (MyHome full
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (pipeline promote PRG:54)
 | 2026-05-06 | PRG:55 — nearby places: GeoJSON migration (54,209 docs), 2dsphere index, /api/places/:id/nearby, /api/nearby/ward/:gss, /api/nearby/constituency/:gss, useNearby hook, LocationInfo wired | PASS |
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (nearby places PRG:55)
+| 2026-05-06 | Mobile Side Drawer — MobileDrawerWrapper replaces MobileNavPanel; side-edge handles in mid pane, left green/right blue, slide-in drawers | PASS 6978 |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (mobile side drawer sprint)
+| 2026-05-06 | Bugfix: drawer z-index raised (1100/1200/1300) to beat Leaflet map layers on map tab | PASS |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (drawer z-index fix)
+| 2026-05-06 | PRG:57 — Map overlay controls + pane search bars: MapOverlayControls on map surface, place search in left pane, constituency filter in right pane, LocationSearch removed from tab strip | PASS 6979 |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (map overlay controls + pane search bars PRG:57)
+| 2026-05-06 | Redesign: MapOverlayControls — vertical collapsible toolbars, single icon + toggle, collapsed by default |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (vertical collapsible map overlay controls)

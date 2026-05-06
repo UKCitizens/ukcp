@@ -1,0 +1,103 @@
+/**
+ * MobileDrawerWrapper.module.css
+ * Mobile side-drawer styles. Handles and drawers are hidden on desktop.
+ */
+
+/* Outer wrapper — contains all absolute-positioned children */
+.wrapper {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Handle base — hidden on desktop */
+.handle {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 72px;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.handleLeft {
+  left: 0;
+  background-color: #2E7D32;
+  border-radius: 0 4px 4px 0;
+}
+
+.handleRight {
+  right: 0;
+  background-color: #1864ab;
+  border-radius: 4px 0 0 4px;
+}
+
+/* Backdrop */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1200;
+}
+
+/* Drawer base */
+.drawer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 82%;
+  max-width: 320px;
+  background: #fff;
+  z-index: 1300;
+  overflow-y: auto;
+  transition: transform 0.22s ease;
+}
+
+.drawerLeft {
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.drawerRight {
+  right: 0;
+  transform: translateX(100%);
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+/* Close button inside drawer */
+.closeBtn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  color: #333;
+  z-index: 1310;
+}
+
+.drawerContent {
+  padding: 40px 8px 8px;
+}
+
+/* Mobile only — show handles */
+@media (max-width: 767px) {
+  .handle {
+    display: flex;
+  }
+}

@@ -3,24 +3,25 @@
  * @description UKCP application shell.
  *
  * Layout model:
- *   pageOuter        — 100vw × 100vh, overflow hidden. PageBackground renders here.
- *   pageFrame        — 95% wide, centred, flex column, 8px gap, 8px vertical padding.
- *   headerZone       — flex-shrink 0, z-index 200.
- *   midZone          — flex 1, overflow-y auto. Three columns (left / mid / right)
- *                      laid out with flexbox, responsive via CSS.
- *   mobilePanelSlot  — hidden on desktop; renders above midCol on mobile.
- *   footerZone       — flex-shrink 0, 48px height.
+ *   pageOuter    — 100vw × 100vh, overflow hidden. PageBackground renders here.
+ *   pageFrame    — 95% wide, centred, flex column, 8px gap, 8px vertical padding.
+ *   headerZone   — flex-shrink 0, z-index 200.
+ *   midZone      — flex 1, overflow-y auto. Three columns (left / mid / right)
+ *                  laid out with flexbox, responsive via CSS.
+ *   footerZone   — flex-shrink 0, 48px height.
  *
  * Responsive column behaviour:
  *   Desktop  (≥1200px): left (21.667%) | mid (flex 1) | right (21.667%)
  *   Tablet   (768–899px): all three columns stack vertically
- *   Mobile   (<768px): leftCol/rightCol CSS-hidden; mobilePanelSlot + midCol visible
+ *   Mobile   (<768px): leftCol/rightCol CSS-hidden; MobileDrawerWrapper handles
+ *             left/right content via side-edge drawer handles inside midCol.
  *
  * headerHeight prop is accepted but unused — retained for call-site compatibility.
  */
 
 import { Paper } from '@mantine/core'
 import PageBackground from './Layout/PageBackground.jsx'
+import MobileDrawerWrapper from './Layout/MobileDrawerWrapper.jsx'
 import classes from './PageLayout.module.css'
 
 /**
@@ -34,10 +35,9 @@ import classes from './PageLayout.module.css'
  * @param {React.ReactNode} props.rightPane      - Right column content.
  * @param {React.ReactNode} props.footer         - Footer zone content.
  * @param {boolean}         [props.mapExpand]    - Collapses header/footer for map view.
- * @param {React.ReactNode} [props.mobilePanel]  - Mobile nav panel above midCol on mobile.
  * @returns {JSX.Element}
  */
-export default function PageLayout({ header, headerHeight, leftPane, midPane, rightPane, footer, mapExpand, mobilePanel }) {
+export default function PageLayout({ header, headerHeight, leftPane, midPane, rightPane, footer, mapExpand }) {
   return (
     <div className={classes.pageOuter}>
       <PageBackground />
@@ -52,13 +52,6 @@ export default function PageLayout({ header, headerHeight, leftPane, midPane, ri
         {/* Mid zone — scrollable three-column area */}
         <div className={classes.midZone}>
 
-          {/* Mobile nav panel — CSS-hidden on desktop, sits above midCol on mobile */}
-          {mobilePanel && (
-            <div className={classes.mobilePanelSlot}>
-              {mobilePanel}
-            </div>
-          )}
-
           {/* Left column — CSS-hidden on mobile */}
           <div className={classes.leftCol}>
             <Paper p="md" className={classes.column}>
@@ -66,10 +59,12 @@ export default function PageLayout({ header, headerHeight, leftPane, midPane, ri
             </Paper>
           </div>
 
-          {/* Mid column — full width on mobile */}
+          {/* Mid column — full width on mobile; drawers provide left/right access */}
           <div className={classes.midCol}>
             <Paper p="md" className={classes.column}>
-              {midPane}
+              <MobileDrawerWrapper leftContent={leftPane} rightContent={rightPane}>
+                {midPane}
+              </MobileDrawerWrapper>
             </Paper>
           </div>
 
