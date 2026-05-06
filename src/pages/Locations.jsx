@@ -345,7 +345,9 @@ export default function Locations() {
   const contentContext = useMemo(() => {
     if (pendingPlace)          return {
       type:  pendingPlace.place_type.toLowerCase(),
-      slug:  pendingPlace.name.replace(/ /g, '_'),
+      slug:  county
+        ? `${pendingPlace.name.replace(/ /g, '_')},_${county.replace(/ /g, '_')}`
+        : pendingPlace.name.replace(/ /g, '_'),
       label: pendingPlace.name,
     }
     if (pendingWard)           return { type: 'ward',          slug: pendingWard.replace(/ /g, '_'),          label: pendingWard          }
