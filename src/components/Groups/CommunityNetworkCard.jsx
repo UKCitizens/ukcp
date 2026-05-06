@@ -10,7 +10,10 @@
  *   onClick     -- () => void, selects the network
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import ContentActions from '../ContentActions.jsx'
+
+const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
 // Inline SVG icons keyed by topic_category slug.
 // Add more as networks are defined.
@@ -22,9 +25,44 @@ function fallbackIcon(topicCategory) {
   return ICONS[topicCategory] ?? GenericIcon
 }
 
-export default function CommunityNetworkCard({ name, description, topicCategory, isSelected, onClick }) {
-  const [popupOpen, setPopupOpen] = useState(false)
+export default function CommunityNetworkCard({ name, description, topicCategory, isSelected, onClick, chapterId, chapterName, session }) {
+  const [popupOpen,    setPopupOpen]    = useState(false)
+  const [isFollowing,  setIsFollowing]  = useState(false)
+  const [hovered,      setHovered]      = useState(false)
   const Icon = fallbackIcon(topicCategory)
+
+  useEffect(() => {
+    if (!session?.access_token || !chapterId) return
+    fetch(`${API_BASE}/api/follows?entity_type=network_chapter`, {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then(r => r.ok ? r.json() : [])
+      .then(rows => {
+        setIsFollowing(rows.some(r => r.entity_id === String(chapterId)))
+      })
+      .catch(() => {})
+  }, [session, chapterId])
+
+  async function handleFollow(e) {
+    e.stopPropagation()
+    if (!session?.access_token || !chapterId) return
+    await fetch(`${API_BASE}/api/follows`, {
+      method:  'POST',
+      headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ entity_type: 'network_chapter', entity_id: String(chapterId), entity_name: chapterName ?? name }),
+    })
+    setIsFollowing(true)
+  }
+
+  async function handleUnfollow(e) {
+    e.stopPropagation()
+    if (!session?.access_token || !chapterId) return
+    await fetch(`${API_BASE}/api/follows/network_chapter/${encodeURIComponent(String(chapterId))}`, {
+      method:  'DELETE',
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+    setIsFollowing(false)
+  }
 
   function handleInfo(e) {
     e.stopPropagation()
@@ -40,6 +78,8 @@ export default function CommunityNetworkCard({ name, description, topicCategory,
     <>
       <div
         onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
           position:    'relative',
           borderRadius: 6,
@@ -105,6 +145,29 @@ export default function CommunityNetworkCard({ name, description, topicCategory,
           >
             i
           </button>
+        )}
+
+        {/* ContentActions — visible on hover when session + chapterId available */}
+        {session && chapterId && (
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              top:      4,
+              left:     4,
+              opacity:  hovered ? 1 : 0,
+              transition: 'opacity 0.15s',
+            }}
+          >
+            <ContentActions
+              entityType="network_chapter"
+              entityId={String(chapterId)}
+              entityName={chapterName ?? name}
+              isFollowing={isFollowing}
+              onFollow={handleFollow}
+              onUnfollow={handleUnfollow}
+            />
+          </div>
         )}
       </div>
 

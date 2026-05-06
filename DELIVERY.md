@@ -44,3 +44,12 @@ LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-04 (auth diagno
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile drawer nav)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile button labels)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (mobile nav panel sprint PRG:49)
+| 2026-05-05 | PRG:50 — MyHome POC shell: MyIncludes left pane, MyMeta right pane, ContentActions, /api/follows/all | PASS 6974 |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-05 (MyHome POC shell PRG:50)
+| 2026-05-06 | PRG:52 — box-bot agent loop (Ali-Projects/agent/agent-loop.ps1); smoke test passed; no UKCP files changed |
+| 2026-05-06 | PRG:53 — MyHome Full Build: FeedZone, FeedControls, PostFeedCard, MyMeta live data, myhome router, notifications model, reply notifications, ContentActions on School/CommitteeTab/CommunityNetworkCard | PASS 6977 |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (MyHome full build PRG:53)
+| 2026-05-06 | PRG:54 — pipeline promote: routes/pipeline.js + agent/promote.py; 91/91 manifests promoted to geo-content.json | PASS |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (pipeline promote PRG:54)
+| 2026-05-06 | PRG:55 — nearby places: GeoJSON migration (54,209 docs), 2dsphere index, /api/places/:id/nearby, /api/nearby/ward/:gss, /api/nearby/constituency/:gss, useNearby hook, LocationInfo wired | PASS |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (nearby places PRG:55)

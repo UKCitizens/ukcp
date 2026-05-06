@@ -19,6 +19,7 @@ import { requireAuth } from '../middleware/auth.js'
 import {
   postsCol, postTypeConfigCol,
   schoolsCol, committeeForumsCol, networkChaptersCol, placesCol,
+  notificationsCol,
 } from '../db/mongo.js'
 import { asyncHandler } from '../middleware/asyncHandler.js'
 
@@ -216,8 +217,9 @@ router.post('/', requireAuth, asyncHandler(async (req, res) => {
     reach_effective = clamped
   }
 
-  const now    = new Date()
-  const isAnon = Boolean(is_anonymous)
+  const now      = new Date()
+  const isAnon   = Boolean(is_anonymous)
+  const reply_to = req.body.reply_to && typeof req.body.reply_to === 'string' ? req.body.reply_to : null
 
   const doc = {
     post_type,
@@ -254,9 +256,43 @@ router.post('/', requireAuth, asyncHandler(async (req, res) => {
     national_feed_suppressed: false,
 
     meta: meta && typeof meta === 'object' ? meta : {},
+
+    ...(reply_to ? { reply_to } : {}),
   }
 
   const result = await pstCol.insertOne(doc)
+
+  // Fire-and-forget reply notification to parent post author
+  if (reply_to && ObjectId.isValid(reply_to)) {
+    ;(async () => {
+      try {
+        const nCol   = notificationsCol()
+        const parent = await pstCol.findOne({ _id: new ObjectId(reply_to) })
+        if (
+          nCol && parent &&
+          parent.author?.user_id &&
+          !parent.author.user_id.equals(req.user._id)
+        ) {
+          const authorName = req.claims.display_name ?? req.user.display_name ?? 'Someone'
+          await nCol.insertOne({
+            user_id:     parent.author.user_id,
+            category:    'notification',
+            subtype:     'reply',
+            entity_type: doc.origin.entity_type,
+            entity_id:   doc.origin.entity_id,
+            entity_name: doc.origin.entity_id,
+            summary:     `${authorName} replied to your post`,
+            detail_url:  null,
+            read:        false,
+            resolved:    false,
+            created_at:  new Date(),
+            expires_at:  null,
+          })
+        }
+      } catch (_) { /* non-blocking */ }
+    })()
+  }
+
   res.status(201).json(scrubAuthor({ ...doc, _id: result.insertedId }))
 }))
 

@@ -15,6 +15,7 @@
  *   proximity, onSchoolsChange
  */
 import { useState, useEffect, useRef } from 'react'
+import ContentActions from '../ContentActions.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -158,9 +159,30 @@ function SchoolList({ focusUrn, onFocusSchool, selectedUrns, onToggleSchool, pro
 // ── School detail ─────────────────────────────────────────────────────────────
 
 function SchoolDetail({ school, selectedUrns, onToggleSchool, session, onBack }) {
-  const isFollowing = selectedUrns.includes(school.urn)
-  const label    = session ? (isFollowing ? 'Following' : 'Follow') : (isFollowing ? 'Saved' : 'Save')
-  const btnStyle = isFollowing ? followingBtn : followBtn
+  const mapIsFollowing = selectedUrns.includes(school.urn)
+  const label    = session ? (mapIsFollowing ? 'Following' : 'Follow') : (mapIsFollowing ? 'Saved' : 'Save')
+  const btnStyle = mapIsFollowing ? followingBtn : followBtn
+
+  const [isFollowing, setIsFollowing] = useState(selectedUrns.includes(school.urn))
+
+  async function handleFollow() {
+    if (!session?.access_token) return
+    await fetch(`${API_BASE}/api/follows`, {
+      method:  'POST',
+      headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ entity_type: 'school', entity_id: String(school.urn), entity_name: school.name }),
+    })
+    setIsFollowing(true)
+  }
+
+  async function handleUnfollow() {
+    if (!session?.access_token) return
+    await fetch(`${API_BASE}/api/follows/school/${encodeURIComponent(String(school.urn))}`, {
+      method:  'DELETE',
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+    setIsFollowing(false)
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -169,7 +191,19 @@ function SchoolDetail({ school, selectedUrns, onToggleSchool, session, onBack })
       </div>
       <div style={{ overflowY: 'auto', flex: 1, padding: 10 }}>
         <div style={detailCard}>
-          <p style={schoolName}>{school.name}</p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+            <p style={{ ...schoolName, margin: 0 }}>{school.name}</p>
+            {session && (
+              <ContentActions
+                entityType="school"
+                entityId={String(school.urn)}
+                entityName={school.name}
+                isFollowing={isFollowing}
+                onFollow={handleFollow}
+                onUnfollow={handleUnfollow}
+              />
+            )}
+          </div>
           <p style={meta}>{school.phase} -- {school.type}</p>
           <p style={meta}>{school.gender}</p>
           <div style={{ marginTop: 6 }}>

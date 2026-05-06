@@ -107,7 +107,7 @@ export default function CommunityNetworksSection({ locationType, locationSlug, s
         overflowY:           'auto',
         marginBottom:        10,
       }}>
-        {data.map(({ nationalGroup }) => {
+        {data.map(({ nationalGroup, chapter }) => {
           const slug = nationalGroup.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
           const hasDedicatedMode = NETWORK_MODE_SLUGS.has(slug)
           return (
@@ -117,6 +117,9 @@ export default function CommunityNetworksSection({ locationType, locationSlug, s
               description={nationalGroup.purpose_statement}
               topicCategory={nationalGroup.topic_category}
               isSelected={selectedId === nationalGroup._id?.toString()}
+              chapterId={chapter?._id ?? null}
+              chapterName={chapter?.name ?? nationalGroup.name}
+              session={session}
               onClick={() => {
                 if (hasDedicatedMode && onNetworkSelect) {
                   onNetworkSelect(slug)

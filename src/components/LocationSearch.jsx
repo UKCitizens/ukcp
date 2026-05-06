@@ -106,6 +106,7 @@ export default function LocationSearch({ onPlaceSelect, onGeoSelect }) {
         onKeyDown={handleKeyDown}
         onFocus={() => results.length > 0 && setOpen(true)}
         placeholder="Search all places…"
+        dir="ltr"
         autoComplete="off"
         spellCheck={false}
         style={{

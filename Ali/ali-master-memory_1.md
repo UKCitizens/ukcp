@@ -10,6 +10,76 @@
 
 ## ZONE: PRG -- Dynamic progress (purge and re-establish as needed)
 
+[PRG:134] PROGRESS  | Session 6 May 2026 -- box-bot agent pipeline designed and config complete.
+                     AGENT FOLDER: C:\Users\phild\Desktop\Projects\Ali-Projects\agent\
+                       Structure: config/ processed/ review-queue/ logs/
+                       config/ contains: sources.json, content-types.json, rules.json,
+                         prompts.json, manifest-schema.json, README.md
+                     BOX-BOT: Name given to the local LLM agent. Qwen3:8B on Ollama.
+                       Ollama v0.23.1, localhost:11434, think:false mandatory for all
+                       execution tasks. PowerShell driver (not Node).
+                       Key param: temperature:0.1, num_ctx:4096, num_predict:256.
+                     CONFIG DESIGN:
+                       sources.json -- Wikipedia REST + sections + Wikidata SPARQL.
+                       content-types.json -- all four target fields (f7/f8/f10/f14),
+                         each with schema, examples, inclusions, exclusions, severity
+                         criteria. T1/T3 prompt gaps addressed (explicit severity
+                         definitions and exclusion rules).
+                       rules.json -- absolute paths, ollama params, first run scoped
+                         to f10/county/10 entries max.
+                       prompts.json -- four role fragments: extractor, evaluator,
+                         formatter, error-classifier. All think:false.
+                       manifest-schema.json -- wide content-agnostic promotion envelope.
+                     ARCHITECTURE DECISIONS:
+                       Agent folder is fully external to UKCP. UKCP is source (geo-content.json)
+                         and target (PATCH /api/admin/geo-content) only. Nothing agent-related
+                         inside UKCP codebase.
+                       Manifest pattern: wide from the start. content_type agnostic envelope.
+                         One importer, routes by content_type. Not retrofitted later.
+                       Promotion path: local disk -> dev-staging DataManager -> promote button
+                         exports manifest -> import to staging -> live. DataManager promotion
+                         UI is a separate sprint.
+                       Phase 4 is a triad handoff boundary by design, not a model capability
+                         workaround. Strategic definition stays with triad permanently.
+                     DEX SPRINT: dex-instructions/dex-boxbot-agent-loop.md written and ready.
+                       First run: smoke test single entry, f10, county, confirm processed/
+                       file + PATCH post + agent.log before full batch.
+                     MYHOME SPRINT: dex-instructions/dex-myhome-sprint.md pending -- do not
+                       add new Dex work until that one is confirmed complete.
+                     NEXT SESSION:
+                       Verify box-bot smoke test result with Dex.
+                       If clean: run full county f10 batch overnight.
+                       Then: expand to f7/f8/f14, then region, then country entries.
+                       MyHome sprint review once Dex confirms delivery.
+
+[PRG:133] PROGRESS  | Session 5 May 2026 -- MyHome POC built (Dex, wrong tab session).
+                     BUILT: GET /api/follows/all (returns all follows for caller, no type filter).
+                       ContentActions.jsx -- hover/tap popover, Open + Add/Remove My Home + Select,
+                         actions computed from props. Desktop: icon row on hover. Mobile: ... always.
+                       MyIncludes.jsx -- left pane. Fetches all follows, Accordion by entity_type
+                         (Places, Schools, Committees, Networks, Groups, Spaces). Item click selects
+                         feed context. Remove wired through ContentActions.
+                       MyMeta.jsx -- right pane. Four section shells: Notifications, Alerts,
+                         Counts, Responses. Empty states, zero-count badges. Structure live, no data.
+                       MyHome.jsx -- rewritten. IdentityStrip + reach control in mid pane top.
+                         FeedZone driven by MyIncludes selection. Empty state -> Locations.
+                     DESIGN DECISIONS LANDED:
+                       Right pane: Notifications (social, clears on read), Alerts (civic/system,
+                         time-bounded), Counts (ambient digest), Responses (personal queue).
+                         Empty-hidden or collapsed. Pane is not decorative.
+                       Mid pane: typed timeline. Common envelope { type, entity_id, timestamp,
+                         summary, scope }. Type-specific card render. Controls at top of mid pane
+                         (not left pane) -- type chips, date range, scope selector.
+                       ContentActions: single component, receives { entityType, entityId,
+                         entityName, context }, computes actions. One array, all contexts.
+                     OUTSTANDING -- Ali to produce before Dex proceeds:
+                       (1) Feed aggregator brief -- common envelope schema, which collections feed
+                           in, sort/pagination, POC filter controls vs deferred.
+                       (2) ContentActions placement spec -- which existing components get it,
+                           how it integrates without disrupting current UI.
+                       (3) Notification/alert generation model -- events schema, Mongo vs
+                           Supabase side. Architecture decision.
+
 [PRG:132] PROGRESS  | Session 4 May 2026 -- Auth stabilisation + admin delete confirmed.
                      AUTH: Password set on phild@btltd.net admin account via supabaseAdmin
                        updateUserById (Dex script). No email reset loop needed.

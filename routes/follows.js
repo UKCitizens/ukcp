@@ -23,6 +23,19 @@ import { asyncHandler } from '../middleware/asyncHandler.js'
 
 const router = Router()
 
+// GET /api/follows/all — every follow for the caller across all entity types
+router.get('/all', requireAuth, asyncHandler(async (req, res) => {
+  const col = followsCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+
+  const rows = await col
+    .find({ user_id: req.user._id })
+    .sort({ entity_type: 1, followed_at: -1 })
+    .toArray()
+
+  res.json(rows)
+}))
+
 // GET /api/follows?entity_type=school
 router.get('/', requireAuth, asyncHandler(async (req, res) => {
   const entityType = req.query.entity_type

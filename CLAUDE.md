@@ -185,7 +185,37 @@ Phil relies on :3000 as the stable review point. This step is not optional.
                      Issue 2: graceful not-found already in admin.js:257. Zero orphans confirmed.
                      Orphan flag: uucp99@gmail.com in Supabase only (unconfirmed) -- not auto-deleted.
 
+[PRG:50] SPRINT-MYHOME-POC | MyHome POC shell. MyIncludes (left, all follows grouped by type, selectable, removable), MyMeta (right, 4-section shells: Notifications/Alerts/Counts/Responses), ContentActions component, GET /api/follows/all endpoint. Mid pane: IdentityStrip + reach control + FeedZone driven by selected item. complete. 05 May 2026.
+
 [PRG:49] SPRINT-MOBILE-NAV-PANEL | MobileNavPanel replaces two-drawer approach. MobileNavPanel.jsx + MobileNavPanel.module.css created. PageLayout.jsx stripped of drawer/state logic, mobilePanel prop added. Locations.jsx sections extracted, mobilePanelEl computed per tab. complete. 05 May 2026.
+
+[PRG:51] SPRINT-LLM-AGENT-SHAKEDOWN | Local LLM agent shakedown. Ollama updated 0.5.11->0.23.1.
+                     Qwen3:8B pulled (5.2GB, fits 8GB VRAM cleanly). REST API confirmed on :11434.
+                     think:false established as primary perf lever (47s->9s per call).
+                     Native tool calling confirmed in model template.
+                     Cognitive tests T1-T4 passed -- two prompt calibration gaps identified (severity
+                     grading, relevance boundary) -- prompt definition problems not model problems.
+                     Full tech spec + findings in Ali/llm-agent-design.md. Handed to Ali for Phase 2
+                     config schema and content type definitions. complete. 06 May 2026.
+
+[PRG:52] SPRINT-BOX-BOT-AGENT | box-bot agent loop. agent-loop.ps1 built in Ali-Projects/agent/.
+                     Wikipedia Action API (exsectionformat=wiki) used in place of REST v1 mobile-sections (deprecated).
+                     Smoke test passed: county:Aberdeenshire, f10, score:10, processed manifest written.
+                     Config tuned: num_predict 256->1024, num_ctx 4096->8192, Ollama timeout 120->300s.
+                     max_entries_per_run left at 1 (smoke test) -- Phil scales when ready.
+                     POST step will 401 when :3000 is authenticated -- admin route requires auth.
+                     Phil action required: add localhost bypass or bot token to /api/admin/geo-content before batch run.
+                     Performance: ~7min/entry (VRAM pressure). complete. 06 May 2026.
+
+[PRG:53] SPRINT-MYHOME-FULL | MyHome Full Build. FeedZone.jsx + FeedControls.jsx + PostFeedCard.jsx (new).
+                     MyMeta.jsx live data from /api/myhome/meta. routes/myhome.js: feed + meta + read/resolve.
+                     db/mongo.js: user_notifications collection + indexes. Reply notification writer in posts.js.
+                     ContentActions wired into SchoolsRightNav (school detail), CommunityNetworkCard (hover),
+                     CommitteeTab (forum header). complete. 06 May 2026.
+
+[PRG:54] SPRINT-PIPELINE-PROMOTE | Pipeline promote endpoint + promote.py. routes/pipeline.js (localhost-only PATCH /api/pipeline/geo-content/:key). agent/promote.py batch script. BOM encoding fix (utf-8-sig). SSL ctx for :3443 self-signed cert. Smoke test: 91/91 manifests promoted, 0 failures. complete. 06 May 2026.
+
+[PRG:55] SPRINT-NEARBY-PLACES | Nearby places context. GeoJSON location field added to 54,209 place docs (bulkWrite migration). 2dsphere index on places collection. routes/nearby.js (ward + constituency endpoints). GET /api/places/:id/nearby in routes/places.js. useNearby hook (localStorage cache, 30-day TTL). LocationInfo.jsx wired for place/ward/constituency. dotenvx local/Atlas split noted -- migration run direct to Atlas URI. complete. 06 May 2026.
 
 [PRG:46] SPRINT-PHONE-AUTH | Phone Second Factor. Status: DEFERRED. 02 May 2026.
                      Blocker: requires Twilio (or equivalent) SMS provider in Supabase first.

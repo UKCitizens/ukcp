@@ -26,6 +26,7 @@
 
 import { Stack, Text, Anchor, Loader, Center, Divider, Group, Avatar, Badge } from '@mantine/core'
 import MiniMap from './MiniMap.jsx'
+import { useNearby } from '../hooks/useNearby.js'
 
 /**
  * @param {{
@@ -48,8 +49,17 @@ export default function LocationInfo({
   mpName, party, partyColour, population, geoData,
   area, elevation, website, notable_facts, category_tags,
   loading, error, label, wardInfo, lat, lng, onMapClick,
+  placeId, wardGss, conGss, nearbyEntityType, nearbyLat, nearbyLng,
 }) {
   const placeData = { area, elevation, website, notable_facts, category_tags }
+
+  const { data: nearbyData } = useNearby({
+    entityType: nearbyEntityType,
+    id:         placeId,
+    gss:        nearbyEntityType === 'ward' ? wardGss : conGss,
+    lat:        nearbyLat ?? lat,
+    lng:        nearbyLng ?? lng,
+  })
   // ── Ward — local context, no external fetch ─────────────────────────────
   if (wardInfo) {
     return (
@@ -74,6 +84,22 @@ export default function LocationInfo({
           <Text size="xs"><Text span c="dimmed" size="xs">Region: </Text>{wardInfo.region}</Text>
           <Text size="xs"><Text span c="dimmed" size="xs">Country: </Text>{wardInfo.country}</Text>
         </Stack>
+        {nearbyData && (nearbyData.settlements?.length > 0 || nearbyData.towns?.length > 0 || nearbyData.city) && (
+          <>
+            <Divider />
+            <Stack gap={2}>
+              {nearbyData.settlements?.length > 0 && (
+                <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
+              )}
+              {nearbyData.towns?.length > 0 && (
+                <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
+              )}
+              {nearbyData.city && (
+                <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
+              )}
+            </Stack>
+          </>
+        )}
       </Stack>
     )
   }
@@ -141,6 +167,12 @@ export default function LocationInfo({
         >
           Source: UK Parliament Members API
         </Anchor>
+        {nearbyData?.places?.length > 0 && (
+          <>
+            <Divider />
+            <Text size="xs"><Text span c="dimmed" size="xs">Towns and cities: </Text>{nearbyData.places.map(p => p.name).join(', ')}</Text>
+          </>
+        )}
       </Stack>
     )
   }
@@ -346,6 +378,46 @@ export default function LocationInfo({
           <Anchor href={placeData.website} target="_blank" rel="noopener noreferrer" size="xs" c="dimmed">
             Official website
           </Anchor>
+        </div>
+      )}
+
+      {/* Nearby — place */}
+      {nearbyEntityType === 'place' && nearbyData && (nearbyData.peers?.length > 0 || nearbyData.hierarchy) && (
+        <div style={{ borderTop: '1px solid #f1f3f5', marginTop: 8, paddingTop: 8 }}>
+          <Stack gap={2}>
+            {nearbyData.peers?.length > 0 && (
+              <Text size="xs">
+                <Text span c="dimmed" size="xs">Near: </Text>
+                {nearbyData.peers.length === 1
+                  ? nearbyData.peers[0].name
+                  : nearbyData.peers.slice(0, -1).map(p => p.name).join(', ') + ' and ' + nearbyData.peers.at(-1).name
+                }
+              </Text>
+            )}
+            {nearbyData.hierarchy && (
+              <Text size="xs">
+                <Text span c="dimmed" size="xs">Nearest {nearbyData.hierarchy.place_type?.toLowerCase()}: </Text>
+                {nearbyData.hierarchy.name}
+              </Text>
+            )}
+          </Stack>
+        </div>
+      )}
+
+      {/* Nearby — ward (pendingWard active, wardInfo not rendered) */}
+      {nearbyEntityType === 'ward' && nearbyData && (nearbyData.settlements?.length > 0 || nearbyData.towns?.length > 0 || nearbyData.city) && (
+        <div style={{ borderTop: '1px solid #f1f3f5', marginTop: 8, paddingTop: 8 }}>
+          <Stack gap={2}>
+            {nearbyData.settlements?.length > 0 && (
+              <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
+            )}
+            {nearbyData.towns?.length > 0 && (
+              <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
+            )}
+            {nearbyData.city && (
+              <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
+            )}
+          </Stack>
         </div>
       )}
     </Stack>

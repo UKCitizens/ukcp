@@ -42,6 +42,9 @@ import schoolsRouter                   from './routes/schools.js'
 import sessionRouter                   from './routes/session.js'
 import followsRouter                   from './routes/follows.js'
 import peopleRouter                    from './routes/people.js'
+import myhomeRouter                    from './routes/myhome.js'
+import pipelineRouter                  from './routes/pipeline.js'
+import nearbyRouter                    from './routes/nearby.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
@@ -75,6 +78,9 @@ app.use('/api/schools',           schoolsRouter)
 app.use('/api', sessionRouter)
 app.use('/api/follows', followsRouter)
 app.use('/api/people',  peopleRouter)
+app.use('/api/myhome',  myhomeRouter)
+app.use('/api/pipeline', pipelineRouter)
+app.use('/api/nearby',   nearbyRouter)
 
 // ── SPA catch-all ─────────────────────────────────────────────────────────────
 // Any unmatched route returns index.html -- React Router handles client-side nav.

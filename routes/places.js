@@ -74,6 +74,40 @@ router.get('/places/search', asyncHandler(async (req, res) => {
   }
 }))
 
+// ── GET /api/places/:id/nearby ────────────────────────────────────────────────
+
+router.get('/places/:id/nearby', asyncHandler(async (req, res) => {
+  const col = placesCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+
+  const place = await col.findOne({ _id: req.params.id })
+  if (!place) return res.status(404).json({ error: 'Place not found' })
+
+  if (!place.location) {
+    return res.json({ peers: [], hierarchy: null })
+  }
+
+  const HIERARCHY = ['Hamlet', 'Village', 'Town', 'City']
+  const placeRank = HIERARCHY.indexOf(place.place_type)
+
+  const peers = await col.find({
+    location:   { $nearSphere: { $geometry: place.location, $maxDistance: 50000 } },
+    place_type: place.place_type,
+    _id:        { $ne: place._id },
+  }).limit(3).project({ _id: 1, name: 1, place_type: 1 }).toArray()
+
+  let hierarchyHit = null
+  for (let i = placeRank + 1; i < HIERARCHY.length; i++) {
+    const hit = await col.findOne({
+      location:   { $nearSphere: { $geometry: place.location, $maxDistance: 100000 } },
+      place_type: HIERARCHY[i],
+    }, { projection: { _id: 1, name: 1, place_type: 1 } })
+    if (hit) { hierarchyHit = hit; break }
+  }
+
+  res.json({ peers, hierarchy: hierarchyHit })
+}))
+
 // ── Admin block (Tier 2: requireAuth + requireRole('admin')) ─────────────────
 //
 // Applied per-route below rather than via router.use() because the public

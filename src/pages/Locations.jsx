@@ -362,6 +362,11 @@ export default function Locations() {
     return { ward, constituency, county, region, country }
   }, [ward, constituency, county, region, country])
 
+  const nearbyEntityType = pendingPlace ? 'place'
+    : (pendingWard || ward) ? 'ward'
+    : (constituency || pendingConstituency) ? 'constituency'
+    : null
+
   const {
     contentType, summary, extract, thumbnail, title, wikiUrl,
     mpName, party, partyColour, population, geoData,
@@ -385,14 +390,23 @@ export default function Locations() {
 
   // ── GSS codes for Nomis population lookup (ward + constituency) ──────────
   const wardGss = useMemo(() => {
-    if (!ward || !wards) return null
-    return wards.find(w => w.ward === ward)?.ward_gss ?? null
-  }, [ward, wards])
+    const target = pendingWard ?? ward
+    if (!target || !wards) return null
+    return wards.find(w => w.ward === target)?.ward_gss ?? null
+  }, [pendingWard, ward, wards])
 
   const conGss = useMemo(() => {
     if (!constituency || !wards) return null
     return wards.find(w => w.constituency === constituency)?.con_gss ?? null
   }, [constituency, wards])
+
+  const wardCoords = useMemo(() => {
+    const target = pendingWard ?? ward
+    if (!target || !wards) return null
+    const hit = wards.find(w => w.ward === target)
+    if (hit?.lat && hit?.lng && !isNaN(+hit.lat)) return { lat: +hit.lat, lng: +hit.lng }
+    return null
+  }, [pendingWard, ward, wards])
 
   // Nomis population — active when ward or constituency is selected (places use Wikidata via content hook)
   const { population: gssPopulation } = usePopulation(wardGss ?? conGss)
@@ -929,6 +943,12 @@ export default function Locations() {
               lat={contextCoords?.lat ?? null}
               lng={contextCoords?.lng ?? null}
               onMapClick={handleMapHeaderClick}
+              placeId={pendingPlace?.id ?? null}
+              wardGss={wardGss}
+              conGss={conGss}
+              nearbyEntityType={nearbyEntityType}
+              nearbyLat={nearbyEntityType === 'ward' ? (wardCoords?.lat ?? contextCoords?.lat ?? null) : (contextCoords?.lat ?? null)}
+              nearbyLng={nearbyEntityType === 'ward' ? (wardCoords?.lng ?? contextCoords?.lng ?? null) : (contextCoords?.lng ?? null)}
             />
           }
         />

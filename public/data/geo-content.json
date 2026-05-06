@@ -176,7 +176,8 @@
     "f3": "Content coming soon.",
     "f5": "6,313 km²",
     "f13": "https://www.aberdeenshire.gov.uk/",
-    "f6": "Con: 2 · SNP: 2"
+    "f6": "Con: 2 · SNP: 2",
+    "f10": "Aberdeenshire has been inhabited since the Neolithic and Bronze Age, with numerous cairns, stone circles, and Iron Age hill forts distributed across the area. The Taexali and later the Picts were the primary pre-medieval peoples. Celtic monasteries at Old Deer and Monymusk established early Christian influence. The county was central to Scottish dynastic conflict; Macbeth fell at Lumphanan in 1057, and Robert the Bruce defeated English forces near Inverurie in 1307. Anglo-Norman penetration introduced the families of Balliol, Bruce, and Comyn during the 12th and 13th centuries. Religious conflict between the Catholic Gordon family and the Protestant Forbes clan intensified after the Reformation. Three universities were founded before the 17th century. Increased agricultural and commercial progress followed the settling of clan rivalries after 1688."
   },
   "county:Anglesey": {
     "name": "Anglesey",
@@ -185,34 +186,39 @@
     "f3": "Content coming soon.",
     "f4": "Môn Mam Cymru",
     "f5": "749 km²",
-    "f13": "http://www.anglesey.gov.uk/"
+    "f13": "http://www.anglesey.gov.uk/",
+    "f10": "Anglesey has been inhabited since the Mesolithic period, with the earliest excavated sites dating to around 7000 BC near Aberffraw. Neolithic settlers constructed the chambered tomb of Bryn Celli Ddu and numerous megaliths from around 3000 BC. Iron Age Celtic peoples built hill forts and roundhouse settlements, some occupied continuously into the Roman period. The Ordovices were defeated by a Roman legion around 78 AD. Following Roman withdrawal, Anglesey formed part of the kingdom of Gwynedd. The island's fertile land made it the principal granary of Wales throughout the medieval period. Norse presence left traces in coastal place names. Edward I constructed Beaumaris Castle in 1295 as part of his network of fortifications controlling north Wales."
   },
   "county:Angus": {
     "name": "Angus",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "SNP: 1"
+    "f6": "SNP: 1",
+    "f10": "The area now comprising Angus has been occupied since at least the Neolithic period, with radiocarbon-dated enclosures at Douglasmuir from around 3500 BC and Bronze Age short-cist burials near Arbroath. Iron Age souterrains at Carlungie and Ardestie testify to continued occupation. Angus formed the Pictish territory of Circin, and numerous sculptured Pictish stones survive at Aberlemno, Kirriemuir, and elsewhere. The county was first recorded as a Scottish province in 937. Arbroath Abbey was the site of the 1320 Declaration establishing Scottish independence. The medieval administration centred on the Sheriff of Forfar, whose shire gradually superseded the older provincial structure. Witch trials in Forfar during the 16th and 17th centuries reflected wider patterns of religious conflict."
   },
   "county:Argyllshire": {
     "name": "Argyllshire",
     "f1": "",
     "f2": "",
-    "f3": "Content coming soon."
+    "f3": "Content coming soon.",
+    "f10": "The Kilmartin Glen contains Neolithic and Bronze Age monuments dating from around 3000 BC, constituting one of the most significant concentrations of prehistoric remains in mainland Scotland. The Gaelic kingdom of Dal Riata flourished between the 5th and 9th centuries, with its principal fortress at Dunadd. Iona Abbey, founded in 563 AD, became a major centre of early Celtic Christianity. Dal Riata fragmented during the Viking Age and the mainland portion merged with the Pictish kingdom under Kenneth MacAlpin in 843 AD to form the Kingdom of Alba. The area was subsequently divided into lordships including Kintyre, Knapdale, Lorn, and Cowal. Norwegian control of the islands persisted until the Treaty of Perth in 1266. Inveraray emerged as the county's administrative centre in the early modern period."
   },
   "county:Ayrshire": {
     "name": "Ayrshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Lab: 3"
+    "f6": "Lab: 3",
+    "f10": "Ayrshire was part of the territory south of the Antonine Wall briefly occupied by Rome in the 2nd century AD and was inhabited by the Damnonii, a Brittonic people. It subsequently formed part of the kingdom of Strathclyde before incorporation into Scotland in the 11th century. The historic shire of Ayr was divided into three districts: Carrick in the south, Kyle in the centre, and Cunninghame in the north. Turnberry Castle, associated with the birth of Robert the Bruce, dates to the 13th century or earlier. The county's fertile coastal plain supported extensive potato and livestock farming. Lead and coal were worked in the inland areas from the medieval period. Industrial development centred on textile and iron trades in the northern towns during the late 18th and 19th centuries."
   },
   "county:Banffshire": {
     "name": "Banffshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Evidence of prehistoric settlement is widespread in Banffshire, particularly near the coast, including cairns and the 12th-century kirk at Gamrie. The shire originated under David I, with the earliest documented Sheriff of Banff in the 13th century. Its jurisdiction covered the provincial lordships of Boyne, Enzie, Strathisla, Glenlivet, Strathavon, and Glenfiddich, territory lying between the larger provinces of Moray and Buchan. The shire extended along a narrow corridor some fifty miles into the Grampian Mountains following the River Spey. Boundary reviews under the Local Government Act 1889 resolved several longstanding exclaves and parish anomalies. The county was noted for distilling in the upper Spey valley and for fishing harbours on its north coast."
   },
   "county:Bedfordshire": {
     "name": "Bedfordshire",
@@ -221,7 +227,8 @@
     "f3": "Content coming soon.",
     "f5": "1,235 km²",
     "f13": "http://www.bedfordshire.gov.uk/",
-    "f6": "Con: 2 · Lab: 2"
+    "f6": "Con: 2 · Lab: 2",
+    "f10": "Bedfordshire takes its name from the Anglo-Saxon Bedanfordscir, first recorded in 1011, denoting the shire of Beda's ford. The county was historically divided into nine hundreds including Barford, Biggleswade, Clifton, and Flitt. It sits on the southern chalk ridge of the Chilterns, with the remainder part of the River Great Ouse drainage basin. The county's clays and sandstones from the Jurassic and Cretaceous periods supported brick-making, notably Fletton-style bricks in the Marston Vale. Agricultural activity dominated from the medieval period, with market gardening and wheat cultivation significant by the 18th century. The county experienced hardship during 19th-century agricultural depression, prompting emigration to industrial towns. Local brick and straw plaiting industries were significant before industrialisation."
   },
   "county:Berkshire": {
     "name": "Berkshire",
@@ -229,7 +236,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "1,262 km²",
-    "f6": "LD: 4 · Con: 2 · Lab: 2"
+    "f6": "LD: 4 · Con: 2 · Lab: 2",
+    "f10": "Berkshire takes its name from the Celtic word bearroc, meaning hilly, referring to a now-lost wood of box trees west of Frilsham. The county's early history is preserved in the Chronicles of Abingdon Abbey, which held extensive estates with its own judicial privileges. Alfred the Great's campaigns against the Danes included battles at Englefield, Ashdown, and Reading. The English Civil War brought conflict at two battles of Newbury in 1643 and 1644, and Donnington Castle was reduced to ruin in the aftermath. The Glorious Revolution's only substantial English military engagement took place at the Battle of Reading in December 1688. Berkshire and Oxfordshire shared a single sheriff until the reign of Elizabeth I. Windsor Castle's association with the crown since the Norman Conquest led to the county's designation as Royal County in 1957."
   },
   "county:Berwickshire": {
     "name": "Berwickshire",
@@ -238,14 +246,16 @@
     "f3": "Content coming soon.",
     "f5": "1,184 km²",
     "f13": "http://www.berwickshire-lieutenancy.co.uk/",
-    "f6": ""
+    "f6": "",
+    "f10": "Berwickshire's territory corresponds to the medieval province of Merse, lying between the Lammermuir Hills and the River Tweed. The shire was created under David I in the 12th century, centred on the royal burgh of Berwick-upon-Tweed. After Berwick was ceded to English control in 1482, county administration shifted between Duns, Lauder, and Greenlaw before settling at Greenlaw by act of James VI in 1596. The county was repeatedly contested during Anglo-Scottish medieval conflicts. Commissioners of Supply were established in 1667. County Hall was built at Greenlaw in 1829 to serve as courthouse and administrative centre. The county's economy was predominantly agricultural, based on the fertile lowlands of the Merse."
   },
   "county:Brecknockshire": {
     "name": "Brecknockshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Lab: 2"
+    "f6": "Lab: 2",
+    "f10": "Brecknockshire was created as a county in 1536 under the Laws in Wales Act, incorporating the medieval Welsh kingdom of Brycheiniog in its southern portions and the cantref of Buellt to the north. Brycheiniog had functioned as an independent buffer state in early medieval south Wales before Norman conquest between 1088 and 1095 by Bernard de Neufmarche, who established the Lordship of Brecknock. Buellt was seized by Edward I in 1282 during the final Welsh conquest. The landscape is dominated by the Black Mountains, Brecon Beacons, and Fforest Fawr. The county remained predominantly pastoral and agricultural, with the River Wye defining the northern boundary and the Usk flowing through the central valley. Several Norman castles including Brecon served as administrative and military centres throughout the medieval period."
   },
   "county:Buckinghamshire": {
     "name": "Buckinghamshire",
@@ -254,21 +264,24 @@
     "f3": "Content coming soon.",
     "f5": "1,874 km²",
     "f13": "http://www.buckscc.gov.uk/",
-    "f6": "Lab: 4 · Con: 2 · LD: 2"
+    "f6": "Lab: 4 · Con: 2 · LD: 2",
+    "f10": "Buckinghamshire takes its Anglo-Saxon name from Bucca's home, referring to Buckingham in the north of the county. The county existed as a subdivision of the kingdom of Mercia from the 6th century and its rural geography has changed little from the Anglo-Saxon period. The county was politically significant during the 16th century when Henry VIII intervened in local affairs. The English Civil War reputedly began with John Hampden's resistance to ship money taxation in mid-Buckinghamshire in the 1630s. The 19th century brought agricultural depression and migration to urban centres, releasing land for purchase by wealthier incomers. Railways accelerated growth in southern towns such as Aylesbury and High Wycombe, while Buckingham itself declined into relative obscurity. The county's southern portion, bounded by the Thames, was historically part of the Chiltern Hills wool-producing economy."
   },
   "county:Buteshire": {
     "name": "Buteshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Buteshire was created as a shire by Robert II around 1385, incorporating islands in the Firth of Clyde that had not previously formed part of any Scottish shire. The sheriffdom was initially held hereditarily by descendants of John Stewart and later by the Earls of Bute. The island of Arran was the largest territory within the shire, with Bute and the Cumbraes completing its extent. The county remained largely pastoral and agricultural throughout its history, with fishing a significant local activity. Inherited sheriffdoms were abolished under the Heritable Jurisdictions Act 1746, after which Buteshire was administered jointly with Argyll. County buildings were established at Rothesay on Bute. The shire was abolished for local government purposes in 1975."
   },
   "county:Caernarfonshire": {
     "name": "Caernarfonshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Caernarfonshire was formally constituted as a county under the Statute of Rhuddlan in 1284 following Edward I's conquest of Wales, incorporating the cantrefi of Llyn, Arfon, Arllechwedd, and part of Dunoding. Its territory encompassed the mountainous heart of Snowdonia, including Snowdon, the highest point in Wales. The county was divided into ten hundreds based on existing Welsh commotes. Caernarfon Castle, built from 1283, served as a principal administrative centre of English authority in north Wales. Population grew steadily through the 19th century from 46,000 in 1801 to 137,000 by 1901, driven partly by the slate quarrying industry centred around Llanberis and Bethesda. Elected county councils were established in 1889 under the Local Government Act 1888."
   },
   "county:Caithness": {
     "name": "Caithness",
@@ -276,7 +289,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "618 km²",
-    "f6": ""
+    "f6": "",
+    "f10": "Caithness has been settled since the Neolithic period; its Old Red Sandstone flagstone was an important building material from ancient times. The area formed part of the ancient Pictish kingdom of Cat. Norse settlers colonised the county from the 9th century, with Norwegian overlordship acknowledged until the Scottish crown claimed the region in 1098. The county became a separate shire by act of Parliament in 1641. Its flat landscape of open moorland and blanket bog, known as the Flow Country, extends south into Sutherland and represents the largest expanse of blanket bog in Europe. Wick grew as a significant herring fishing port in the 18th and 19th centuries. The county's sparse population made it one of the least densely settled parts of mainland Britain."
   },
   "county:Cambridgeshire": {
     "name": "Cambridgeshire",
@@ -284,7 +298,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "3,390 km²",
-    "f6": "Lab: 3 · Con: 2"
+    "f6": "Lab: 3 · Con: 2",
+    "f10": "Cambridgeshire contains some of the earliest known Neolithic permanent settlements in Britain, notably Flag Fen at Fengate, and Must Farm near Whittlesey, where exceptionally well-preserved Bronze Age dwellings were found. The area was settled by Anglo-Saxons from the 5th century and appears in the Domesday Book as Grantbridgeshire. The Fenland was progressively drained and converted to farmland from the medieval period onwards, transforming the agricultural landscape. The University of Cambridge grew from foundations in 1209, becoming a major intellectual centre. The county's flat terrain made it strategically important for military airfields during the Second World War. Cereal and market garden production dominated the post-medieval agricultural economy."
   },
   "county:Cardiganshire": {
     "name": "Cardiganshire",
@@ -294,7 +309,8 @@
     "f4": "GOLUD GWLAD RHYDDID",
     "f5": "1,786 km²",
     "f13": "https://www.ceredigion.gov.uk/",
-    "f6": ""
+    "f6": "",
+    "f10": "Cardiganshire has been inhabited since prehistoric times, with 170 hill forts and enclosures identified across the area and numerous Bronze Age standing stones. The Romans operated forts at Bremia and Loventium to protect gold mines near present-day Llanddewi Brefi. Following Roman withdrawal, the territory formed the kingdom of Ceredigion, traditionally associated with Ceredig son of Cunedda in the 5th century. Strata Florida Abbey and Llanbadarn Fawr were significant medieval monastic centres of scholarship. Edward I divided Wales into counties in 1282, forming Cardiganshire from five hundreds. Cardigan was a major southern Welsh port until its harbour silted in the mid-19th century. Lead mining and export through Aberystwyth became economically important in the 19th century, alongside coastal herring and corn trade."
   },
   "county:Carmarthenshire": {
     "name": "Carmarthenshire",
@@ -304,7 +320,8 @@
     "f4": "RHYDDID GWERIN FFYNIANT GWLAD",
     "f5": "2,370 km²",
     "f13": "http://www.carmarthenshire.gov.uk/",
-    "f6": "Lab: 1"
+    "f6": "Lab: 1",
+    "f10": "Carmarthenshire contains evidence of hominin occupation dating back at least 40,000 years, with stone tools from Coygan Cave near Laugharne. The Roman fort at Carmarthen, established around 75 AD with an adjacent amphitheatre, likely makes the town the oldest continuously occupied settlement in Wales. The area formed the kingdom of Ystrad Tywi within the High Medieval kingdom of Deheubarth, with its principal court at Dinefwr. The Normans transformed Carmarthen into an international trading port, the only Welsh staple port for wool, pelts, lead, and tin. Following conquest by Edward I, the county was reorganised under the Statute of Rhuddlan in 1284. The first industrial canal in Wales was constructed in 1768 to convey coal from the Gwendraeth Valley. Coal, iron, and agricultural production intensified during the Napoleonic Wars era."
   },
   "county:Cheshire": {
     "name": "Cheshire",
@@ -312,7 +329,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "2,343 km²",
-    "f6": "Lab: 4 · Con: 2 · LD: 1"
+    "f6": "Lab: 4 · Con: 2 · LD: 1",
+    "f10": "Cheshire was made a county palatine by William I after 1066, with the Earl of Chester holding autonomous powers on the Welsh Marches. The Domesday Book of 1086 recorded Cheshire as a larger county than its modern form, including hundreds later transferred to north Wales. The county's ten hundreds consolidated into seven: Broxton, Bucklow, Eddisbury, Macclesfield, Nantwich, Northwich, and Wirral. The earldom's independence meant Magna Carta did not apply to the shire of Chester; the earl instead issued his own Chester Charter. Salt production at the Cheshire meres was economically significant from Roman times through the medieval period and into the early modern era. The county's borders were adjusted in 1182 when land north of the Mersey was incorporated into the new county of Lancashire."
   },
   "county:Clackmannanshire": {
     "name": "Clackmannanshire",
@@ -320,7 +338,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "159 km²",
-    "f13": "http://www.clacks.gov.uk/"
+    "f13": "http://www.clacks.gov.uk/",
+    "f10": "Clackmannanshire takes its name from a pre-Christian stone associated with the deity Manau at the county town of Clackmannan. The shire was established by 1305, possibly earlier. Clackmannan's tolbooth, built in 1592, served as the sheriff court until 1822 when administration shifted to the larger town of Alloa. The county became known for weaving mills powered by Hillfoots streams, with brewing, glass manufacture, mining, and shipbuilding as additional industries. Commissioners of Supply were established in 1667. County Buildings were constructed in 1865 in Alloa to serve as courthouse and administrative centre. The county was one of the smallest in Scotland and was abolished for local government purposes in 1975."
   },
   "county:Cornwall": {
     "name": "Cornwall",
@@ -329,13 +348,15 @@
     "f3": "Content coming soon.",
     "f5": "3,562 km²",
     "f13": "https://cornwall.gov.uk",
-    "f6": "Lab: 4 · LD: 2"
+    "f6": "Lab: 4 · LD: 2",
+    "f10": "Cornwall has been inhabited since the Palaeolithic period and formed part of the Atlantic Bronze Age maritime trading network. The first written account of the area, from Diodorus Siculus citing the 4th-century BC geographer Pytheas, describes tin production traded overland through France to Mediterranean merchants. Tin and copper mining was central to the county's economy from ancient times; the Stannary Convocation, regulating the tin industry, dates from the 12th century. Romans occupied parts of Cornwall and established several forts, though the area remained peripheral to the main centres of Romanisation. The county absorbed its Brittonic population into the kingdom of Wessex by the mid-9th century. A distinct Cornish identity persisted through the medieval period, evidenced by the Cornish language and the Prayer Book Rebellion of 1549."
   },
   "county:Cromartyshire": {
     "name": "Cromartyshire",
     "f1": "",
     "f2": "",
-    "f3": "Content coming soon."
+    "f3": "Content coming soon.",
+    "f10": "Cromartyshire was anciently part of the province of Ross, under Norwegian overlordship until the Scottish crown claimed suzerainty in 1098. A small shire of Cromarty, covering the Black Isle peninsula, was established by the mid-13th century, with the sheriffdom becoming hereditary in Clan Urquhart. In 1682 the feudal barony of Cromarty was purchased by the Mackenzies of Tarbat. Parliamentary acts of 1685 and 1690 transferred additional Easter Ross lands to Cromartyshire, creating a fragmented county of scattered detached portions. The county remained small and administratively anomalous throughout its existence, noted for its complex boundaries rather than industrial or agricultural distinction. Commissioners of Supply were established in 1667 and a county council created in 1890. The county was abolished in 1975."
   },
   "county:Cumberland": {
     "name": "Cumberland",
@@ -343,7 +364,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "1,516 km²",
-    "f6": "Lab: 2"
+    "f6": "Lab: 2",
+    "f10": "Cumberland's boundaries were established in the 12th century, lying between Northumberland and Durham to the east, Westmorland to the south, and the Solway Firth and Irish Sea to the west. The county was historically vulnerable to Scottish incursions; its internal wards originated as military subdivisions for organising local defence. Carlisle served as county town throughout Cumberland's history. The county's parishes were notably large, often encompassing multiple townships, a pattern typical of northern England. Roman fortifications along Hadrian's Wall traversed the county's northern portions. The medieval wool trade and subsequent coal mining at Whitehaven, developed from the 17th century, drove economic growth. Agriculture in the Eden valley and coastal plains remained significant alongside the mining economy."
   },
   "county:Denbighshire": {
     "name": "Denbighshire",
@@ -352,7 +374,8 @@
     "f3": "Content coming soon.",
     "f5": "837 km²",
     "f13": "http://www.denbighshire.gov.uk/",
-    "f6": "Lab: 2"
+    "f6": "Lab: 2",
+    "f10": "Denbighshire was created in 1536 under the Laws in Wales Acts, incorporating territory along the eastern edge of north Wales between the Clwydian Range and the Berwyn mountains. The fertile Vale of Clwyd, running north to south through the county, was the principal agricultural zone, supporting dairy farming and grain production. Medieval settlements along the Clwyd valley reflect both Welsh and Anglo-Norman administrative patterns, with Denbigh Castle established by Edward I in 1282 as a garrison town. Coal and steel industries developed in the Wrexham area during the 19th century. The arrival of the coastal railway in the mid-19th century opened the north coast to visitors from Merseyside, initiating a tourist economy around resorts such as Rhyl and Prestatyn."
   },
   "county:Derbyshire": {
     "name": "Derbyshire",
@@ -362,7 +385,8 @@
     "f4": "Bene consulendo",
     "f5": "2,625 km²",
     "f13": "https://www.derbyshire.gov.uk/",
-    "f6": "Lab: 12"
+    "f6": "Lab: 12",
+    "f10": "Derbyshire has evidence of human presence from at least 200,000 years ago, with Middle Palaeolithic hand axes found near Hopton. Neolithic settlers constructed chambered tombs at Minninglow and Five Wells, and the henge monument of Arbor Low dates to around 2500 BC. Roman occupation brought exploitation of the county's lead ore deposits, with forts at Brough and near Glossop and a settlement at Buxton exploiting its warm springs. Derventio fort was established near modern Derby. Several Mercian kings were buried in the Repton area. Following the Norman Conquest, the Forest of High Peak and Duffield Frith were established as hunting grounds. Lead mining and coal extraction expanded significantly from the medieval period, with the Derwent valley becoming central to early industrialisation in the 18th century."
   },
   "county:Devon": {
     "name": "Devon",
@@ -371,7 +395,8 @@
     "f3": "Content coming soon.",
     "f4": "Auxilio Divino",
     "f5": "6,707 km²",
-    "f6": "LD: 4 · Lab: 3 · Con: 2"
+    "f6": "LD: 4 · Lab: 3 · Con: 2",
+    "f10": "Devon has been inhabited since the Palaeolithic period, with Kents Cavern in Torquay producing human remains from 30,000 to 40,000 years ago. Dartmoor was occupied by Mesolithic hunter-gatherers from around 6000 BC. The Romans held the area for approximately 350 years, with Exeter serving as the regional capital Isca Dumnoniorum. Saxon expansion absorbed Devon into Wessex by the mid-9th century, with the border with Cornwall fixed at the River Tamar by King Athelstan in 936 AD. Devon participated in major conflicts including the Wars of the Roses, the Prayer Book Rebellion of 1549, and the English Civil War. Tin and copper mining on Dartmoor and in the county's uplands operated from the 12th century, regulated by the Stannary Convocation, declining in the late 19th century as deposits were exhausted."
   },
   "county:Dorset": {
     "name": "Dorset",
@@ -380,21 +405,24 @@
     "f3": "Content coming soon.",
     "f5": "2,814 km²",
     "f13": "https://www.dorsetforyou.gov.uk/",
-    "f6": "Lab: 2 · Con: 2 · LD: 2"
+    "f6": "Lab: 2 · Con: 2 · LD: 2",
+    "f10": "Dorset was first settled by Mesolithic hunters around 8000 BC, with the Dorset Cursus, a Neolithic ceremonial monument, constructed around 3000 BC. Bronze Age farmers cleared the chalk downland, leaving numerous round barrows. The Iron Age Durotriges tribe built extensive hill forts, most notably Maiden Castle, one of the largest in Europe. The Romans captured Maiden Castle in 43 AD and established Durnovaria near modern Dorchester. Bokerley Dyke, constructed by post-Roman inhabitants, delayed Saxon advance into Dorset for approximately 150 years. The Saxons established a diocese at Sherborne and Dorset became a shire of Wessex with borders largely unchanged since. The county's wool trade, Purbeck Marble quarrying, and ports of Weymouth and Lyme Regis generated medieval prosperity until the Black Death of 1348 reduced the population by approximately one third."
   },
   "county:Dumfriesshire": {
     "name": "Dumfriesshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Con: 1"
+    "f6": "Con: 1",
+    "f10": "Dumfriesshire is defined by three principal river systems, the Nith, Annan, and Esk, flowing south from the Southern Uplands to the Solway Firth. Scots Dyke, a man-made berm between the Esk and Sark, marks the historic Anglo-Scottish border in the county's southwest. The coastal lowlands contain areas of reclaimed moss land formerly under water. Dumfries was an important medieval royal burgh and administrative centre. The county's border position made it subject to frequent raiding and military campaigns throughout the medieval and early modern periods. Agricultural improvement of the fertile holms and river valleys was well underway by the 18th century. Textile industries developed in the Nith and Annan valleys during the Industrial Revolution."
   },
   "county:Dunbartonshire": {
     "name": "Dunbartonshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Lab: 2"
+    "f6": "Lab: 2",
+    "f10": "Dunbartonshire became a shire by the end of the 12th century, initially encompassing an area north of the River Clyde and around Loch Lomond, broadly corresponding to the earldom of Lennox. Boundary adjustments with Stirlingshire over the parishes of Kirkintilloch and Cumbernauld occurred repeatedly between the 13th and 16th centuries. Dumbarton Castle on its rock above the Clyde was a significant medieval fortress controlling river access. Commissioners of Supply were established for the shire in 1667 and an elected county council in 1890. The county incorporated shipbuilding and associated industries along the Clyde from the 18th century onwards. Dumbarton and Clydebank became industrially important during the Victorian period. The county was abolished for local government in 1975."
   },
   "county:Durham": {
     "name": "Durham",
@@ -409,7 +437,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "679 km²",
-    "f13": "http://www.eastlothian.gov.uk/"
+    "f13": "http://www.eastlothian.gov.uk/",
+    "f10": "Lothian was populated by Brythonic-speaking Britons after Roman withdrawal, forming part of the Gododdin kingdom within the Old North. The region fell to the Angles in the 7th century, becoming part of Bernicia and subsequently Northumbria, before coming under Scottish control in the 10th century. The shire of Haddington was first mentioned in 12th-century charters of King David. The Palace of Haddington served as a seat of Scottish kings in the 12th and 13th centuries. The county was the site of several major conflicts including the Battle of Dunbar in 1296, the Rough Wooing of the 1540s, and a further Battle of Dunbar in 1650. The Battle of Prestonpans in 1745 was a significant Jacobite victory. Fertile agricultural land in the coastal plains supported grain and cattle farming throughout the county's history."
   },
   "county:Essex": {
     "name": "Essex",
@@ -418,7 +447,8 @@
     "f3": "Content coming soon.",
     "f5": "3,670 km²",
     "f13": "https://www.essex.gov.uk/",
-    "f6": "Con: 10 · Lab: 4 · LD: 2 · Reform: 1 · Ind: 1"
+    "f6": "Con: 10 · Lab: 4 · LD: 2 · Reform: 1 · Ind: 1",
+    "f10": "Essex evolved from the kingdom of the East Saxons, itself rooted in the territory of the Iron Age Trinovantes tribe. The Trinovantes established Colchester, Britain's oldest recorded town, as their capital oppidum with its own mint, before being absorbed by the Catuvellauni around 10 AD. The Roman invasion of 43 AD established Colchester as a colonia, the first and most important city in Roman Britain, including a major imperial temple. Colchester's foundation contributed to the Boudiccan revolt of around 60 AD which destroyed the city. Anglo-Saxon settlement from the 5th century established the kingdom of the East Saxons. The county's medieval economy centred on wool and cloth production, with markets at Colchester, Chelmsford, and Saffron Walden among the most significant in eastern England."
   },
   "county:Fife": {
     "name": "Fife",
@@ -427,7 +457,8 @@
     "f3": "Content coming soon.",
     "f5": "1,325 km²",
     "f13": "https://www.fife.gov.uk/",
-    "f6": "LD: 1 · Lab: 1"
+    "f6": "LD: 1 · Lab: 1",
+    "f10": "Fife is documented as one of the seven sub-kingdoms of the Pictish realm, with the hill fort of Clatchard Craig serving as an important Pictish stronghold between the 6th and 8th centuries. Dunfermline became an important royal centre from the reign of Malcolm III, with Dunfermline Abbey replacing Iona as the burial place of Scottish royalty. The Earl of Fife held the hereditary right to crown Scottish monarchs. Falkland Palace was developed by successive Stuart monarchs who favoured the area's hunting grounds. Wool, linen, coal, and salt were traded through Fife's coastal ports with the Low Countries from the medieval period. Coal had been mined in Fife since at least the 12th century, expanding dramatically during the Victorian era and transforming formerly rural villages into substantial industrial towns."
   },
   "county:Flintshire": {
     "name": "Flintshire",
@@ -437,14 +468,16 @@
     "f4": "GOROU TARIAN, CYFIAWNDER",
     "f5": "437 km²",
     "f13": "http://www.flintshire.gov.uk/",
-    "f6": "Lab: 1"
+    "f6": "Lab: 1",
+    "f10": "At the time of the Roman invasion, Flintshire was inhabited by the Deceangli, a Celtic tribe whose territory showed evidence of lead and silver mining under Roman exploitation. The Deceangli surrendered to Roman rule with little resistance. The area was absorbed into the Anglo-Saxon kingdom of Mercia by the 8th century, with Offa's Dyke marking the western boundary. Edward I constituted Flintshire as a county under the Statute of Rhuddlan in 1284, administered jointly with the Palatinate of Chester. The Laws in Wales Acts 1535-1542 consolidated the county under the English Crown, including the detached exclave of Welsh Maelor. Flintshire was notable for lead smelting along the Dee estuary and coal deposits in the Wrexham area, both economically significant from the medieval period."
   },
   "county:Glamorgan": {
     "name": "Glamorgan",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Lab: 11"
+    "f6": "Lab: 11",
+    "f10": "Glamorgan's terrain has been inhabited for over 200,000 years, with the Red Lady of Paviland, the oldest known human burial in Britain dated to around 29,000 BC, found on the Gower Peninsula. Nineteen Neolithic chambered tombs were constructed from around 4000 BC. The Iron Age Silures tribe occupied the area and fiercely resisted Roman conquest, not being subdued until approximately 75 AD, when the regional capital of Venta Silurum at Caerwent was established. Following Roman withdrawal, the kingdom of Morgannwg emerged from the fusion of smaller Welsh polities. The Normans entered the region in the late 11th century, establishing a network of castles. The Vale of Glamorgan supported productive mixed farming, while the coalfield to the north and west developed into an industrially significant zone from the 18th century."
   },
   "county:Gloucestershire": {
     "name": "Gloucestershire",
@@ -453,7 +486,8 @@
     "f3": "Content coming soon.",
     "f5": "3,150 km²",
     "f13": "https://www.gloucestershire.gov.uk/",
-    "f6": "Lab: 4 · LD: 3 · Con: 1"
+    "f6": "Lab: 4 · LD: 3 · Con: 1",
+    "f10": "Gloucestershire is first recorded in the Anglo-Saxon Chronicle in the 10th century, though Winchcombe and the Forest of Dean were not incorporated until the late 11th century. The county originally included Bristol, which separated as a county in its own right in 1373. The Cotswolds supported a significant medieval wool economy, with monastery estates at Cirencester and elsewhere holding extensive sheep-farming land. The Forest of Dean yielded timber and iron ore from the Roman period onwards. Gloucester served as the Roman colony of Glevum and remained administratively significant through the Norman period. Agricultural and extractive industries underpinned the county's economy through the early modern period before industrialisation concentrated around the Severn valley."
   },
   "county:Greater_Manchester": {
     "name": "Greater Manchester",
@@ -461,7 +495,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "1,276 km²",
-    "f6": "Lab: 16 · LD: 2"
+    "f6": "Lab: 16 · LD: 2",
+    "f10": "The Greater Manchester area has evidence of Iron Age habitation, particularly at Mellor, with the Brigantes occupying the region before Roman conquest. Roman forts were established at Castlefield in Manchester and at Castleshaw in Saddleworth during the 1st century AD. The area between the Mersey and Ribble was recorded in the Domesday Book of 1086 under Cheshire. From the late 18th century the Industrial Revolution transformed the local domestic textile system; mechanisation drove rapid expansion of the cotton industry and ancillary trades, making Manchester the world's largest cotton goods marketplace by the early 19th century. The townships around Manchester expanded rapidly through unplanned urbanisation driven by textile production, becoming a dense conurbation of mill towns by the mid-19th century."
   },
   "county:Hampshire": {
     "name": "Hampshire",
@@ -470,7 +505,8 @@
     "f3": "Content coming soon.",
     "f5": "3,769 km²",
     "f13": "http://www.hants.gov.uk/",
-    "f6": "Lab: 8 · Con: 7 · LD: 5 · Reform: 1"
+    "f6": "Lab: 8 · Con: 7 · LD: 5 · Reform: 1",
+    "f10": "Hampshire has been continuously occupied since the end of the last Ice Age, around 12,000 BC, with Mesolithic hunter-gatherers concentrated in river valleys. Neolithic agriculture was established by 4000 BC, and Iron Age hillforts including Danebury Rings were major features of the later prehistoric landscape. By the Roman conquest, Winchester, Venta Belgarum, served as the regional administrative centre. The Romans incorporated Hampshire peacefully into the province of Britannia in 43 AD. Winchester subsequently became the capital of the Anglo-Saxon kingdom of Wessex and later of England. The county's coastline and harbours at Southampton and Portsmouth made it strategically significant for naval and commercial activity throughout the medieval and early modern periods."
   },
   "county:Herefordshire": {
     "name": "Herefordshire",
@@ -479,7 +515,8 @@
     "f3": "Content coming soon.",
     "f5": "2,180 km²",
     "f13": "https://www.herefordshire.gov.uk/",
-    "f6": "Con: 1"
+    "f6": "Con: 1",
+    "f10": "Herefordshire occupied a border position against Wales that shaped its medieval history throughout. The county's fertile agricultural land in the Wye and Lugg valleys supported mixed farming with a specialisation in orchards and cider production extending from the medieval period. Hereford Cathedral, established in the 7th century, housed the Mappa Mundi and a significant collection of chained medieval manuscripts. The county was a Marcher zone subject to Welsh raids and Norman castle-building throughout the 11th to 13th centuries. The town of Hereford grew as a market centre serving an extensive agricultural hinterland. The county's economy remained predominantly pastoral and agricultural, with cider production a defining local industry from the medieval period through the modern era."
   },
   "county:Hertfordshire": {
     "name": "Hertfordshire",
@@ -488,7 +525,8 @@
     "f3": "Content coming soon.",
     "f5": "1,643 km²",
     "f13": "https://www.hertfordshire.gov.uk",
-    "f6": "Lab: 6 · LD: 2 · Con: 2"
+    "f6": "Lab: 6 · LD: 2 · Con: 2",
+    "f10": "Hertfordshire has evidence of human occupation from the Mesolithic period, with Neolithic farming and Bronze Age settlement established in sequence. The Iron Age Catuvellauni tribe adapted to Roman conquest, leading to the development of Verulamium, modern St Albans, as an important Roman town. Saint Alban's martyrdom at Verulamium, traditionally dated to the 3rd century, was the first recorded British martyrdom. The county was assigned a fortress at Hertford by Edward the Elder in 913. Hertfordshire lay on the front line of Alfred the Great's campaigns against Norse forces, with the River Lea established as a Danelaw boundary. The medieval wool trade and the county's proximity to London generated commercial activity, while the dissolution of monasteries in the 16th century restructured land ownership significantly."
   },
   "county:Huntingdonshire": {
     "name": "Huntingdonshire",
@@ -497,7 +535,8 @@
     "f3": "Content coming soon.",
     "f5": "906 km²",
     "f13": "http://www.huntsdc.gov.uk/",
-    "f6": "Lab: 1"
+    "f6": "Lab: 1",
+    "f10": "Huntingdonshire's boundaries were first delimited in Anglo-Saxon times and remained largely unchanged until the 20th century. Henry II declared all of Huntingdonshire a royal forest on his accession in 1154. The River Great Ouse and its fenland tributaries shaped the county's agricultural economy, with the draining of the fens from the 17th century transforming extensive wetlands into productive farmland. The county was notable as a parliamentary stronghold during the Civil War. The town of Huntingdon was an important medieval market centre. Under the Local Government Act 1888, Huntingdonshire became an administrative county, merged with the Soke of Peterborough in 1965, and absorbed into Cambridgeshire under the 1972 Act. Its boundaries were among the most stable of any English county."
   },
   "county:Inner_London": {
     "name": "Inner London",
@@ -505,14 +544,16 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "319 km²",
-    "f6": "Lab: 18 · Ind: 2 · Con: 1"
+    "f6": "Lab: 18 · Ind: 2 · Con: 1",
+    "f10": "The area now constituting Inner London grew from the ancient City of London, which originated as the Roman trading settlement of Londinium, founded around 43 AD on the north bank of the Thames. The City became the pre-eminent commercial centre of Roman Britain. Anglo-Saxon settlement and Viking raids followed Roman withdrawal, with London emerging as a major trading port by the 9th century. The Norman Conquest brought construction of the Tower of London from 1066. The medieval city expanded steadily beyond its Roman walls, developing into the most populous settlement in England by the 13th century. The Metropolitan Board of Works, established in 1855, was succeeded by the County of London in 1889. Inner London's population reached its peak of nearly five million in 1911."
   },
   "county:Inverness-shire": {
     "name": "Inverness-shire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "The mainland portion of Inverness-shire was anciently part of the Province of Moray, ruled by its own Earls or Mormaers. The province was divided into shires during the 12th century as the Scottish crown secured its authority, with Inverness-shire incorporating the provincial lordships of Badenoch and Lochaber. The Sheriff of Inverness additionally held nominal authority over the northern provinces of Ross and Caithness until separate shires were created. Following the incorporation of the Lordship of the Isles into Scotland in the 15th century, the sheriff took responsibility for the Hebrides and Skye. The county was among the largest in Britain by area, encompassing extensive Highland terrain. Commissioners of Supply were established in 1667 and an elected county council created in 1890."
   },
   "county:Kent": {
     "name": "Kent",
@@ -521,35 +562,40 @@
     "f3": "Content coming soon.",
     "f5": "3,738 km²",
     "f13": "http://www.kent.gov.uk/",
-    "f6": "Lab: 9 · Con: 2 · Ind: 1"
+    "f6": "Lab: 9 · Con: 2 · Ind: 1",
+    "f10": "Kent was occupied intermittently since the Palaeolithic, with early Neanderthal remains found at Swanscombe and the Medway megaliths built during the Neolithic era. Julius Caesar described the area as Cantium around 51 BC, noting its inhabitants as the most civilised in Britain. Following Roman withdrawal, Jutish settlers established the kingdom of Cantia. Augustine's mission of 597 AD converted King Aethelberht of Kent, establishing the Diocese of Canterbury as England's first episcopal see. The county was designated a semi-autonomous county palatine in 1067 after resisting Norman subjugation. Kent's proximity to France and its Cinque Ports made it commercially and strategically vital throughout the medieval period. The Medway valley and the Weald supported iron-founding, cloth-making, and timber industries."
   },
   "county:Kincardineshire": {
     "name": "Kincardineshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Kincardineshire was anciently the province of Mearns, administered by a maer rather than the grander mormaer of larger provinces. A sheriff was established by the 1160s, holding courts at the royal castle of Kincardine. In 1296, King John Balliol surrendered to Edward I from Kincardine Castle, marking the beginning of the Wars of Scottish Independence. A charter of 1532 confirmed Kincardine's role as the shire's judicial centre, but by 1600 the town had declined and courts transferred to Stonehaven. Kincardine subsequently lost its market and fair to Fettercairn and was entirely depopulated by the mid-19th century. The county's agricultural lowlands and coastal settlements supported fishing, farming, and the trade of Stonehaven. Commissioners of Supply were established in 1667 and a county council in 1890."
   },
   "county:Kinross-shire": {
     "name": "Kinross-shire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f13": "http://www.perthshire.com/"
+    "f13": "http://www.perthshire.com/",
+    "f10": "Kinross-shire was anciently part of the province of Fothriff, absorbed into the earldom of Fife. A sheriff of Kinross was established by 1252, with authority initially over just two parishes. The county remained very small throughout its history, being the least populous Scottish county at the 1921 census with fewer than 8,000 inhabitants. Commissioners of Supply were established in 1667. County Buildings were built in 1826 in Kinross as the courthouse and commissioners' meeting place. Loch Leven within the county was historically significant as the site of Mary Queen of Scots' imprisonment in 1567-68. Due to its low population, the 1929 Act combined Kinross-shire and Perthshire county councils for most purposes from 1930. The county was abolished as an administrative area in 1975."
   },
   "county:Kirkcudbrightshire": {
     "name": "Kirkcudbrightshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "The area west of the Nith was originally inhabited by the Celtic Novantae tribe. A Roman marching camp at Shawhead indicates military presence but not sustained occupation. By the 6th century the region formed part of the Brythonic kingdom of Strathclyde, later subject to Norse and Northumbrian overlordship. Following Malcolm Canmore's consolidation of Scottish power after 1057, the Galloway chiefs became vassals of the Scottish crown. In 1369, Archibald the Grim received the eastern part of Galloway and administered it through a steward, establishing Kirkcudbrightshire as the Stewartry. Threave Castle, built by the Douglases on the River Dee, served as the principal fortress until its reduction in 1455. The county's economy was based on mixed farming and coastal fishing throughout the medieval and early modern periods."
   },
   "county:Lanarkshire": {
     "name": "Lanarkshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Lab: 5"
+    "f6": "Lab: 5",
+    "f10": "Lanarkshire became a shire, probably under David I, covering much of the basin of the River Clyde. The county took its name from Lanark, near its geographic centre, which served as the first county town. When created the shire included an area south of the Clyde stretching to the Firth, later separated as Renfrewshire in the early 15th century. The county was administered through two wards, Over and Nether, replaced by three in the mid-18th century. Elected county councils were created in 1890. From the 18th century, heavy industry centred on coal and iron in the north and east of the county transformed the area significantly. Glasgow, situated within Lanarkshire's boundaries, became a separately governed county of itself in 1893. The county was abolished for local government purposes in 1975."
   },
   "county:Lancashire": {
     "name": "Lancashire",
@@ -558,7 +604,8 @@
     "f3": "Content coming soon.",
     "f5": "3,075 km²",
     "f13": "https://www.lancashire.gov.uk/",
-    "f6": "Lab: 13 · Con: 2 · Ind: 1 · LD: 1"
+    "f6": "Lab: 13 · Con: 2 · Ind: 1 · LD: 1",
+    "f10": "Lancashire was established as a county in 1182, covering territory between the Ribble and Mersey rivers, and incorporating hundreds of Amounderness, Blackburn, Leyland, Lonsdale, Salford, and West Derby. During Roman times the area was part of the Brigantes tribal zone, with towns at Manchester, Lancaster, and Ribchester growing around Roman forts. The county formed part of the Anglo-Saxon kingdoms of Northumbria north of the Ribble and Mercia to the south. During the Industrial Revolution, Lancashire became the centre of the world's cotton textile industry, with rapid urbanisation concentrated around Manchester, Preston, and the mill towns of the east. Lancaster, the historic county town, became a city in 1937. By the 1961 census the county's administrative area held over 2.28 million people."
   },
   "county:Leicestershire": {
     "name": "Leicestershire",
@@ -566,7 +613,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "2,156 km²",
-    "f6": "Lab: 4 · Con: 4 · Ind: 1"
+    "f6": "Lab: 4 · Con: 4 · Ind: 1",
+    "f10": "The Domesday Book of 1086 records four wapentakes in Leicestershire: Guthlaxton, Framland, Goscote, and Gartree. The first recorded use of the county name occurs in 1087. Leicestershire's external boundaries have changed little since the Domesday Survey. The county formed part of the Anglo-Saxon kingdom of Mercia. Leicester was an important Roman settlement, Ratae Corieltauvorum, lying on the Fosse Way. The county's economy in the medieval period centred on wool production and, later, hosiery manufacture in the east Midlands framework-knitting industry. The county is traditionally associated with fox hunting; Hugo Meynell of Quorn is credited with establishing modern fox hunting methods in the 18th century. Rutland, adjacent to Leicestershire, was periodically administered as part of the county."
   },
   "county:Lincolnshire": {
     "name": "Lincolnshire",
@@ -575,14 +623,16 @@
     "f3": "Content coming soon.",
     "f5": "6,975 km²",
     "f13": "https://www.lincolnshire.gov.uk/",
-    "f6": "Lab: 5 · Con: 4 · Reform: 1"
+    "f6": "Lab: 5 · Con: 4 · Reform: 1",
+    "f10": "In pre-Roman times Lincolnshire was inhabited by the Corieltauvi people, who spoke Common Brittonic. The name Lincoln derives from Lindum Colonia, the Roman settlement established on the River Witham, which became one of the most important towns in Roman Britain. Large numbers of Germanic settlers arrived following Roman withdrawal, establishing Old English as the primary language. Modern Lincolnshire derives from the merged territory of the Kingdom of Lindsey and the Danelaw borough of Stamford. For much of its history the entire county was called Lindsey, later divided into three administrative Parts: Lindsey, Holland, and Kesteven. The county's extensive fenland was drained progressively from the 17th century. Lincolnshire's agricultural economy, centred on cereals and sheep, was among the most productive in England."
   },
   "county:Merionethshire": {
     "name": "Merionethshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "PC: 1"
+    "f6": "PC: 1",
+    "f10": "Merionethshire comprised the medieval cantrefs of Meirionydd and Penllyn and the commote of Ardudwy. The region formed part of the principality of Gwynedd from the 12th century. Norman influence disrupted existing Welsh political patterns after 1066, with the county becoming formally constituted under Edward I following his conquest of Wales in 1282, incorporating it within the Principality. The county was notable as one of the most mountainous and sparsely populated in Britain, with the Snowdonian massif and Cader Idris dominating its terrain. Sheep and cattle farming in the uplands and quarrying at Blaenau Ffestiniog were principal economic activities. The county's strong Welsh-speaking character persisted through the modern period. Merionethshire was abolished under the Local Government Act 1972."
   },
   "county:Merseyside": {
     "name": "Merseyside",
@@ -590,7 +640,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "647 km²",
-    "f6": "Lab: 13"
+    "f6": "Lab: 13",
+    "f10": "Merseyside as a formal county was created in 1974 from parts of Lancashire and Cheshire, though the area's history extends much further. The Mersey estuary divided settlement between the Wirral peninsula to the west and a Lancashire-dominated hinterland to the east. Liverpool grew from a minor ferry crossing established by King John in 1207 into a major Atlantic trading port by the 18th century. The port's growth was driven by trade in tobacco, sugar, and cotton with the Americas. Birkenhead developed as an industrial shipbuilding centre from the early 19th century. St Helens was a centre of glass manufacture and coal mining. The area's industrial and commercial activity made it one of the most economically significant regions in Victorian Britain."
   },
   "county:Middlesex": {
     "name": "Middlesex",
@@ -598,7 +649,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "602 km²",
-    "f6": "Con: 2"
+    "f6": "Con: 2",
+    "f10": "Middlesex lay within the London Basin, bounded by the Thames to the south, the River Lea to the east, and the River Colne to the west. The county was once well wooded, with the ancient Forest of Middlesex covering a substantial proportion of its area; the Domesday Book of 1086 recorded approximately 30 per cent woodland cover. The county formed part of the East Saxon kingdom from the 6th century. Westminster Abbey, founded in the early medieval period, and the Palace of Westminster grew as the centre of English royal and governmental administration within Middlesex. The county's proximity to London drove steady urbanisation from the 17th century onwards. Middlesex was largely absorbed into the County of London and the surrounding county boroughs by the 20th century, being abolished under the London Government Act 1963."
   },
   "county:Midlothian": {
     "name": "Midlothian",
@@ -607,7 +659,8 @@
     "f3": "Content coming soon.",
     "f5": "354 km²",
     "f13": "http://www.midlothian.gov.uk/",
-    "f6": "Lab: 6"
+    "f6": "Lab: 6",
+    "f10": "Midlothian formed the heart of Scotland's central administrative region, encompassing Edinburgh and its hinterland. The area was part of Lothian, contested between the Britons, Angles, and ultimately the Scottish crown from the 10th century. The shire of Edinburgh, which broadly corresponds to the historic county of Midlothian, developed around Edinburgh Castle and the burgh of Edinburgh, which became Scotland's capital by the late medieval period. Coal mining was historically significant in the eastern and southern parts of the county, with shale oil production emerging in the 19th century as a distinctive local industry. The county was abolished for local government purposes in 1975, with its territory divided between a Midlothian district and the enlarged City of Edinburgh."
   },
   "county:Monmouthshire": {
     "name": "Monmouthshire",
@@ -617,14 +670,16 @@
     "f4": "UTRIQUE FIDELIS",
     "f5": "849 km²",
     "f13": "http://www.monmouthshire.gov.uk/",
-    "f6": "Lab: 6"
+    "f6": "Lab: 6",
+    "f10": "Monmouthshire has evidence of Mesolithic occupation and contains numerous Iron Age hillforts including Llanmelin Wood, suggested as the capital of the Silures. The Silures were among Rome's most resistant opponents, requiring approximately 35 years of campaign before subjugation around 75 AD. The Roman town of Venta Silurum at Caerwent, established in 75 AD, was the regional capital and shows evidence of a thriving civic life including a town council. Following Roman withdrawal, the Kingdom of Gwent was established in the 5th or 6th century. The area was subject to Norman conquest and castle-building from the late 11th century. Its ambiguous status as both Welsh and English territory persisted until the Laws in Wales Acts of 1535-1543 formally incorporated it into England."
   },
   "county:Montgomeryshire": {
     "name": "Montgomeryshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Montgomeryshire was created in 1536 under the Laws in Wales Acts from the former Marcher lordship of Powys, which had itself evolved from the medieval principality of Powys Wenwynwyn. The Treaty of Montgomery of 1267 had formalised the boundaries of this Welsh state within its English-influenced border position. The conversion of Powys Wenwynwyn into a marcher lordship through surrender and regrant gave its ruling princes English backing at the cost of formal independence. The county town was set at Montgomery, the strongest centre of English authority, rather than the Welsh centre at Welshpool. The county comprised the cantrefi of Powys Wenwynwyn including Y Fyrnwy, Llyswynaf, Ystlyg, Cedewain, and Arwystli. The area remained predominantly Welsh-speaking and rural throughout the early modern period."
   },
   "county:Morayshire": {
     "name": "Morayshire",
@@ -633,13 +688,15 @@
     "f3": "Content coming soon.",
     "f5": "2 km²",
     "f13": "http://www.moray.gov.uk/",
-    "f6": ""
+    "f6": "",
+    "f10": "Moray was a large medieval province, sometimes functioning as a vassal of the Scottish crown and at others as a separate kingdom, before being absorbed into Scotland during the 12th century. The old earldom of Moray was divided into the three shires of Elginshire, Nairnshire, and the mainland part of Inverness-shire, probably under David I. Elginshire, informally called Morayshire as the core of the old Moray territory, developed around the sheriffdom of Elgin. The county's fertile coastal lowlands supported productive arable farming. Elgin served as the principal market and administrative town. Fishing harbours at Burghead and Lossiemouth were economically significant from the medieval period. The county was abolished for local government purposes in 1975 and its area incorporated into a new Moray district."
   },
   "county:Nairnshire": {
     "name": "Nairnshire",
     "f1": "",
     "f2": "",
-    "f3": "Content coming soon."
+    "f3": "Content coming soon.",
+    "f10": "Nairnshire was part of the Province of Moray, which was divided into shires during the 12th century as the Scottish crown secured its authority. The shire of Nairn was created probably under William the Lion, with a separate sheriff from at least the late 12th century. A short-lived shire centred on Forres to the east was grouped with Nairn in the early 14th century before later being incorporated into Elginshire. Commissioners of Supply were established for the shire in 1667. The county's Town and County Buildings in Nairn, built in 1818, served as courthouse, commissioners' meeting place, and town council chamber. Nairnshire had five detached portions resolved by boundary review in 1891. The county was one of the smallest in Scotland and was abolished for local government purposes in 1975."
   },
   "county:Norfolk": {
     "name": "Norfolk",
@@ -648,7 +705,8 @@
     "f3": "Content coming soon.",
     "f5": "5,380 km²",
     "f13": "https://www.norfolk.gov.uk/",
-    "f6": "Lab: 4 · Con: 4 · LD: 1"
+    "f6": "Lab: 4 · Con: 4 · LD: 1",
+    "f10": "Norfolk was settled in pre-Roman times, with Palaeolithic evidence from at least 950,000 years ago and quarrying of flint from the chalk in the west. The Brittonic Iceni tribe revolted against Roman authority in 47 AD and again in 60 AD under Boudica, after which the area was opened to systematic Roman settlement, road-building, and agriculture. Germanic settlers, later known as Angles, established control by the 5th century, dividing into north folk and south folk that gave rise to the county names. Norfolk and Suffolk formed the Kingdom of East Anglia. The county's fenland was progressively converted to farmland from the medieval period. Norfolk's medieval prosperity is evidenced by over 650 surviving medieval churches. The county's wool and woollen industries flourished in the high medieval period before the Black Death of 1349 reduced the population sharply."
   },
   "county:Northamptonshire": {
     "name": "Northamptonshire",
@@ -657,7 +715,8 @@
     "f3": "Content coming soon.",
     "f5": "2,364 km²",
     "f13": "https://www.northamptonshire.gov.uk/",
-    "f6": "Lab: 6 · Con: 4"
+    "f6": "Lab: 6 · Con: 4",
+    "f10": "Northamptonshire shows relatively sparse early settlement, with Iron Age hill forts at Rainsborough, Borough Hill, and Hunsbury Hill constructed around 500 BC. The Catuvellauni, a Belgic tribe, controlled the area in the 1st century BC. The Romans established a settlement at Lactodurum, modern Towcester, on Watling Street and a large fort at Longthorpe. After Roman withdrawal the area became part of the Anglo-Saxon kingdom of Mercia. The Danes conquered the area around 889 and it became part of the Danelaw with Watling Street as the boundary, before recapture by Edward the Elder in 917. Rockingham Castle was built for William the Conqueror. The Battle of Northampton in 1460 and the Battle of Naseby in 1645 were major Civil War era engagements fought within the county."
   },
   "county:Northumberland": {
     "name": "Northumberland",
@@ -666,7 +725,8 @@
     "f3": "Content coming soon.",
     "f5": "5,014 km²",
     "f13": "https://www.northumberland.gov.uk/",
-    "f6": ""
+    "f6": "",
+    "f10": "Northumberland has a rich prehistory including rock art, the hillfort of Yeavering Bell, and stone circles. Most of the area was occupied by the Brythonic-Celtic Votadini before Roman conquest. The county lay largely north of Hadrian's Wall and was only briefly under direct Roman control. Present-day Northumberland formed the core of the Anglian kingdom of Bernicia from around 547, united with Deira to form Northumbria in the 7th century. Christianity flourished on Lindisfarne after King Oswald invited Iona monks in the 630s, producing the Lindisfarne Gospels around 700. The county subsequently became a frontier zone with Scotland, accounting for its having more castles than any other English county. Coal mining in the south of the county was significant from the medieval period."
   },
   "county:Nottinghamshire": {
     "name": "Nottinghamshire",
@@ -675,7 +735,8 @@
     "f3": "Content coming soon.",
     "f5": "2,159 km²",
     "f13": "https://www.nottinghamshire.gov.uk/",
-    "f6": "Lab: 8 · Reform: 2"
+    "f6": "Lab: 8 · Reform: 2",
+    "f10": "Nottinghamshire lies on the Roman Fosse Way, with Roman settlements at Mansfield and a fort at Broxtowe. The county was settled by Angles around the 5th century, becoming part of the kingdom and later earldom of Mercia. The county was administratively united with Derbyshire under a single sheriff until 1568. Norman occupation brought the malting and woollen industries to prominence. William the Conqueror made Sherwood Forest a royal hunting forest in 1066. The county developed coal and iron extraction during the Industrial Revolution, with experimental waggonways as early as 1603-1616 at Wollaton. In the 18th and 19th centuries mechanised collieries opened and lace and cotton industries grew. Mansfield became a centre of nonconformism in the 17th century, associated with the early Quaker movement."
   },
   "county:Orkney": {
     "name": "Orkney",
@@ -684,7 +745,8 @@
     "f3": "Content coming soon.",
     "f5": "990 km²",
     "f13": "http://www.orkney.gov.uk/",
-    "f6": ""
+    "f6": "",
+    "f10": "Orkney has been inhabited since at least 8000 BC, with Mesolithic evidence from Tankerness. The Neolithic settlement of Skara Brae, Europe's best-preserved Neolithic village, dates from around 3100 BC. The Standing Stones of Stenness, the Ring of Brodgar, and Maeshowe passage grave testify to a sophisticated prehistoric ceremonial landscape. Norse colonisation occurred during the late 8th and 9th centuries, with King Harald Harfagre annexing the Northern Isles in 875. The Earldom of Orkney passed to the Scottish crown in 1472 when the islands were pledged by Norway as security for a dowry that was never paid. The medieval economy centred on fishing, cattle, and grain production. Flagstone quarrying exploiting the Old Red Sandstone was economically significant from the Neolithic period through the 19th century."
   },
   "county:Outer_London": {
     "name": "Outer London",
@@ -692,7 +754,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "1,253 km²",
-    "f6": "Lab: 26 · LD: 6 · Con: 6 · Reform: 1"
+    "f6": "Lab: 26 · LD: 6 · Con: 6 · Reform: 1",
+    "f10": "Outer London comprises the areas surrounding the historic County of London that were formally incorporated into Greater London in 1965. These territories were historically part of the surrounding counties of Surrey, Kent, Middlesex, and Essex, and formed the suburban periphery of the expanding metropolitan area from the 19th century. Railway development from the 1830s onwards stimulated rapid suburban growth across what became Outer London, transforming agricultural and market-garden land into residential districts. The area's growth accelerated further with the development of the London Underground network in the late 19th and early 20th centuries. Each constituent district had distinct industrial, commercial, and agricultural histories prior to suburban absorption."
   },
   "county:Oxfordshire": {
     "name": "Oxfordshire",
@@ -701,14 +764,16 @@
     "f3": "Content coming soon.",
     "f5": "2,605 km²",
     "f13": "https://www.oxfordshire.gov.uk/",
-    "f6": "Lab: 2 · LD: 2"
+    "f6": "Lab: 2 · LD: 2",
+    "f10": "Oxfordshire was recorded as a county in the early 10th century, lying between the Thames, the Cotswolds, the Chilterns, and the Midlands. Alfred the Great was born across the Thames in Wantage in the Vale of White Horse. The University of Oxford was founded in 1096, becoming a major intellectual centre during the medieval and early modern periods. The area formed part of the Cotswolds wool trade from the 13th century, with western portions particularly prosperous. The county was divided into fourteen hundreds for most of its history. The county's predominantly agricultural economy changed significantly in the early 20th century when Morris Motors was founded in Oxford in 1912, bringing industrial employment. The Vale of White Horse district and parts of South Oxfordshire were historically part of Berkshire before boundary changes in 1974."
   },
   "county:Peeblesshire": {
     "name": "Peeblesshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Con: 1"
+    "f6": "Con: 1",
+    "f10": "Peeblesshire became a shire sometime around the 12th century, covering part of the historic province of Tweeddale. The southern part of Tweeddale became Selkirkshire, while the northern part was divided into two sheriffdoms at Peebles and Traquair before unification as Peeblesshire around 1304. The county's landscape is landlocked, consisting largely of the Southern Uplands with the River Tweed flowing through the county in a crescent. Peebles was the county town. Commissioners of Supply were established for the shire in 1667. County Council was created in 1890 and based at the courthouse on High Street in Peebles. The county's economy was predominantly pastoral, based on sheep farming in the upland hills and woollen textile production in the Tweed valley. The county was abolished for local government purposes in 1975."
   },
   "county:Pembrokeshire": {
     "name": "Pembrokeshire",
@@ -718,21 +783,24 @@
     "f4": "EX UNITATE VIRES",
     "f5": "1,619 km²",
     "f13": "https://www.pembrokeshire.gov.uk/",
-    "f6": ""
+    "f6": "",
+    "f10": "Pembrokeshire has been inhabited since prehistoric times, with evidence of early human occupation at coastal sites throughout the peninsula. The county's rocky coastline contains numerous hill forts from the Iron Age period. The Milford Haven estuary, a major natural harbour, was strategically significant from the prehistoric period. Norman colonisation of the southern part of Pembrokeshire was so thorough that a distinct English-speaking area known as Little England beyond Wales emerged, separated from the Welsh north by an informal boundary called the Landsker Line. The county was created in 1536 under the Laws in Wales Acts. Pembroke Castle, built from the late 11th century, was one of the most powerful Norman fortresses in Wales. The county's economy was based on farming, fishing, and the considerable maritime trade of Milford Haven and Tenby."
   },
   "county:Perthshire": {
     "name": "Perthshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Perthshire's origins as a shire are obscure but it appears to have been created during the reign of David I, with the Sheriff of Perth holding authority over several provinces including Atholl, Breadalbane, Gowrie, Menteith, and Strathearn. Perth itself was an important medieval royal burgh and market centre. The county contained some of Scotland's most significant medieval religious sites, including Scone Palace, where Scottish kings were traditionally crowned. Commissioners of Supply were established in 1667. A county council was created in 1890 and based at Perth Sheriff Court. The county's economy was based on mixed agriculture in the lowland straths, upland sheep farming, and, from the 18th century, linen and cotton textile production. Due to its low-population neighbour Kinross-shire, the two county councils were combined for most purposes from 1930."
   },
   "county:Radnorshire": {
     "name": "Radnorshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Radnorshire was created in 1535 under the Laws in Wales Act from several former territories including the cantrefs of Maelienydd and Elfael and the commote of Gwrtheyrnion. Prior to this the territory fell within the area of Rhwng Gwy a Hafren, Between Wye and Severn, under Marcher Lord control from the late 11th century. Cwmhir Abbey, a Cistercian monastery founded in 1176, was the most significant medieval institution in the county. The county was notable for its poverty throughout the early modern period. New Radnor was designated county town, with sessions alternating at Presteigne. The Welsh language remained dominant in the county until the latter 18th century, retreating westwards through the 19th century. The county's predominantly upland terrain supported sheep farming throughout its history."
   },
   "county:Renfrewshire": {
     "name": "Renfrewshire",
@@ -741,21 +809,24 @@
     "f3": "Content coming soon.",
     "f5": "261 km²",
     "f13": "http://www.renfrewshire.gov.uk/",
-    "f6": "Lab: 5"
+    "f6": "Lab: 5",
+    "f10": "Renfrewshire developed as a shire from Lanarkshire in the early 15th century, covering an area south of the Clyde stretching to the Firth. The county town was Renfrew, though Paisley became the largest settlement. Paisley Abbey, founded in the 12th century, was the most significant medieval institution in the county. The town of Paisley developed a major linen and later cotton textile industry from the 17th century, with the distinctive Paisley pattern shawl manufacture becoming internationally recognised by the early 19th century. Greenock and Port Glasgow on the Firth of Clyde developed as major shipbuilding and sugar refining centres. The county was abolished for local government purposes in 1975 and its territory divided between Eastwood, Renfrew, and Inverclyde districts within Strathclyde Region."
   },
   "county:Ross-shire": {
     "name": "Ross-shire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "The province of Ross is documented from the 10th century, formerly the northern part of the province of Moray, with the River Beauly marking its southern extent. The Scottish crown claimed overlordship from Norway in 1098 but effective authority was slow to develop. Ross was placed nominally under the Sheriff of Inverness until separate sheriffdoms at Cromarty and Dingwall were established by the mid-13th century, though with limited jurisdiction. A parliamentary act of 1504 declared Ross a separate shire but this was largely reversed in 1509. A subsequent act of 1661 finally established Ross-shire for all purposes, with Kenneth Mackenzie, 3rd Earl of Seaforth, appointed as first permanent Sheriff in 1662. The county's economy centred on cattle, fishing, and limited arable agriculture in the coastal lowlands."
   },
   "county:Roxburghshire": {
     "name": "Roxburghshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Roxburghshire appears to have originated in the 12th century with the creation of the sheriffdom of Roxburgh, with the first known sheriff being Gospatric. The hereditary sheriffship was held by the Douglas family until the abolition of heritable jurisdictions in the 18th century. The county was continuously contested in the medieval period as part of the Anglo-Scottish Wars, before the border settled into roughly its modern form with the Treaty of York in 1237. The violence of the border period gave rise to the Border Reivers. The ancient royal burgh of Roxburgh, from which the county took its name, fell into decay by the 15th century; administration subsequently centred on Jedburgh. County Buildings were erected in Jedburgh in 1812. The county's economy was based on sheep farming and some arable cultivation in the border valleys."
   },
   "county:Rutland": {
     "name": "Rutland",
@@ -763,14 +834,16 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "382 km²",
-    "f13": "https://www.rutland.gov.uk/"
+    "f13": "https://www.rutland.gov.uk/",
+    "f10": "Rutland is referred to as Roteland in the Domesday Book of 1086, the name meaning land belonging to Rota. The county was one of the smallest in England. The High Sheriff of Rutland was instituted in 1129, indicating early administrative significance. Oakham Castle, built around 1180-1190, is one of the best-preserved Norman buildings in England. By the 19th century the county was divided into the hundreds of Alstoe, East Rutland, Martinsley, Oakham, and Wrandike. Despite pressure in the 20th century to merge it with neighbouring Leicestershire, local resistance maintained Rutland as a distinct administrative entity. The county's economy was based entirely on agriculture, with mixed farming of the limestone upland and river valley terrain. Rutland became a unitary authority in 1997 after decades of incorporation into Leicestershire."
   },
   "county:Selkirkshire": {
     "name": "Selkirkshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Selkirkshire, also known as Ettrick Forest, was forest land rather than agricultural settlement for much of its early history; neither the Romans, Angles, nor Saxons cleared much of its woodland. The shire emerged from the province of Tweeddale around the 12th century, forming its southern portion alongside Peeblesshire to the north. The first recorded sheriff of Selkirkshire was appointed by William the Lion. The county's royal forest status meant that sheriffs appointed to administer it on the crown's behalf were significant figures. The Earls of Douglas and Earls of Angus administered the county following Robert the Bruce. The county contained the burgh of Selkirk and was notable for pastoral farming in the upland valleys. A county council was created in 1890 and abolished in 1975."
   },
   "county:Shetland": {
     "name": "Shetland",
@@ -779,7 +852,8 @@
     "f3": "Content coming soon.",
     "f5": "1,468 km²",
     "f13": "http://www.shetland.gov.uk/",
-    "f6": ""
+    "f6": "",
+    "f10": "Shetland was colonised by Norse settlers during the late 8th and 9th centuries, with the fate of the existing Pictish population uncertain. King Harald Harfagre annexed the Northern Isles in 875, and the Earldom of Orkney, which included Shetland, was established. The islands were placed under direct Norwegian rule as the Lordship of Shetland in 1195, removed from the earldom. Scotland progressively asserted influence over the Norse-controlled islands from the 13th century. The islands were pledged to Scotland in 1468 as security for a Norwegian royal dowry never paid, and formally incorporated in 1472. Fishing was the dominant economic activity throughout the islands' history, with herring and cod the primary catches. The Norse patronymic naming system and DNA heritage persisted strongly in Shetland's population."
   },
   "county:Shropshire": {
     "name": "Shropshire",
@@ -788,7 +862,8 @@
     "f3": "Content coming soon.",
     "f5": "3,488 km²",
     "f13": "https://www.shropshire.gov.uk/",
-    "f6": "Lab: 3 · Con: 1"
+    "f6": "Lab: 3 · Con: 1",
+    "f10": "Shropshire has evidence of Neolithic occupation, with a site at Sutton near Shrewsbury dated before 2000 BC. A Bronze Age stone circle at Mitchell's Fold and Iron Age hill forts at Caer Caradoc and Old Oswestry reflect successive prehistoric cultures. The area was inhabited by the Cornovii, a Celtic Iron Age people whose capital before Roman occupation was probably on the Wrekin. The Romans established Viroconium Cornoviorum at Wroxeter, which became one of the largest cities in Roman Britain. After Roman withdrawal, Shropshire formed part of the Welsh kingdom of Powys until Mercian annexation in the 8th century. King Offa built two dykes demarcating the border with Wales. The county's medieval economy was based on agriculture, with wool and cloth production significant in the east."
   },
   "county:Somerset": {
     "name": "Somerset",
@@ -797,7 +872,8 @@
     "f3": "Content coming soon.",
     "f5": "4,170 km²",
     "f13": "https://www.somerset.gov.uk/",
-    "f6": "Lab: 4 · LD: 4"
+    "f6": "Lab: 4 · LD: 4",
+    "f10": "Somerset was settled from the Palaeolithic period, with caves in the Mendip Hills at Cheddar Gorge containing remains dated to 12,000 BCE. The Sweet Track, a wooden causeway across the Somerset Levels dated to 3807-3806 BC, is among the world's oldest known engineered roadways. The Glastonbury and Brent Knoll areas of the Somerset Levels were settled by Mesolithic hunters. Numerous Iron Age hillforts, including Cadbury Castle and Ham Hill, were occupied across the county. The Romans invaded Somerset in 47 CE under Vespasian, with the area remaining under Roman authority until around 409 CE. Somerset resisted Saxon advance until the early 8th century, when King Ine of Wessex incorporated it. The Norman Conquest divided Somerset into approximately 700 feudal fiefs. The county's wool trade was significant through the medieval period."
   },
   "county:South_Yorkshire": {
     "name": "South Yorkshire",
@@ -806,7 +882,8 @@
     "f3": "Content coming soon.",
     "f5": "1,552 km²",
     "f13": "https://southyorkshire-ca.gov.uk/",
-    "f6": "Lab: 10"
+    "f6": "Lab: 10",
+    "f10": "The South Yorkshire area has Mesolithic occupation evidence including a stone hut circle dated to around 8000 BC at Deepcar. The region lay on the frontier of the Roman Empire, with Roman forts present in the area. Iron and coal deposits in the Pennine foothills drove the development of metal-working and mining industries from the medieval period. Sheffield, Rotherham, and Barnsley grew as centres of steel, iron, and coal production respectively. The steel industry concentrated in Sheffield from the medieval period, using water power from Pennine rivers and exploiting local iron and coal deposits. Coal mining was concentrated to the north and east of the county. The county of South Yorkshire was formally created in 1974 under the Local Government Act 1972, consolidating an area previously divided between the West Riding of Yorkshire and parts of Derbyshire and Nottinghamshire."
   },
   "county:Staffordshire": {
     "name": "Staffordshire",
@@ -815,14 +892,16 @@
     "f3": "Content coming soon.",
     "f5": "2,714 km²",
     "f13": "https://www.staffordshire.gov.uk/",
-    "f6": "Lab: 10 · Con: 3"
+    "f6": "Lab: 10 · Con: 3",
+    "f10": "Staffordshire was historically divided into five hundreds: Cuttlestone, Offlow, Pirehill, Seisdon, and Totmonslow. The historic county boundaries covered much of what is now the metropolitan county of West Midlands. The area formed part of the Anglo-Saxon kingdom of Mercia. Lichfield was made a county corporate by Mary I in 1553. The Staffordshire Potteries, centred on Stoke-on-Trent, developed as a major ceramic manufacturing region from the 17th century, with the Potteries town receiving county borough status in 1910. The Black Country, encompassing Wolverhampton, Walsall, and West Bromwich, developed as a dense industrial zone producing iron, steel, and metal goods. In July 2009, the Staffordshire Hoard, the largest known Anglo-Saxon gold hoard, was discovered near Lichfield, tentatively dated to the 7th or 8th centuries."
   },
   "county:Stirlingshire": {
     "name": "Stirlingshire",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": "Lab: 1"
+    "f6": "Lab: 1",
+    "f10": "Stirling was created a royal burgh by David I in 1130, and Stirlingshire's origins as a shire date probably from his reign. The county's strategic position controlling the lowest crossing of the Forth made it militarily vital throughout medieval Scottish history. The Battle of Stirling Bridge in 1297, the Battle of Falkirk in 1298, and the Battle of Bannockburn in 1314 were all fought within or adjacent to the county during the Wars of Scottish Independence. Stirling Castle served as a principal royal residence of the Scottish crown through the medieval and early modern periods. The county's boundary with Dunbartonshire was adjusted repeatedly between the 13th and 16th centuries. Commissioners of Supply were established in 1667 and a county council in 1890. The county was abolished for local government purposes in 1975."
   },
   "county:Suffolk": {
     "name": "Suffolk",
@@ -831,7 +910,8 @@
     "f3": "Content coming soon.",
     "f5": "3,801 km²",
     "f13": "https://www.suffolk.gov.uk/",
-    "f6": "Lab: 4 · Con: 1"
+    "f6": "Lab: 4 · Con: 1",
+    "f10": "Suffolk has evidence of early human activity from around 70,000 years ago at Pakefield and Beeches Pit. In the Neolithic and Bronze Age, burial mounds and causewayed enclosures were built. At the Roman period, most of Suffolk was inhabited by the Iceni tribe, who revolted under Boudica in 60-61 AD. The county of Suffolk was formed in the 10th or 11th century. Sutton Hoo, an elaborate royal ship burial probably associated with King Raedwald of East Anglia, is the most celebrated Anglo-Saxon site in the county. The abbey at Bury St Edmunds became one of the most powerful religious institutions in medieval England. Suffolk prospered from the wool and cloth trade in the 15th and 16th centuries, with Lavenham and Hadleigh among the most important textile towns. The county was a site of Puritan and parliamentary strength during the English Civil War."
   },
   "county:Surrey": {
     "name": "Surrey",
@@ -840,7 +920,8 @@
     "f3": "Content coming soon.",
     "f5": "1,663 km²",
     "f13": "https://www.surreycc.gov.uk/",
-    "f6": "LD: 5 · Con: 4 · Lab: 2"
+    "f6": "LD: 5 · Con: 4 · Lab: 2",
+    "f10": "Surrey is divided by the chalk ridge of the North Downs running east-west, with the River Thames historically forming its northern boundary. The county has been occupied since prehistoric times, with Bronze Age and Iron Age sites distributed across the North Downs and Weald. The Romans built Stane Street through the county connecting London to Chichester. Kingston upon Thames was a centre for Anglo-Saxon royal ceremonies, with seven kings traditionally crowned there. The county's proximity to London drove early suburban development from the 17th century. Surrey remained the most wooded county in England, with 22 per cent tree cover. Its medieval economy combined sheep farming on the Downs, ironworking in the Weald, and market gardening supplying London."
   },
   "county:Sussex": {
     "name": "Sussex",
@@ -848,14 +929,16 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "3,783 km²",
-    "f6": "LD: 6 · Con: 4 · Lab: 4 · Green: 1"
+    "f6": "LD: 6 · Con: 4 · Lab: 4 · Green: 1",
+    "f10": "Sussex has evidence of human occupation from around 500,000 years ago at Eartham Pit in Boxgrove, making it one of the earliest known inhabited sites in northern Europe. Iron Age hill forts were built across the South Downs. The Roman conquest brought the development of roads and towns; Chichester, Noviomagus Reginorum, served as the regional capital. The kingdom of Sussex was one of the Anglo-Saxon heptarchy states. Norman conquest involved significant castle construction at Pevensey, Hastings, and elsewhere. The county's medieval economy centred on iron-founding in the Weald, which was among the most significant in England until the 18th century, sheep farming on the Downs, and coastal fishing and trade. Sussex was divided into East and West Sussex for administrative purposes from 1888."
   },
   "county:Sutherland": {
     "name": "Sutherland",
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Sutherland formed part of the ancient Pictish kingdom of Cat, which also included Caithness. The area was conquered by Sigurd Eysteinsson, Jarl of Orkney, in the 9th century. The Scottish crown claimed suzerainty over Caithness and Sutherland from Norway in 1098. The Diocese of Caithness was established in the 12th century with its bishop's seat at Dornoch Cathedral, begun in 1224. A new earldom of Sutherland was created around the same time from the southern part of the joint earldom of Orkney and Caithness. The county of Sutherland was formally established as a separate shire in 1633, covering the earldom of Sutherland, Strathnaver, and Assynt. The county is notable for its sparse population and extensive peat moorland. The Highland Clearances of the late 18th and 19th centuries significantly depopulated interior settlements."
   },
   "county:Tyne_and_Wear": {
     "name": "Tyne and Wear",
@@ -863,7 +946,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "540 km²",
-    "f6": "Lab: 10"
+    "f6": "Lab: 10",
+    "f10": "The area now constituting Tyne and Wear was settled since prehistoric times and formed part of the Roman frontier zone, with significant military infrastructure along the Tyne corridor associated with Hadrian's Wall. The monastic centre at Wearmouth-Jarrow, founded in the 670s and 680s, was one of the most important intellectual centres of early medieval Europe, where the Venerable Bede composed his ecclesiastical histories. Coal mining on both sides of the Tyne and Wear from the medieval period drove industrial growth. Newcastle upon Tyne was granted county corporate status in 1400. Shipbuilding on the Tyne and Wear became central to the area's economy from the 18th century. The metropolitan county of Tyne and Wear was created in 1974, consolidating previous county borough and county structures."
   },
   "county:Warwickshire": {
     "name": "Warwickshire",
@@ -872,7 +956,8 @@
     "f3": "Content coming soon.",
     "f5": "1,975 km²",
     "f13": "https://www.warwickshire.gov.uk/",
-    "f6": "Lab: 4 · Con: 2"
+    "f6": "Lab: 4 · Con: 2",
+    "f10": "Warwickshire was heavily forested in the early medieval period, with the ancient Forest of Arden covering much of western Warwickshire including areas now forming part of Coventry and Birmingham. The county formed part of the Anglo-Saxon kingdom of Mercia. Warwick Castle, built from the late 11th century, was the centre of Norman control over the county. The county was divided into the agricultural Felden to the south and the wooded Arden to the north and west. The Battle of Edge Hill in 1642, the first major engagement of the English Civil War, was fought in the south of the county. Medieval wool production was economically significant. The 19th century brought coal mining, textile manufacture, and engineering industries to the northern and eastern towns, while the south remained predominantly agricultural."
   },
   "county:West_Lothian": {
     "name": "West Lothian",
@@ -880,7 +965,8 @@
     "f2": "",
     "f3": "Content coming soon.",
     "f5": "428 km²",
-    "f6": ""
+    "f6": "",
+    "f10": "West Lothian formed part of Lothian, which came under Scottish control from the 10th century. The county's history was shaped by its position between Edinburgh and the River Forth, making it a significant transit corridor. Coal mining was historically the dominant industry in the county, with shale oil production emerging distinctively in the 19th century at Bathgate and Broxburn, pioneered by James Young from the 1850s. The county contained several important medieval sites including Linlithgow Palace, a principal royal residence of the Scottish crown from the 15th century. Bo'ness, on the Forth, was a significant coal and salt export port. The county was reorganised under the Local Government Act 1973, with its boundaries adjusted and it becoming a district within Lothian Region."
   },
   "county:West_Midlands": {
     "name": "West Midlands",
@@ -898,7 +984,8 @@
     "f3": "Content coming soon.",
     "f5": "2,029 km²",
     "f13": "https://www.westyorks-ca.gov.uk/",
-    "f6": "Lab: 16 · Ind: 1 · Con: 1"
+    "f6": "Lab: 16 · Ind: 1 · Con: 1",
+    "f10": "The West Yorkshire area has evidence of Bronze Age and Iron Age occupation across the Pennine uplands, with the Brigantes tribal federation controlling much of the region before Roman conquest. Roman forts at Ilkley and Castleford controlled key Pennine crossings. The West Riding of Yorkshire, which encompassed most of what became West Yorkshire, was divided between upland pastoral farming in the west and more productive lowland agriculture to the east. From the late medieval period the area became central to England's woollen cloth industry, exploiting fast-flowing Pennine streams for fulling mills. The Industrial Revolution transformed the textile industry with mechanisation from the 1780s, and coal mining in the Yorkshire coalfield expanded to support the textile mills. West Yorkshire was constituted as a metropolitan county in 1974."
   },
   "county:Westmorland": {
     "name": "Westmorland",
@@ -912,7 +999,8 @@
     "f1": "",
     "f2": "",
     "f3": "Content coming soon.",
-    "f6": ""
+    "f6": "",
+    "f10": "Wigtownshire's western coastline showed strong alignment with the Isle of Man and Irish Sea Norse culture; the Rhinns peninsula was part of a maritime network with Norse and Gaelic-Norse settlement names from the 10th and 11th centuries. The western part of Galloway, west of the River Cree, became the Shire of Wigtown in 1370 when Archibald the Grim retained it under crown sheriffdom administration, distinguishing it from the Stewartry of Kirkcudbright to the east. Most of Wigtownshire was Gaelic-speaking at the beginning of the 16th century. The county's flat coastal terrain supported mixed farming and fishing. Stranraer developed as a ferry port to Ireland from the 17th century. The county was abolished for local government purposes in 1975 and its area absorbed into Dumfries and Galloway."
   },
   "county:Wiltshire": {
     "name": "Wiltshire",
@@ -921,7 +1009,8 @@
     "f3": "Content coming soon.",
     "f5": "3,485 km²",
     "f13": "http://www.wiltshire.gov.uk/",
-    "f6": "LD: 2 · Con: 2"
+    "f6": "LD: 2 · Con: 2",
+    "f10": "Wiltshire is notable for its pre-Roman archaeology, with Stonehenge and Avebury representing two of the most significant Neolithic ceremonial sites in Europe. Mesolithic, Neolithic, and Bronze Age peoples built settlements on the chalk downland that covers much of the county. The county formed part of the Anglo-Saxon kingdom of Wessex from the 6th century. At the time of the Domesday Survey, Wiltshire's industry was largely agricultural, with 390 mills recorded. The Cistercian monastery of Stanley exported wool to Florentine and Flemish markets in the 13th and 14th centuries. The Battle of Roundway Down, a Royalist victory in the Civil War, was fought near Devizes in 1643. The Kennet and Avon Canal was built around 1800, providing a transport route between Bristol and London."
   },
   "county:Worcestershire": {
     "name": "Worcestershire",
@@ -930,7 +1019,8 @@
     "f3": "Content coming soon.",
     "f5": "1,741 km²",
     "f13": "https://www.worcestershire.gov.uk/",
-    "f6": "Lab: 2 · Con: 2"
+    "f6": "Lab: 2 · Con: 2",
+    "f10": "Worcestershire was first populated at least 700,000 years ago. The area became predominantly agricultural in the Bronze Age. By the Iron Age, hill forts dominated the landscape. The Roman period brought the villa system to the Cotswolds and Vale of Evesham, with Droitwich, Salinae, as the most important settlement due to its salt production. The area that became Worcestershire formed the heartland of the Anglo-Saxon kingdom of the Hwicce, absorbed by the kingdom of Mercia in the 7th century. Worcestershire was established as an administrative unit in the early 10th century around the estates of the See of Worcester. After the Norman Conquest, the Bishop of Worcester and the Abbots of Pershore and Evesham retained substantial territorial control. The county's medieval economy centred on the wool trade and fruit cultivation in the Vale of Evesham."
   },
   "county:Yorkshire": {
     "name": "Yorkshire",
@@ -939,6 +1029,7 @@
     "f3": "Content coming soon.",
     "f5": "11,903 km²",
     "f13": "http://yorkshire.com",
-    "f6": "Lab: 10 · Con: 2 · LD: 2 · Ind: 1"
+    "f6": "Lab: 10 · Con: 2 · LD: 2 · Ind: 1",
+    "f10": "By the late Iron Age, Yorkshire was inhabited by the Brigantes in the north and west and the Parisi in the east. The Brigantes were the most extensive Celtic tribal grouping in Britain before Roman conquest, which occurred under general Petillius Cerialis in 71 AD. The Roman capital of Britannia Inferior, Eboracum, was established at modern York and became a joint capital of Roman Britain. Emperor Septimius Severus ruled the empire from York in his final years, and Constantine the Great was proclaimed emperor there in 306 AD. Following Roman withdrawal, small Celtic kingdoms arose before Anglian settlement consolidated the region. The county was divided into three Ridings for administrative purposes, an arrangement dating from the Danelaw period of the 9th century. Wool and cloth production were economically dominant from the medieval period."
   }
 }

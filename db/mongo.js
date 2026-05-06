@@ -51,6 +51,7 @@ export async function connectMongo() {
     await db.collection('schools').createIndex({ con_gss:  1 })
     await db.collection('schools').createIndex({ la_gss:   1 })
     await db.collection('schools').createIndex({ location: '2dsphere' }, { sparse: true })
+    await db.collection('places').createIndex({ location: '2dsphere' }, { sparse: true })
     await db.collection('posts').createIndex({ 'origin.entity_type': 1, 'origin.entity_id': 1 })
     await db.collection('posts').createIndex({ 'origin.geo_scope.ward_gss':         1 })
     await db.collection('posts').createIndex({ 'origin.geo_scope.constituency_gss': 1 })
@@ -73,6 +74,8 @@ export async function connectMongo() {
     await db.collection('traders').createIndex({ 'location.county_gss': 1 })
     await db.collection('traders').createIndex({ status: 1 })
     await db.collection('traders').createIndex({ category: 1 })
+    await db.collection('user_notifications').createIndex({ user_id: 1, category: 1, read: 1, created_at: -1 })
+    await db.collection('user_notifications').createIndex({ user_id: 1, resolved: 1 })
     console.log('MongoDB connected')
   } catch (err) {
     console.error('[mongo] connection failed -- continuing without MongoDB:', err.message)
@@ -130,3 +133,6 @@ export function followsCol()         { return db ? db.collection('user_follows')
 
 /** Returns the traders collection, or null if Mongo is unavailable. */
 export function tradersCol()         { return db ? db.collection('traders')          : null }
+
+/** Returns the user_notifications collection, or null if Mongo is unavailable. */
+export function notificationsCol()   { return db ? db.collection('user_notifications') : null }

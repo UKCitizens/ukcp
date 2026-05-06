@@ -11,8 +11,9 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
-import JoinForumModal from './JoinForumModal.jsx'
-import PostsTab from '../Posts/PostsTab.jsx'
+import JoinForumModal   from './JoinForumModal.jsx'
+import PostsTab         from '../Posts/PostsTab.jsx'
+import ContentActions   from '../ContentActions.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -21,11 +22,12 @@ const API_BASE = import.meta.env.VITE_API_URL ?? ''
  */
 export default function CommitteeTab({ locationType, locationSlug }) {
   const { session } = useAuth()
-  const [forum,         setForum]         = useState(null)
-  const [loading,       setLoading]       = useState(false)
-  const [error,         setError]         = useState(null)
-  const [isMember,      setIsMember]      = useState(false)
-  const [showJoinModal, setShowJoinModal] = useState(false)
+  const [forum,            setForum]            = useState(null)
+  const [loading,          setLoading]          = useState(false)
+  const [error,            setError]            = useState(null)
+  const [isMember,         setIsMember]         = useState(false)
+  const [showJoinModal,    setShowJoinModal]    = useState(false)
+  const [isFollowingForum, setIsFollowingForum] = useState(false)
 
   useEffect(() => {
     if (locationType !== 'constituency' || !locationSlug) {
@@ -80,6 +82,35 @@ export default function CommitteeTab({ locationType, locationSlug }) {
     setForum(prev => prev ? { ...prev, member_count: (prev.member_count ?? 0) + 1 } : prev)
   }
 
+  useEffect(() => {
+    if (!session?.access_token || !forum?._id) return
+    fetch(`${API_BASE}/api/follows?entity_type=committee_forum`, {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then(r => r.ok ? r.json() : [])
+      .then(rows => setIsFollowingForum(rows.some(r => r.entity_id === String(forum._id))))
+      .catch(() => {})
+  }, [session, forum?._id])
+
+  async function handleFollowForum() {
+    if (!session?.access_token || !forum) return
+    await fetch(`${API_BASE}/api/follows`, {
+      method:  'POST',
+      headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ entity_type: 'committee_forum', entity_id: String(forum._id), entity_name: forum.name, scope_gss: forum.con_gss }),
+    })
+    setIsFollowingForum(true)
+  }
+
+  async function handleUnfollowForum() {
+    if (!session?.access_token || !forum) return
+    await fetch(`${API_BASE}/api/follows/committee_forum/${encodeURIComponent(String(forum._id))}`, {
+      method:  'DELETE',
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+    setIsFollowingForum(false)
+  }
+
   if (locationType !== 'constituency') {
     return <div style={wrap}><p style={dim}>Select a constituency to see its committee forum.</p></div>
   }
@@ -92,7 +123,19 @@ export default function CommitteeTab({ locationType, locationSlug }) {
     <div style={wrap}>
       {/* Forum header */}
       <div style={forumHeader}>
-        <p style={forumName}>{forum.name}</p>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6 }}>
+          <p style={{ ...forumName, margin: 0 }}>{forum.name}</p>
+          {session && (
+            <ContentActions
+              entityType="committee_forum"
+              entityId={String(forum._id)}
+              entityName={forum.name}
+              isFollowing={isFollowingForum}
+              onFollow={handleFollowForum}
+              onUnfollow={handleUnfollowForum}
+            />
+          )}
+        </div>
         <p style={forumDesc}>
           The public forum for {forum.committee?.name ?? locationSlug.replace(/_/g, ' ')} constituency
         </p>
