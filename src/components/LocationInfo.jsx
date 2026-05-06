@@ -343,6 +343,43 @@ export default function LocationInfo({
           <Text size="xs" fw={500}>{population}</Text>
         </div>
       )}
+
+      {/* Nearby — place: peers + hierarchy (shown at top so it's always visible) */}
+      {nearbyEntityType === 'place' && nearbyData && (nearbyData.peers?.length > 0 || nearbyData.hierarchy) && (
+        <Stack gap={2}>
+          {nearbyData.peers?.length > 0 && (
+            <Text size="xs">
+              <Text span c="dimmed" size="xs">Near: </Text>
+              {nearbyData.peers.length === 1
+                ? nearbyData.peers[0].name
+                : nearbyData.peers.slice(0, -1).map(p => p.name).join(', ') + ' and ' + nearbyData.peers.at(-1).name
+              }
+            </Text>
+          )}
+          {nearbyData.hierarchy && (
+            <Text size="xs">
+              <Text span c="dimmed" size="xs">Nearest {nearbyData.hierarchy.place_type?.toLowerCase()}: </Text>
+              {nearbyData.hierarchy.name}
+            </Text>
+          )}
+        </Stack>
+      )}
+
+      {/* Nearby — ward when pendingWard active (shown at top) */}
+      {nearbyEntityType === 'ward' && nearbyData && (nearbyData.settlements?.length > 0 || nearbyData.towns?.length > 0 || nearbyData.city) && (
+        <Stack gap={2}>
+          {nearbyData.settlements?.length > 0 && (
+            <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
+          )}
+          {nearbyData.towns?.length > 0 && (
+            <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
+          )}
+          {nearbyData.city && (
+            <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
+          )}
+        </Stack>
+      )}
+
       {summary && (
         <div>
           <Text size="10px" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: '0.06em', marginBottom: 4 }}>Summary</Text>
@@ -416,45 +453,6 @@ export default function LocationInfo({
         </div>
       )}
 
-      {/* Nearby — place */}
-      {nearbyEntityType === 'place' && nearbyData && (nearbyData.peers?.length > 0 || nearbyData.hierarchy) && (
-        <div style={{ borderTop: '1px solid #f1f3f5', marginTop: 8, paddingTop: 8 }}>
-          <Stack gap={2}>
-            {nearbyData.peers?.length > 0 && (
-              <Text size="xs">
-                <Text span c="dimmed" size="xs">Near: </Text>
-                {nearbyData.peers.length === 1
-                  ? nearbyData.peers[0].name
-                  : nearbyData.peers.slice(0, -1).map(p => p.name).join(', ') + ' and ' + nearbyData.peers.at(-1).name
-                }
-              </Text>
-            )}
-            {nearbyData.hierarchy && (
-              <Text size="xs">
-                <Text span c="dimmed" size="xs">Nearest {nearbyData.hierarchy.place_type?.toLowerCase()}: </Text>
-                {nearbyData.hierarchy.name}
-              </Text>
-            )}
-          </Stack>
-        </div>
-      )}
-
-      {/* Nearby — ward (pendingWard active, wardInfo not rendered) */}
-      {nearbyEntityType === 'ward' && nearbyData && (nearbyData.settlements?.length > 0 || nearbyData.towns?.length > 0 || nearbyData.city) && (
-        <div style={{ borderTop: '1px solid #f1f3f5', marginTop: 8, paddingTop: 8 }}>
-          <Stack gap={2}>
-            {nearbyData.settlements?.length > 0 && (
-              <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
-            )}
-            {nearbyData.towns?.length > 0 && (
-              <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
-            )}
-            {nearbyData.city && (
-              <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
-            )}
-          </Stack>
-        </div>
-      )}
     </Stack>
   )
 }
