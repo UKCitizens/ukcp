@@ -15,7 +15,7 @@
 import { useState, useEffect } from 'react'
 import {
   Stack, Text, Group, SegmentedControl,
-  Badge, Avatar, Anchor,
+  Badge, Avatar, Anchor, Paper,
 } from '@mantine/core'
 import { useAuth }      from '../context/AuthContext.jsx'
 import { useNavigate }  from 'react-router-dom'

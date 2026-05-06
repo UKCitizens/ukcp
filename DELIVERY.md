@@ -66,4 +66,6 @@ LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (drawer z-in
 | 2026-05-06 | PRG:57 — Map overlay controls + pane search bars: MapOverlayControls on map surface, place search in left pane, constituency filter in right pane, LocationSearch removed from tab strip | PASS 6979 |
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (map overlay controls + pane search bars PRG:57)
 | 2026-05-06 | Redesign: MapOverlayControls — vertical collapsible toolbars, single icon + toggle, collapsed by default |
+| 2026-05-06 | Fix: crumb row mobile font (10px) + map overlay control left/right offsets (PRG:57 residuals) | PASS |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (PRG:57 residuals + local server restart)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (vertical collapsible map overlay controls)
