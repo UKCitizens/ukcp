@@ -290,11 +290,46 @@ export default function LocationInfo({
 
   // ── Error / no content fallback ─────────────────────────────────────────
   if (error || (!extract && !summary)) {
+    const wardNearby = nearbyEntityType === 'ward' && nearbyData &&
+      (nearbyData.settlements?.length > 0 || nearbyData.towns?.length > 0 || nearbyData.city)
+    const placeNearby = nearbyEntityType === 'place' && nearbyData &&
+      (nearbyData.peers?.length > 0 || nearbyData.hierarchy)
     return (
-      <Stack gap="xs" p="md" align="center" style={{ minHeight: 80 }}>
-        <Text size="xs" c="dimmed">
+      <Stack gap="xs" p="md" style={{ minHeight: 80 }}>
+        <Text size="xs" c="dimmed" ta="center">
           No summary available for {label}.
         </Text>
+        {(wardNearby || placeNearby) && (
+          <>
+            <Divider />
+            <Stack gap={2}>
+              {wardNearby && nearbyData.settlements?.length > 0 && (
+                <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
+              )}
+              {wardNearby && nearbyData.towns?.length > 0 && (
+                <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
+              )}
+              {wardNearby && nearbyData.city && (
+                <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
+              )}
+              {placeNearby && nearbyData.peers?.length > 0 && (
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Near: </Text>
+                  {nearbyData.peers.length === 1
+                    ? nearbyData.peers[0].name
+                    : nearbyData.peers.slice(0, -1).map(p => p.name).join(', ') + ' and ' + nearbyData.peers.at(-1).name
+                  }
+                </Text>
+              )}
+              {placeNearby && nearbyData.hierarchy && (
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Nearest {nearbyData.hierarchy.place_type?.toLowerCase()}: </Text>
+                  {nearbyData.hierarchy.name}
+                </Text>
+              )}
+            </Stack>
+          </>
+        )}
       </Stack>
     )
   }

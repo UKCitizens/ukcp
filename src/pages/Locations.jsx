@@ -396,9 +396,10 @@ export default function Locations() {
   }, [pendingWard, ward, wards])
 
   const conGss = useMemo(() => {
-    if (!constituency || !wards) return null
-    return wards.find(w => w.constituency === constituency)?.con_gss ?? null
-  }, [constituency, wards])
+    const target = pendingConstituency ?? constituency
+    if (!target || !wards) return null
+    return wards.find(w => w.constituency === target)?.con_gss ?? null
+  }, [pendingConstituency, constituency, wards])
 
   const wardCoords = useMemo(() => {
     const target = pendingWard ?? ward
