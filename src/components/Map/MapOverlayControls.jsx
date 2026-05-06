@@ -64,7 +64,7 @@ export default function MapOverlayControls({ visibleTypes, onToggle, layers, onL
   return (
     <>
       {/* Left toolbar — place type filters */}
-      <div style={{ ...TOOLBAR_STYLE, left: 8 }}>
+      <div style={{ ...TOOLBAR_STYLE, left: 44 }}>
         <button
           style={{
             ...TOGGLE_BTN,
@@ -87,7 +87,7 @@ export default function MapOverlayControls({ visibleTypes, onToggle, layers, onL
       </div>
 
       {/* Right toolbar — political toggles + layer pills */}
-      <div style={{ ...TOOLBAR_STYLE, right: 8 }}>
+      <div style={{ ...TOOLBAR_STYLE, right: 44 }}>
         <button
           style={{
             ...TOGGLE_BTN,

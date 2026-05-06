@@ -63,3 +63,10 @@
 .crumbRow {
   min-height: 20px;
 }
+
+@media (max-width: 767px) {
+  .crumbRow *,
+  .crumbRow {
+    font-size: 10px !important;
+  }
+}
