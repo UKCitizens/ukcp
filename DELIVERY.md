@@ -29,6 +29,12 @@
 
 ---
 
+## ARCHITECTURE — Dual deployment (permanent)
+- **Railway** (ukcp-production.up.railway.app) — full Express stack: static dist/ + all /api/* routes. Auto-deploys on push.
+- **Vercel** (ukcportal.co.uk) — static React shell only. No Express process. /api/* proxied to Railway via vercel.json rewrites. Auto-deploys on push.
+- The catch-all `/(.*) → index.html` in vercel.json is required for SPA routing. The /api proxy must always sit above it. If adding new /api route prefixes, no vercel.json change needed — the wildcard covers all /api/* paths.
+- Every push deploys both. If Vercel shows stale data, check vercel.json proxy is intact.
+
 ## FLAGS (pre-existing, non-imperative)
 - ROW4_HEIGHT missing from HEADER_ROWS.js — SiteHeaderRow4.jsx crashes on import in dev, cascades to MidPaneMap/SchoolsRightNav. Does not block build.
 - Chunk size advisory — index-*.js bundle is ~954kB minified (284kB gzip), exceeds Rollup's 500kB warning threshold. Pre-existing; not introduced by mobile drawer sprint. Consider code-splitting via dynamic import() if bundle growth becomes a concern.
