@@ -37,7 +37,7 @@ import classes from './PageLayout.module.css'
  * @param {boolean}         [props.mapExpand]    - Collapses header/footer for map view.
  * @returns {JSX.Element}
  */
-export default function PageLayout({ header, headerHeight, leftPane, midPane, rightPane, footer, mapExpand }) {
+export default function PageLayout({ header, headerHeight, leftPane, midPane, rightPane, footer, mapExpand, leftLabel = 'Nav', rightLabel = 'Info' }) {
   return (
     <div className={classes.pageOuter}>
       <PageBackground />
@@ -54,15 +54,22 @@ export default function PageLayout({ header, headerHeight, leftPane, midPane, ri
 
           {/* Left column — CSS-hidden on mobile */}
           <div className={classes.leftCol}>
-            <Paper p="md" className={classes.column}>
-              {leftPane}
+            <Paper p={0} className={classes.column}>
+              {leftPane && (
+                <div className={classes.paneHeading}>
+                  <span className={classes.paneHeadingLabel}>{leftLabel}</span>
+                </div>
+              )}
+              <div className={classes.paneContent}>
+                {leftPane}
+              </div>
             </Paper>
           </div>
 
           {/* Mid column — full width on mobile; drawers provide left/right access */}
           <div className={classes.midCol}>
             <Paper p="md" className={classes.column}>
-              <MobileDrawerWrapper leftContent={leftPane} rightContent={rightPane}>
+              <MobileDrawerWrapper leftContent={leftPane} rightContent={rightPane} leftLabel={leftLabel} rightLabel={rightLabel}>
                 {midPane}
               </MobileDrawerWrapper>
             </Paper>
@@ -70,8 +77,15 @@ export default function PageLayout({ header, headerHeight, leftPane, midPane, ri
 
           {/* Right column — CSS-hidden on mobile */}
           <div className={classes.rightCol}>
-            <Paper p="md" className={classes.column}>
-              {rightPane}
+            <Paper p={0} className={classes.column}>
+              {rightPane && (
+                <div className={classes.paneHeading}>
+                  <span className={classes.paneHeadingLabel}>{rightLabel}</span>
+                </div>
+              )}
+              <div className={classes.paneContent}>
+                {rightPane}
+              </div>
             </Paper>
           </div>
 

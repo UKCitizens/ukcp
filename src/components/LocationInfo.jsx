@@ -50,6 +50,7 @@ export default function LocationInfo({
   area, elevation, website, notable_facts, category_tags,
   loading, error, label, wardInfo, lat, lng, onMapClick,
   placeId, wardGss, conGss, nearbyEntityType, nearbyLat, nearbyLng,
+  onPlaceSelect,
 }) {
   const placeData = { area, elevation, website, notable_facts, category_tags }
 
@@ -89,13 +90,34 @@ export default function LocationInfo({
             <Divider />
             <Stack gap={2}>
               {nearbyData.settlements?.length > 0 && (
-                <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Includes: </Text>
+                  {nearbyData.settlements.map((p, i) => (
+                    <span key={p._id}>
+                      {i > 0 && ', '}
+                      {onPlaceSelect ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>{p.name}</Anchor> : p.name}
+                    </span>
+                  ))}
+                </Text>
               )}
               {nearbyData.towns?.length > 0 && (
-                <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Nearby towns: </Text>
+                  {nearbyData.towns.map((p, i) => (
+                    <span key={p._id}>
+                      {i > 0 && ', '}
+                      {onPlaceSelect ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>{p.name}</Anchor> : p.name}
+                    </span>
+                  ))}
+                </Text>
               )}
               {nearbyData.city && (
-                <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Nearest city: </Text>
+                  {onPlaceSelect
+                    ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: nearbyData.city._id, name: nearbyData.city.name, place_type: nearbyData.city.place_type })}>{nearbyData.city.name}</Anchor>
+                    : nearbyData.city.name}
+                </Text>
               )}
             </Stack>
           </>
@@ -170,7 +192,19 @@ export default function LocationInfo({
         {nearbyData?.places?.length > 0 && (
           <>
             <Divider />
-            <Text size="xs"><Text span c="dimmed" size="xs">Towns and cities: </Text>{nearbyData.places.map(p => p.name).join(', ')}</Text>
+            <Text size="xs">
+              <Text span c="dimmed" size="xs">Towns and cities: </Text>
+              {nearbyData.places.map((p, i) => (
+                <span key={p._id}>
+                  {i > 0 && ', '}
+                  {onPlaceSelect ? (
+                    <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>
+                      {p.name}
+                    </Anchor>
+                  ) : p.name}
+                </span>
+              ))}
+            </Text>
           </>
         )}
       </Stack>
@@ -304,21 +338,52 @@ export default function LocationInfo({
             <Divider />
             <Stack gap={2}>
               {wardNearby && nearbyData.settlements?.length > 0 && (
-                <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Includes: </Text>
+                  {nearbyData.settlements.map((p, i) => (
+                    <span key={p._id}>
+                      {i > 0 && ', '}
+                      {onPlaceSelect ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>{p.name}</Anchor> : p.name}
+                    </span>
+                  ))}
+                </Text>
               )}
               {wardNearby && nearbyData.towns?.length > 0 && (
-                <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Nearby towns: </Text>
+                  {nearbyData.towns.map((p, i) => (
+                    <span key={p._id}>
+                      {i > 0 && ', '}
+                      {onPlaceSelect ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>{p.name}</Anchor> : p.name}
+                    </span>
+                  ))}
+                </Text>
               )}
               {wardNearby && nearbyData.city && (
-                <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
+                <Text size="xs">
+                  <Text span c="dimmed" size="xs">Nearest city: </Text>
+                  {onPlaceSelect
+                    ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: nearbyData.city._id, name: nearbyData.city.name, place_type: nearbyData.city.place_type })}>{nearbyData.city.name}</Anchor>
+                    : nearbyData.city.name}
+                </Text>
               )}
               {placeNearby && nearbyData.peers?.length > 0 && (
                 <Text size="xs">
                   <Text span c="dimmed" size="xs">Near: </Text>
-                  {nearbyData.peers.length === 1
-                    ? nearbyData.peers[0].name
-                    : nearbyData.peers.slice(0, -1).map(p => p.name).join(', ') + ' and ' + nearbyData.peers.at(-1).name
-                  }
+                  {nearbyData.peers.map((p, i) => (
+                    <span key={p._id}>
+                      {i > 0 && (i === nearbyData.peers.length - 1 ? ' and ' : ', ')}
+                      {onPlaceSelect ? (
+                        <Anchor
+                          component="button"
+                          size="xs"
+                          onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}
+                        >
+                          {p.name}
+                        </Anchor>
+                      ) : p.name}
+                    </span>
+                  ))}
                 </Text>
               )}
               {placeNearby && nearbyData.hierarchy && (
@@ -350,16 +415,20 @@ export default function LocationInfo({
           {nearbyData.peers?.length > 0 && (
             <Text size="xs">
               <Text span c="dimmed" size="xs">Near: </Text>
-              {nearbyData.peers.length === 1
-                ? nearbyData.peers[0].name
-                : nearbyData.peers.slice(0, -1).map(p => p.name).join(', ') + ' and ' + nearbyData.peers.at(-1).name
-              }
+              {nearbyData.peers.map((p, i) => (
+                <span key={p._id}>
+                  {i > 0 && (i === nearbyData.peers.length - 1 ? ' and ' : ', ')}
+                  {onPlaceSelect ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>{p.name}</Anchor> : p.name}
+                </span>
+              ))}
             </Text>
           )}
           {nearbyData.hierarchy && (
             <Text size="xs">
               <Text span c="dimmed" size="xs">Nearest {nearbyData.hierarchy.place_type?.toLowerCase()}: </Text>
-              {nearbyData.hierarchy.name}
+              {onPlaceSelect
+                ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: nearbyData.hierarchy._id, name: nearbyData.hierarchy.name, place_type: nearbyData.hierarchy.place_type })}>{nearbyData.hierarchy.name}</Anchor>
+                : nearbyData.hierarchy.name}
             </Text>
           )}
         </Stack>
@@ -369,13 +438,34 @@ export default function LocationInfo({
       {nearbyEntityType === 'ward' && nearbyData && (nearbyData.settlements?.length > 0 || nearbyData.towns?.length > 0 || nearbyData.city) && (
         <Stack gap={2}>
           {nearbyData.settlements?.length > 0 && (
-            <Text size="xs"><Text span c="dimmed" size="xs">Includes: </Text>{nearbyData.settlements.map(p => p.name).join(', ')}</Text>
+            <Text size="xs">
+              <Text span c="dimmed" size="xs">Includes: </Text>
+              {nearbyData.settlements.map((p, i) => (
+                <span key={p._id}>
+                  {i > 0 && ', '}
+                  {onPlaceSelect ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>{p.name}</Anchor> : p.name}
+                </span>
+              ))}
+            </Text>
           )}
           {nearbyData.towns?.length > 0 && (
-            <Text size="xs"><Text span c="dimmed" size="xs">Nearby towns: </Text>{nearbyData.towns.map(p => p.name).join(', ')}</Text>
+            <Text size="xs">
+              <Text span c="dimmed" size="xs">Nearby towns: </Text>
+              {nearbyData.towns.map((p, i) => (
+                <span key={p._id}>
+                  {i > 0 && ', '}
+                  {onPlaceSelect ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: p._id, name: p.name, place_type: p.place_type })}>{p.name}</Anchor> : p.name}
+                </span>
+              ))}
+            </Text>
           )}
           {nearbyData.city && (
-            <Text size="xs"><Text span c="dimmed" size="xs">Nearest city: </Text>{nearbyData.city.name}</Text>
+            <Text size="xs">
+              <Text span c="dimmed" size="xs">Nearest city: </Text>
+              {onPlaceSelect
+                ? <Anchor component="button" size="xs" onClick={() => onPlaceSelect({ _id: nearbyData.city._id, name: nearbyData.city.name, place_type: nearbyData.city.place_type })}>{nearbyData.city.name}</Anchor>
+                : nearbyData.city.name}
+            </Text>
           )}
         </Stack>
       )}

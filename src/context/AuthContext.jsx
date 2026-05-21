@@ -70,11 +70,30 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Safety timeout: if Supabase never responds (paused project, network down),
+    // release the loading gate after 6s so the modal opens and the user can act.
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false)
+    }, 6000)
+
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      clearTimeout(loadingTimeout)
+      if (error) {
+        // Bad or expired stored session. Clear it so onAuthStateChange can start clean.
+        console.warn('[auth] getSession error, clearing stored session:', error.message)
+        supabase.auth.signOut().catch(() => {})
+        setLoading(false)
+        return
+      }
       setSession(session)
       setUser(session?.user ?? null)
       setClaims(claimsFromSession(session))
       if (session?.access_token) fetchProfile(session.access_token)
+      setLoading(false)
+    }).catch(err => {
+      // Network-level failure -- Supabase unreachable. Release the loading gate.
+      clearTimeout(loadingTimeout)
+      console.error('[auth] getSession threw (network?):', err.message)
       setLoading(false)
     })
 

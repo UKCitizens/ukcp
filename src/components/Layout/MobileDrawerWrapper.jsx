@@ -17,7 +17,7 @@ import classes from './MobileDrawerWrapper.module.css'
  * }} props
  * @returns {JSX.Element}
  */
-export default function MobileDrawerWrapper({ leftContent, rightContent, children }) {
+export default function MobileDrawerWrapper({ leftContent, rightContent, children, leftLabel = 'Nav', rightLabel = 'Info' }) {
   const [open, setOpen] = useState(null) // null | 'left' | 'right'
 
   function openLeft()  { setOpen('left')  }
@@ -30,23 +30,27 @@ export default function MobileDrawerWrapper({ leftContent, rightContent, childre
       {/* Mid pane content */}
       {children}
 
-      {/* Left handle — green, visible on mobile only */}
-      <button
-        className={`${classes.handle} ${classes.handleLeft}`}
-        onClick={open === 'left' ? close : openLeft}
-        aria-label="Open left panel"
-      >
-        {open === 'left' ? '«' : '»'}
-      </button>
+      {/* Left handle — green, visible on mobile only, suppressed when no content */}
+      {leftContent && (
+        <button
+          className={`${classes.handle} ${classes.handleLeft}`}
+          onClick={open === 'left' ? close : openLeft}
+          aria-label="Open left panel"
+        >
+          {open === 'left' ? '«' : '»'}
+        </button>
+      )}
 
-      {/* Right handle — blue, visible on mobile only */}
-      <button
-        className={`${classes.handle} ${classes.handleRight}`}
-        onClick={open === 'right' ? close : openRight}
-        aria-label="Open right panel"
-      >
-        {open === 'right' ? '»' : '«'}
-      </button>
+      {/* Right handle — blue, visible on mobile only, suppressed when no content */}
+      {rightContent && (
+        <button
+          className={`${classes.handle} ${classes.handleRight}`}
+          onClick={open === 'right' ? close : openRight}
+          aria-label="Open right panel"
+        >
+          {open === 'right' ? '»' : '«'}
+        </button>
+      )}
 
       {/* Backdrop — tap to close */}
       {open && (
@@ -55,7 +59,10 @@ export default function MobileDrawerWrapper({ leftContent, rightContent, childre
 
       {/* Left drawer */}
       <div className={`${classes.drawer} ${classes.drawerLeft} ${open === 'left' ? classes.drawerOpen : ''}`}>
-        <button className={classes.closeBtn} onClick={close} aria-label="Close panel">×</button>
+        <div className={classes.drawerHeading}>
+          <span className={classes.drawerHeadingLabel}>{leftLabel}</span>
+          <button className={classes.closeBtn} onClick={close} aria-label="Close panel">×</button>
+        </div>
         <div className={classes.drawerContent}>
           {leftContent}
         </div>
@@ -63,7 +70,10 @@ export default function MobileDrawerWrapper({ leftContent, rightContent, childre
 
       {/* Right drawer */}
       <div className={`${classes.drawer} ${classes.drawerRight} ${open === 'right' ? classes.drawerOpen : ''}`}>
-        <button className={classes.closeBtn} onClick={close} aria-label="Close panel">×</button>
+        <div className={classes.drawerHeading}>
+          <span className={classes.drawerHeadingLabel}>{rightLabel}</span>
+          <button className={classes.closeBtn} onClick={close} aria-label="Close panel">×</button>
+        </div>
         <div className={classes.drawerContent}>
           {rightContent}
         </div>

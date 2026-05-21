@@ -10,6 +10,73 @@
 
 ## ZONE: PRG -- Dynamic progress (purge and re-establish as needed)
 
+[PRG:136] PROGRESS  | Session 7 May 2026 -- UX fixes + nearby place links.
+                     MOBILE HEIGHT FIX:
+                       PageLayout.module.css mobile midCol: removed fixed height:60vw /
+                       max-height:420px. Changed to flex:1 / min-height:280px.
+                       Profile, MyHome, People, Settings now fill full height to footer.
+                       Map still renders correctly (MidPaneTabs is position absolute inset 0).
+                     CRUMB TRAIL MOBILE:
+                       SiteHeaderRow3.module.css: .crumbRow * font-size 10px on mobile.
+                       Targets all Mantine child elements via * selector + !important.
+                     MAP OVERLAY INSET:
+                       MapOverlayControls.jsx: left toolbar left:8 -> left:44,
+                       right toolbar right:8 -> right:44. Clears drawer handle width.
+                     MYHOME PAPER FIX:
+                       MyHome.jsx: Paper added to Mantine import (was missing, caused
+                       ReferenceError on home page on every load).
+                     NEARBY PLACE LINKS:
+                       LocationInfo.jsx: all nearby entries now render as Anchor links
+                       when onPlaceSelect prop is present. Covers all four render paths:
+                       (1) early ward return, (2) error/no-content fallback ward,
+                       (3) error/no-content fallback place peers, (4) full content place peers.
+                       Entries covered: settlements, towns, city, peers, hierarchy, places.
+                       New handler in Locations.jsx: handleNearbyPlaceSelect -- async,
+                       fetches /api/places/:id for full record (country/region/ctyhistnm),
+                       then calls setPaneMode('nav') + handleTabChange('map') +
+                       handleLeftPlaceSelect(place). Map flies to place, crumb updates,
+                       SelectionBanner appears for confirmation.
+                       New route: GET /api/places/:id in routes/places.js -- returns
+                       single full place record by _id.
+                     WORKING PRINCIPLE HELD: one sprint at a time, sequential.
+                     NEXT SESSION:
+                       Review Dex mobile audit output (ukcp-ui-reference-mobile.docx).
+                       Box-bot smoke test still pending (PRG:134).
+                       MyHome briefs still outstanding (PRG:133).
+
+[PRG:135] PROGRESS  | Session 6 May 2026 (session 2) -- Mobile UX restructure. Two sprints delivered.
+                     SPRINT 1 -- Mobile side drawer (dex-mobile-side-drawer.md):
+                       MobileNavPanel (above-pane bars) replaced with side-edge drawer handles
+                       embedded in the mid pane Paper. Green handle left, blue handle right.
+                       Tap -> full-height drawer slides in from that side over mid content.
+                       Backdrop tap or X closes. One drawer open at a time.
+                       MobileNavPanel.jsx + module.css deprecated/removed.
+                       mobilePanelSlot removed from PageLayout. mobilePanelEl block removed
+                       from Locations.jsx. Desktop unaffected.
+                     SPRINT 2 -- Map overlay controls (dex-map-overlay-controls.md):
+                       Place-type filter buttons (City/Town/Village/Hamlet) moved from left
+                       nav pane onto map surface -- collapsible toolbar, top-left.
+                       Political + layer toggles (Constituency/Ward + content layers) moved
+                       from right nav pane onto map surface -- collapsible toolbar, top-right.
+                       LocationSearch removed from MidPaneTabs tab strip.
+                       Place search added to top of left nav pane (searches places).
+                       Constituency text search added to top of right nav pane (filters A-Z list).
+                       New component: src/components/Map/MapOverlayControls.jsx.
+                       MidPaneMap accepts overlayControls prop, renders above Leaflet tiles.
+                     HOTFIXES (Ali direct):
+                       MapOverlayControls: toolbar inset left/right 8->44px (clears drawer handles).
+                       SiteHeaderRow3.module.css: crumb row font-size 10px on mobile (<768px).
+                       MyHome.jsx: Paper missing from Mantine import -- caused ReferenceError on
+                         home page. Added Paper to import line 17.
+                     OUTCOME: Navigation significantly cleaner on mobile and desktop. Map does
+                       the map job, panes do the list job. Phil: "1 million times better."
+                     WORKING PRINCIPLE CONFIRMED: one sprint at a time, sequential, no parallel.
+                     NEXT SESSION:
+                       box-bot smoke test verification still pending (see PRG:134).
+                       MyHome briefs still outstanding (PRG:133): feed aggregator, ContentActions
+                         placement spec, notification/alert generation model.
+                       Further map/pane refactor continues sequentially after above.
+
 [PRG:134] PROGRESS  | Session 6 May 2026 -- box-bot agent pipeline designed and config complete.
                      AGENT FOLDER: C:\Users\phild\Desktop\Projects\Ali-Projects\agent\
                        Structure: config/ processed/ review-queue/ logs/

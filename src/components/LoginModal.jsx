@@ -19,9 +19,20 @@ import { supabase } from '../lib/supabase.js'
 import { useAuth }  from '../context/AuthContext.jsx'
 import UKCPLogo     from '../assets/UKCPlogo.png'
 
+function friendlyError(message) {
+  if (!message) return 'Something went wrong. Please try again.'
+  if (message.toLowerCase().includes('failed to fetch') ||
+      message.toLowerCase().includes('networkerror') ||
+      message.toLowerCase().includes('load failed')) {
+    return 'Could not reach the authentication server. The service may be temporarily unavailable -- please try again in a moment.'
+  }
+  return message
+}
+
 export default function LoginModal() {
   const { session, loading } = useAuth()
 
+  const [dismissed,   setDismissed]   = useState(false)   // user chose to continue without signing in
   const [tab,         setTab]         = useState('signin')
   const [confirmed,   setConfirmed]   = useState(false)   // registration email sent
   const [regEmail,    setRegEmail]    = useState('')       // held for "sent to" message
@@ -42,7 +53,9 @@ export default function LoginModal() {
     window.location.hash.includes('access_token') ||
     window.location.search.includes('code=')
 
-  const opened = !loading && !session && !hasAuthParams
+  // Re-open if the user gains a session requirement (e.g. navigates to a gated route).
+  // Dismissal is reset when the route changes -- handled by the parent via the key prop if needed.
+  const opened = !loading && !session && !hasAuthParams && !dismissed
 
   async function handleSignIn(e) {
     e.preventDefault()
@@ -53,7 +66,7 @@ export default function LoginModal() {
       password: siPassword,
     })
     setSiBusy(false)
-    if (error) setSiError(error.message)
+    if (error) setSiError(friendlyError(error.message))
     // Success: SIGNED_IN fires in AuthContext, session set, modal closes.
   }
 
@@ -71,7 +84,7 @@ export default function LoginModal() {
     })
     setRegBusy(false)
     if (error) {
-      setRegError(error.message)
+      setRegError(friendlyError(error.message))
     } else {
       setConfirmed(true)
     }
@@ -79,10 +92,10 @@ export default function LoginModal() {
 
   const modalProps = {
     opened,
-    onClose:              () => {},
+    onClose:              () => setDismissed(true),
     closeOnClickOutside:  false,
-    closeOnEscape:        false,
-    withCloseButton:      false,
+    closeOnEscape:        true,
+    withCloseButton:      false,   // we render our own dismiss link below
     centered:             true,
     size:                 'xs',
     overlayProps:         { backgroundOpacity: 0.55, blur: 3 },
@@ -143,6 +156,9 @@ export default function LoginModal() {
               <Button type="submit" color="green" size="sm" fullWidth loading={siBusy} mt={4}>
                 Sign in
               </Button>
+              <Anchor size="xs" c="dimmed" ta="center" onClick={() => setDismissed(true)}>
+                Continue without signing in
+              </Anchor>
             </Stack>
           </Tabs.Panel>
 

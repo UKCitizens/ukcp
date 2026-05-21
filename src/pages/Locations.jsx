@@ -300,6 +300,22 @@ export default function Locations() {
     setPending(place)
   }, [selectMany, setPending])
 
+  // Nearby place link click -- fetches full record then navigates as a normal place select.
+  // Peers from the nearby API only carry _id/name/place_type; we need the full record
+  // (country/region/ctyhistnm) to update the crumb and geography context correctly.
+  const handleNearbyPlaceSelect = useCallback(async ({ _id }) => {
+    try {
+      const res  = await fetch(`/api/places/${encodeURIComponent(_id)}`)
+      if (!res.ok) return
+      const place = await res.json()
+      setPaneMode('nav')
+      handleTabChange('map')
+      handleLeftPlaceSelect(place)
+    } catch (_) {
+      // silent -- user stays on current view
+    }
+  }, [handleLeftPlaceSelect, setPaneMode, handleTabChange])
+
   // Map marker click — routes to the appropriate selection handler.
   // Each handler already sets explore mode.
   const handleMarkerClick = useCallback(({ type, place, name, constituency }) => {
@@ -847,6 +863,7 @@ export default function Locations() {
               nearbyEntityType={nearbyEntityType}
               nearbyLat={nearbyEntityType === 'ward' ? (wardCoords?.lat ?? contextCoords?.lat ?? null) : (contextCoords?.lat ?? null)}
               nearbyLng={nearbyEntityType === 'ward' ? (wardCoords?.lng ?? contextCoords?.lng ?? null) : (contextCoords?.lng ?? null)}
+              onPlaceSelect={handleNearbyPlaceSelect}
             />
           }
         />

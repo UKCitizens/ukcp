@@ -122,11 +122,14 @@
  * align-items: stretch on midZone).
  * overflow: hidden prevents column content from escaping its bounds.
  * Content requiring internal scroll should use Mantine ScrollArea.
+ * p={0} is set in JSX for left/right cols — padding is handled by paneContent.
  */
 .column {
   position: relative;
   height: 100%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
 }
 
@@ -142,6 +145,42 @@
   max-height: 80px;
   overflow: hidden;
   transition: max-height 0.3s ease;
+}
+
+/* ── Pane heading (left/right cols, desktop) ────────────────────────────── */
+
+/**
+ * Green heading bar at top of left and right column panes.
+ * Matches MobileDrawerWrapper.drawerHeading for visual consistency.
+ * Not shown on mobile — those cols are CSS-hidden and the drawer heading handles it.
+ */
+.paneHeading {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 12px;
+  background: #2f9e44;
+  flex-shrink: 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.paneHeadingLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/**
+ * Content area below the heading — equivalent to Mantine p="md" (16px).
+ * flex: 1 fills remaining column height. overflow-y: auto enables internal scroll.
+ */
+.paneContent {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 /* ── Map expand mode ────────────────────────────────────────────────────── */
@@ -206,8 +245,8 @@
  * Mobile (<768px) — leftCol/rightCol hidden; midCol fills full width.
  * MobileDrawerWrapper inside midCol provides left/right content via
  * side-edge drawer handles. midZone switches to column direction.
- * Mid column gets a fixed height so MidPaneMap (absolute-positioned)
- * renders correctly.
+ * Mid column uses flex: 1 to fill available height. MidPaneMap is
+ * position absolute inset 0 inside MidPaneTabs so it fills whatever height it gets.
  */
 @media (max-width: 767px) {
   .midZone {
@@ -222,9 +261,7 @@
   }
   .midCol {
     width: 100%;
-    flex-shrink: 0;
-    height: 60vw;
+    flex: 1;
     min-height: 280px;
-    max-height: 420px;
   }
 }

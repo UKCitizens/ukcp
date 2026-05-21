@@ -22,3 +22,12 @@ playwright-report/
 test-results/
 .playwright/
 dex-instructions/dex-creds.md
+mob-*.png
+mob-test-*.png
+mob-flow-*.png
+ukcp-*.png
+server.err
+details.txt
+.claude/
+set-password.mjs
+scripts/audit-shots/

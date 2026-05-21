@@ -67,5 +67,6 @@ LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (drawer z-in
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (map overlay controls + pane search bars PRG:57)
 | 2026-05-06 | Redesign: MapOverlayControls — vertical collapsible toolbars, single icon + toggle, collapsed by default |
 | 2026-05-06 | Fix: crumb row mobile font (10px) + map overlay control left/right offsets (PRG:57 residuals) | PASS |
-LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (PRG:57 residuals + local server restart)
+| 2026-05-06 | Fix: place Wikipedia slug now appends county (Boston → Boston,_Lincolnshire) -- prevents US city disambiguation | PASS |
+LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (Wikipedia slug disambiguation fix)
 LIVE INSTANCE RESTARTED -- :3443 serving build completed 2026-05-06 (vertical collapsible map overlay controls)

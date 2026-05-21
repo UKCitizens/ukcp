@@ -74,6 +74,16 @@ router.get('/places/search', asyncHandler(async (req, res) => {
   }
 }))
 
+// ── GET /api/places/:id ───────────────────────────────────────────────────────
+
+router.get('/places/:id', asyncHandler(async (req, res) => {
+  const col = placesCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+  const place = await col.findOne({ _id: req.params.id })
+  if (!place) return res.status(404).json({ error: 'Place not found' })
+  res.json(place)
+}))
+
 // ── GET /api/places/:id/nearby ────────────────────────────────────────────────
 
 router.get('/places/:id/nearby', asyncHandler(async (req, res) => {

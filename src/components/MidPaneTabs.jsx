@@ -27,6 +27,8 @@
  *   session        -- Supabase session or null (gates auth-required tabs)
  */
 
+import classes from './MidPaneTabs.module.css'
+
 const TAB_HEIGHT   = 36
 const ACTIVE_COLOR = '#2f9e44'
 const BORDER_COLOR = '#dee2e6'
@@ -127,12 +129,15 @@ export default function MidPaneTabs({
         zIndex:       10,
         overflow:     'visible',
       }}>
-        <div style={{ display: 'flex', alignItems: 'flex-end', overflowX: 'auto', flex: 1, paddingLeft: 4 }}>
-          {tabs.map(t => (
-            <button key={t.id} style={tabStyle(t.id)} onClick={() => onTabChange(t.id)}>
-              {t.label}
-            </button>
-          ))}
+        <div className={classes.tabStripOuter}>
+          <div className={classes.tabStripScroll}>
+            {tabs.map(t => (
+              <button key={t.id} style={tabStyle(t.id)} onClick={() => onTabChange(t.id)}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <div className={classes.tabFade} aria-hidden="true" />
         </div>
 
         {/* Expand / collapse toggle */}

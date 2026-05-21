@@ -1,0 +1,44 @@
+/**
+ * MidPaneTabs.module.css
+ * Tab strip scroll container and mobile overflow fade indicator.
+ */
+
+/* Wrapper that clips the fade to the tab strip area */
+.tabStripOuter {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Scrollable tab row — hides scrollbar */
+.tabStripScroll {
+  display: flex;
+  align-items: flex-end;
+  overflow-x: auto;
+  padding-left: 4px;
+  height: 100%;
+  scrollbar-width: none;
+}
+
+.tabStripScroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Right-edge fade — signals overflow on mobile only */
+.tabFade {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 32px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.95));
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .tabFade {
+    display: block;
+  }
+}

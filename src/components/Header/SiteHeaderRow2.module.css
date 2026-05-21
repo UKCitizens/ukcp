@@ -58,3 +58,10 @@
     var(--mantine-color-gray-3) 12px
   );
 }
+
+/* Hide nav map banner on mobile — screen real estate > decorative map */
+@media (max-width: 767px) {
+  .row {
+    display: none !important;
+  }
+}
