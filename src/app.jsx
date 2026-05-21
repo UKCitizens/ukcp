@@ -31,6 +31,14 @@ function RequireAuth({ children }) {
   const { session, loading, claims } = useAuth()
   const location = useLocation()
 
+  // If auth has resolved and there is no session, reopen the login modal.
+  // The user may have dismissed it and then navigated to a protected route.
+  useEffect(() => {
+    if (!loading && !session) {
+      window.dispatchEvent(new Event('ukcp:open-login'))
+    }
+  }, [loading, session])
+
   if (loading || !session) return null
 
   // New user gate: force profile completion before accessing any route.
