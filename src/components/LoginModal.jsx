@@ -10,7 +10,7 @@
  * Not dismissible. Closes automatically when session is established.
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Modal, Stack, Title, TextInput, PasswordInput,
   Button, Alert, Anchor, Image, Tabs, Text,
@@ -32,7 +32,14 @@ function friendlyError(message) {
 export default function LoginModal() {
   const { session, loading } = useAuth()
 
-  const [dismissed,   setDismissed]   = useState(false)   // user chose to continue without signing in
+  const [dismissed,   setDismissed]   = useState(false)
+
+  // Allow any component to reopen the modal via: window.dispatchEvent(new Event('ukcp:open-login'))
+  useEffect(() => {
+    function handleOpenLogin() { setDismissed(false) }
+    window.addEventListener('ukcp:open-login', handleOpenLogin)
+    return () => window.removeEventListener('ukcp:open-login', handleOpenLogin)
+  }, [])
   const [tab,         setTab]         = useState('signin')
   const [confirmed,   setConfirmed]   = useState(false)   // registration email sent
   const [regEmail,    setRegEmail]    = useState('')       // held for "sent to" message

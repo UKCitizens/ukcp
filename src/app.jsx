@@ -77,9 +77,9 @@ export default function App() {
         <Route path="/"          element={<Locations />} />
         <Route path="/locations" element={<Locations />} />
         <Route path="/myhome"    element={<RequireAuth><MyHome /></RequireAuth>}    />
-        <Route path="/people"    element={<RequireAuth><People /></RequireAuth>}    />
+        <Route path="/people"    element={<People />}                               />
         <Route path="/profile"   element={<RequireAuth><Profile /></RequireAuth>}   />
-        <Route path="/help"      element={<RequireAuth><Help /></RequireAuth>}      />
+        <Route path="/help"      element={<Help />}                                 />
         <Route path="/settings"  element={<RequireAuth><Settings /></RequireAuth>}  />
       </Routes>
     </>

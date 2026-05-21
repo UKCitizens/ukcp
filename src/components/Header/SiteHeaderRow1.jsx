@@ -104,8 +104,7 @@ export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
               aria-label="Profile"
               onClick={() => {
                 if (!session) {
-                  try { sessionStorage.setItem('ukcp_login_redirect', '/profile') } catch {}
-                  navigate('/login')
+                  window.dispatchEvent(new Event('ukcp:open-login'))
                 } else {
                   navigate('/profile')
                 }
@@ -128,7 +127,7 @@ export default function SiteHeaderRow1({ onWalkerToggle, loading }) {
               Log out
             </Button>
           ) : (
-            <Button size="compact-sm" variant="light" color="green" onClick={() => navigate('/login')}>
+            <Button size="compact-sm" variant="light" color="green" onClick={() => window.dispatchEvent(new Event('ukcp:open-login'))}>
               Log in
             </Button>
           )}
