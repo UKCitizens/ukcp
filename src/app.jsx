@@ -19,6 +19,7 @@ import MyHome         from './pages/MyHome.jsx'
 import People         from './pages/People.jsx'
 import Profile        from './pages/Profile.jsx'
 import Register       from './pages/Register.jsx'
+import ResetPassword  from './pages/ResetPassword.jsx'
 import Help           from './pages/Help.jsx'
 import Settings       from './pages/Settings.jsx'
 
@@ -70,8 +71,9 @@ export default function App() {
       <LoginModal />
       <DefaultLandingRedirect />
       <Routes>
-        <Route path="/login"     element={<Navigate to="/" replace />} />
-        <Route path="/register"  element={<Register />} />
+        <Route path="/login"          element={<Navigate to="/" replace />} />
+        <Route path="/register"       element={<Register />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/"          element={<Locations />} />
         <Route path="/locations" element={<Locations />} />
         <Route path="/myhome"    element={<RequireAuth><MyHome /></RequireAuth>}    />

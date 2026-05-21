@@ -37,6 +37,13 @@ export default function LoginModal() {
   const [confirmed,   setConfirmed]   = useState(false)   // registration email sent
   const [regEmail,    setRegEmail]    = useState('')       // held for "sent to" message
 
+  // Forgot-password flow
+  const [forgotOpen,  setForgotOpen]  = useState(false)
+  const [fpEmail,     setFpEmail]     = useState('')
+  const [fpSent,      setFpSent]      = useState(false)
+  const [fpError,     setFpError]     = useState(null)
+  const [fpBusy,      setFpBusy]      = useState(false)
+
   // Sign-in state
   const [siEmail,     setSiEmail]     = useState('')
   const [siPassword,  setSiPassword]  = useState('')
@@ -49,8 +56,24 @@ export default function LoginModal() {
   const [regError,    setRegError]    = useState(null)
   const [regBusy,     setRegBusy]     = useState(false)
 
+  async function handleForgotPassword(e) {
+    e.preventDefault()
+    setFpError(null)
+    setFpBusy(true)
+    const { error } = await supabase.auth.resetPasswordForEmail(fpEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
+    setFpBusy(false)
+    if (error) {
+      setFpError(friendlyError(error.message))
+    } else {
+      setFpSent(true)
+    }
+  }
+
   const hasAuthParams =
     window.location.hash.includes('access_token') ||
+    window.location.hash.includes('type=recovery') ||
     window.location.search.includes('code=')
 
   // Re-open if the user gains a session requirement (e.g. navigates to a gated route).
@@ -99,6 +122,50 @@ export default function LoginModal() {
     centered:             true,
     size:                 'xs',
     overlayProps:         { backgroundOpacity: 0.55, blur: 3 },
+  }
+
+  if (forgotOpen) {
+    return (
+      <Modal {...modalProps}>
+        <Stack gap="sm">
+          <Stack align="center" gap={4}>
+            <Image src={UKCPLogo} h={32} w="auto" />
+            <Title order={4} ta="center">Reset password</Title>
+          </Stack>
+          {fpSent ? (
+            <Stack align="center" gap="xs">
+              <Text c="dimmed" size="xs" ta="center">
+                Reset link sent to {fpEmail}.<br />
+                Check your email and follow the link.
+              </Text>
+              <Anchor size="xs" onClick={() => { setForgotOpen(false); setFpSent(false); setFpEmail('') }}>
+                Back to sign in
+              </Anchor>
+            </Stack>
+          ) : (
+            <Stack component="form" onSubmit={handleForgotPassword} gap="xs">
+              {fpError && <Alert color="red" size="xs" py={6}>{fpError}</Alert>}
+              <TextInput
+                label="Email"
+                type="email"
+                name="email"
+                autoComplete="email"
+                size="sm"
+                value={fpEmail}
+                onChange={e => setFpEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" color="green" size="sm" fullWidth loading={fpBusy} mt={4}>
+                Send reset link
+              </Button>
+              <Anchor size="xs" c="dimmed" ta="center" onClick={() => setForgotOpen(false)}>
+                Back to sign in
+              </Anchor>
+            </Stack>
+          )}
+        </Stack>
+      </Modal>
+    )
   }
 
   if (confirmed) {
@@ -156,6 +223,9 @@ export default function LoginModal() {
               <Button type="submit" color="green" size="sm" fullWidth loading={siBusy} mt={4}>
                 Sign in
               </Button>
+              <Anchor size="xs" c="dimmed" ta="center" onClick={() => setForgotOpen(true)}>
+                Forgot password?
+              </Anchor>
               <Anchor size="xs" c="dimmed" ta="center" onClick={() => setDismissed(true)}>
                 Continue without signing in
               </Anchor>
