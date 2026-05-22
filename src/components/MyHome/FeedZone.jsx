@@ -7,6 +7,7 @@
  *
  * Props:
  *   feedContext — { entity_type, entity_id, entity_name } or null
+ *   reach       — 'ward'|'constituency'|'county'|'region'|'national' -- drives scope param in All mode
  */
 
 import { useState, useEffect, useCallback } from 'react'
@@ -38,23 +39,25 @@ function postToEnvelope(post, entityName) {
 }
 
 /** @returns {JSX.Element} */
-export default function FeedZone({ feedContext }) {
+export default function FeedZone({ feedContext, reach }) {
   const { session } = useAuth()
   const [items,        setItems]        = useState([])
   const [loading,      setLoading]      = useState(false)
   const [typeOptions,  setTypeOptions]  = useState([])
-  const [filterParams, setFilterParams] = useState({ types: null, since: null, scope: null })
+  const [filterParams, setFilterParams] = useState({ types: null, since: null })
 
   const headers = session?.access_token
     ? { Authorization: `Bearer ${session.access_token}` }
     : {}
 
-  const fetchAllFeed = useCallback(async (fp) => {
+  const fetchAllFeed = useCallback(async (fp, reachOverride) => {
     setLoading(true)
     try {
       const params = new URLSearchParams({ page: 1, limit: 20 })
       if (fp.since)               params.set('since', fp.since)
-      if (fp.scope)               params.set('scope', fp.scope)
+      // reach from parent takes precedence; 'national' means no scope filter
+      const scopeVal = reachOverride ?? reach
+      if (scopeVal && scopeVal !== 'national') params.set('scope', scopeVal)
       if (fp.types?.length)       params.set('types', fp.types.join(','))
       const res  = await fetch(`${API_BASE}/api/myhome/feed?${params}`, { headers })
       const data = res.ok ? await res.json() : null
@@ -82,13 +85,14 @@ export default function FeedZone({ feedContext }) {
     if (feedContext) {
       fetchEntityFeed(feedContext)
     } else {
-      fetchAllFeed(filterParams)
+      // Pass reach explicitly -- fetchAllFeed closure may not have the latest value
+      fetchAllFeed(filterParams, reach)
     }
-  }, [feedContext, session])
+  }, [feedContext, session, reach])
 
   function handleFilter(fp) {
     setFilterParams(fp)
-    fetchAllFeed(fp)
+    fetchAllFeed(fp, reach)
   }
 
   async function handleUnfollow(entityType, entityId) {

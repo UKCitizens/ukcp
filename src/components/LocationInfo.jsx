@@ -27,6 +27,17 @@
 import { Stack, Text, Anchor, Loader, Center, Divider, Group, Avatar, Badge } from '@mantine/core'
 import MiniMap from './MiniMap.jsx'
 import { useNearby } from '../hooks/useNearby.js'
+import GeoFollowButton from './GeoFollowButton.jsx'
+
+/**
+ * Thin wrapper so the follow button renders consistently across all LocationInfo
+ * render paths. Uses GeoFollowButton (shared usePlaceFollows hook) so state
+ * syncs with PlacesCard and ConstituencyPane instantly.
+ */
+function FollowToggle({ followEntityId, label }) {
+  if (!followEntityId) return null
+  return <GeoFollowButton entityId={followEntityId} entityName={label} />
+}
 
 /**
  * @param {{
@@ -51,6 +62,7 @@ export default function LocationInfo({
   loading, error, label, wardInfo, lat, lng, onMapClick,
   placeId, wardGss, conGss, nearbyEntityType, nearbyLat, nearbyLng,
   onPlaceSelect,
+  followEntityId,
 }) {
   const placeData = { area, elevation, website, notable_facts, category_tags }
 
@@ -65,10 +77,13 @@ export default function LocationInfo({
   if (wardInfo) {
     return (
       <Stack gap="sm" p="md">
-        <Stack gap={2}>
-          <Text size="sm" fw={600}>{wardInfo.ward}</Text>
-          <Text size="xs" c="dimmed">Electoral ward</Text>
-        </Stack>
+        <Group justify="space-between" align="flex-start" wrap="nowrap">
+          <Stack gap={2}>
+            <Text size="sm" fw={600}>{wardInfo.ward}</Text>
+            <Text size="xs" c="dimmed">Electoral ward</Text>
+          </Stack>
+          <FollowToggle followEntityId={followEntityId} label={wardInfo.ward} />
+        </Group>
         {population && (
           <>
             <Divider />
@@ -142,9 +157,12 @@ export default function LocationInfo({
     const badgeColour = partyColour ? `#${partyColour}` : '#868e96'
     return (
       <Stack gap="md" p="md">
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: '0.05em' }}>
-          Member of Parliament
-        </Text>
+        <Group justify="space-between" align="center" wrap="nowrap">
+          <Text size="xs" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: '0.05em' }}>
+            Member of Parliament
+          </Text>
+          <FollowToggle followEntityId={followEntityId} label={label} />
+        </Group>
 
         {/* MiniMap — top right, same pattern as geo content */}
         {lat && lng && (
@@ -221,12 +239,13 @@ export default function LocationInfo({
     return (
       <Stack gap={0} style={{ overflowY: 'auto', height: '100%' }}>
 
-        {/* MiniMap — floated top-right when coordinates available */}
-        {lat && lng && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '8px 14px 0' }}>
+        {/* Follow toggle + MiniMap row */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '8px 14px 0' }}>
+          <FollowToggle followEntityId={followEntityId} label={label} />
+          {lat && lng && (
             <MiniMap lat={lat} lng={lng} contentType={contentType} label={label} onMapClick={onMapClick} />
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Motto */}
         {g.motto && (
@@ -330,9 +349,10 @@ export default function LocationInfo({
       (nearbyData.peers?.length > 0 || nearbyData.hierarchy)
     return (
       <Stack gap="xs" p="md" style={{ minHeight: 80 }}>
-        <Text size="xs" c="dimmed" ta="center">
-          No summary available for {label}.
-        </Text>
+        <Group justify="space-between" align="center" wrap="nowrap">
+          <Text size="xs" c="dimmed">No summary available for {label}.</Text>
+          <FollowToggle followEntityId={followEntityId} label={label} />
+        </Group>
         {(wardNearby || placeNearby) && (
           <>
             <Divider />
@@ -402,6 +422,9 @@ export default function LocationInfo({
   // ── Wikipedia extract (+ optional curated summary) ──────────────────────
   return (
     <Stack gap="md" p="md" style={{ overflowY: 'auto', height: '100%' }}>
+      <Group justify="flex-end">
+        <FollowToggle followEntityId={followEntityId} label={label} />
+      </Group>
       {population && (
         <div>
           <Text size="10px" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: '0.06em', marginBottom: 2 }}>Population</Text>

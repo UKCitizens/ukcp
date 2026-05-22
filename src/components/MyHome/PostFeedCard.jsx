@@ -29,8 +29,19 @@ function relativeTime(ts) {
 export default function PostFeedCard({ item, onUnfollow }) {
   const navigate = useNavigate()
 
+  // Map entity_type to the tab that owns it in Locations.jsx.
+  // Locations reads location.state.openTab on mount to switch tab.
+  const TAB_FOR_TYPE = {
+    committee_forum: 'civic',
+    school:          'schools',
+    network_chapter: 'groups',
+    association:     'groups',
+    space:           'groups',
+  }
+
   function handleOpen() {
-    navigate('/locations')
+    const openTab = TAB_FOR_TYPE[item.entity_type] ?? null
+    navigate('/locations', openTab ? { state: { openTab } } : {}  )
   }
 
   function handleUnfollow() {

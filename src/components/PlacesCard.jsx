@@ -19,6 +19,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import classes from './PlacesCard.module.css'
+import GeoContextMenu from './GeoContextMenu.jsx'
 
 const TYPE_ORDER  = ['City', 'Town', 'Village', 'Hamlet']
 const ALL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
@@ -68,6 +69,12 @@ function firstPopulatedLetter(places) {
 export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle, focusPlace, onWalkerModeChange }) {
   const [activeType,   setActiveType]   = useState(null)
   const [activeLetter, setActiveLetter] = useState(null)  // null = All (walker mode)
+  const [menuState,    setMenuState]    = useState(null)  // { x, y, entityId, entityName }
+
+  function handleContextMenu(e, entityId, entityName) {
+    e.preventDefault()
+    setMenuState({ x: e.clientX, y: e.clientY, entityId, entityName })
+  }
 
   // Notify parent when walker mode changes.
   useEffect(() => {
@@ -183,12 +190,15 @@ export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle
         {filteredPlaces.length === 0
           ? <p className={classes.empty}>No places for this selection.</p>
           : filteredPlaces.map((place, i) => {
-              const isFocus = focusPlace?.name === place.name && focusPlace?.place_type === place.place_type
+              const isFocus    = focusPlace?.name === place.name && focusPlace?.place_type === place.place_type
+              const entityId   = `${place.place_type?.toLowerCase() ?? 'place'}:${place.name?.replace(/ /g, '_') ?? ''}`
+              const entityName = place.name
               return (
                 <button
                   key={`${i}-${place.name}`}
                   className={[classes.placeBtn, isFocus ? classes.placeBtnFocus : ''].join(' ')}
                   onClick={() => onPlaceSelect(place)}
+                  onContextMenu={(e) => handleContextMenu(e, entityId, entityName)}
                 >
                   {place.name}
                 </button>
@@ -197,6 +207,15 @@ export default function PlacesCard({ grouped, scopeKey, onPlaceSelect, paneTitle
         }
       </div>
 
+      {menuState && (
+        <GeoContextMenu
+          x={menuState.x}
+          y={menuState.y}
+          entityId={menuState.entityId}
+          entityName={menuState.entityName}
+          onClose={() => setMenuState(null)}
+        />
+      )}
 
     </div>
   )

@@ -10,6 +10,55 @@
 
 ## ZONE: PRG -- Dynamic progress (purge and re-establish as needed)
 
+[PRG:137] PROGRESS  | Session 21 May 2026 -- Auth resurrection + login UX overhaul.
+                     CONTEXT: Supabase free-tier project had paused due to inactivity.
+                       Password for phild@btltd.net was unknown. No in-app reset flow existed.
+                       Recovered by unpausing project in Supabase dashboard + running
+                       set-password.mjs (one-shot Node script, now deleted) using service role key.
+                     AUTHCONTEXT FIX (blank screen):
+                       getSession() now has 6s safety timeout + .catch(). Bad/expired stored
+                       sessions are cleared via signOut(). loading=false always resolves so
+                       modal opens even if Supabase is unreachable.
+                     LOGIN MODAL -- "Failed to fetch":
+                       friendlyError() function translates network-level fetch errors to a
+                       readable message instead of raw "Failed to fetch".
+                     LOGIN MODAL -- dismissible:
+                       dismissed state added. Modal closes on Escape or "Continue without
+                       signing in" link. window event 'ukcp:open-login' resets dismissed state
+                       so any component can reopen the modal.
+                     PUBLIC ROUTES:
+                       / and /locations were already RequireAuth -- now public.
+                       /people and /help also made public.
+                       /myhome, /profile, /settings remain RequireAuth.
+                     REQUIREAUTH -- modal trigger:
+                       RequireAuth now fires 'ukcp:open-login' when session is null after
+                       loading resolves. Hitting a protected route without a session reopens
+                       the modal instead of showing a blank screen.
+                     HEADER LOGIN BUTTON:
+                       "Log in" button and unauthenticated profile icon now dispatch
+                       'ukcp:open-login' instead of navigate('/login'). /login route still
+                       redirects to / as fallback.
+                     FORGOT PASSWORD FLOW:
+                       LoginModal: "Forgot password?" link -> email input -> calls
+                       supabase.auth.resetPasswordForEmail with redirectTo=/reset-password.
+                       Shows "check your email" confirmation state.
+                     RESET PASSWORD PAGE:
+                       src/pages/ResetPassword.jsx -- new page. Listens for PASSWORD_RECOVERY
+                       event from Supabase (implicit flow token in URL hash). Renders new
+                       password + confirm form. Calls supabase.auth.updateUser on submit.
+                       Signs out and redirects to / on success.
+                       Route: /reset-password (public, no RequireAuth).
+                     SUPABASE KEEP-ALIVE: discussed but not implemented -- still needed to
+                       prevent free-tier pause. Schedule a daily ping next session or upgrade.
+                     BROWSER MASTER: Phil confirmed working perfectly for session/credential
+                       cache separation -- the reason it was built.
+                     NEXT SESSION:
+                       Memory and pipeline reform (Phil's priority).
+                       Build + smoke test all auth changes on live.
+                       Supabase keep-alive sprint (small).
+                       PRG:134 box-bot smoke test still pending.
+                       PRG:133 MyHome briefs still outstanding.
+
 [PRG:136] PROGRESS  | Session 7 May 2026 -- UX fixes + nearby place links.
                      MOBILE HEIGHT FIX:
                        PageLayout.module.css mobile midCol: removed fixed height:60vw /

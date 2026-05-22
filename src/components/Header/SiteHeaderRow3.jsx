@@ -19,6 +19,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Anchor, Box, Group, Text } from '@mantine/core'
 import { ROW3_HEIGHT, ROW3_CRUMB_HEIGHT } from './HEADER_ROWS.js'
 import classes from './SiteHeaderRow3.module.css'
+import GeoContextMenu from '../GeoContextMenu.jsx'
 
 // 2 lines at 12px / 1.5 lineHeight + 1 row-gap of 3px
 const TWO_LINE_THRESHOLD = 36
@@ -46,7 +47,18 @@ export default function SiteHeaderRow3({ walkerOpen, currentOptions, navDepth, c
   const levelConfig    = NAV_LEVELS[depth]
   const height         = walkerOpen ? ROW3_HEIGHT : ROW3_CRUMB_HEIGHT
   const optionsWrapRef = useRef(null)
-  const [scrollable, setScrollable] = useState(false)
+  const [scrollable,  setScrollable] = useState(false)
+  const [menuState,   setMenuState]  = useState(null)  // { x, y, entityId, entityName }
+
+  function handleContextMenu(e, opt) {
+    e.preventDefault()
+    setMenuState({
+      x: e.clientX,
+      y: e.clientY,
+      entityId:   `${levelConfig.nextLevel}:${opt.replace(/ /g, '_')}`,
+      entityName: opt,
+    })
+  }
 
   useEffect(() => {
     const el = optionsWrapRef.current
@@ -75,6 +87,7 @@ export default function SiteHeaderRow3({ walkerOpen, currentOptions, navDepth, c
                   key={opt}
                   className={classes.optionLink}
                   onClick={() => onSelect(levelConfig.nextLevel, opt)}
+                  onContextMenu={(e) => handleContextMenu(e, opt)}
                 >
                   {opt}
                 </button>
@@ -118,6 +131,15 @@ export default function SiteHeaderRow3({ walkerOpen, currentOptions, navDepth, c
         )}
 
       </Box>
+
+      {menuState && (
+        <GeoContextMenu
+          x={menuState.x} y={menuState.y}
+          entityId={menuState.entityId} entityName={menuState.entityName}
+          onClose={() => setMenuState(null)}
+        />
+      )}
+
     </Box>
   )
 }

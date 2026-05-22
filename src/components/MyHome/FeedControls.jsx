@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import { Group, Chip, SegmentedControl, Select, Text } from '@mantine/core'
+import { Group, Chip, SegmentedControl, Text } from '@mantine/core'
 
 const DATE_OPTIONS = [
   { label: '7d',  value: '7d'  },
@@ -16,33 +16,27 @@ const DATE_OPTIONS = [
   { label: 'All', value: 'all' },
 ]
 
-const SCOPE_OPTIONS = [
-  { label: 'Any',          value: 'any'         },
-  { label: 'Ward',         value: 'ward'         },
-  { label: 'Constituency', value: 'constituency'  },
-  { label: 'County',       value: 'county'        },
-  { label: 'Region',       value: 'region'        },
-  { label: 'National',     value: 'national'      },
-]
-
 const TYPE_LABELS = { post: 'Posts', network_post: 'Network' }
 
-/** @returns {JSX.Element} */
+/**
+ * @param {object}    props
+ * @param {string[]}  props.typeOptions - feed_type values present in the current feed
+ * @param {Function}  props.onFilter    - fn({ types, since }) -- scope removed, driven by reach in MyHome
+ */
 export default function FeedControls({ typeOptions, onFilter }) {
   const [selectedTypes, setSelectedTypes] = useState(typeOptions ?? [])
   const [dateRange,     setDateRange]     = useState('all')
-  const [scope,         setScope]         = useState('any')
 
   // Keep selectedTypes in sync if typeOptions changes
   useEffect(() => {
     setSelectedTypes(typeOptions ?? [])
   }, [typeOptions?.join(',')])
 
-  function buildFilter(types, date, sc) {
+  function buildFilter(types, date) {
     let since = null
     if (date === '7d')  since = new Date(Date.now() - 7  * 24 * 60 * 60 * 1000).toISOString()
     if (date === '30d') since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-    onFilter({ types, since, scope: sc === 'any' ? null : sc })
+    onFilter({ types, since })
   }
 
   function handleTypeToggle(type) {
@@ -50,17 +44,12 @@ export default function FeedControls({ typeOptions, onFilter }) {
       ? selectedTypes.filter(t => t !== type)
       : [...selectedTypes, type]
     setSelectedTypes(next)
-    buildFilter(next, dateRange, scope)
+    buildFilter(next, dateRange)
   }
 
   function handleDate(val) {
     setDateRange(val)
-    buildFilter(selectedTypes, val, scope)
-  }
-
-  function handleScope(val) {
-    setScope(val)
-    buildFilter(selectedTypes, dateRange, val)
+    buildFilter(selectedTypes, val)
   }
 
   return (
@@ -83,15 +72,6 @@ export default function FeedControls({ typeOptions, onFilter }) {
         value={dateRange}
         onChange={handleDate}
         size="xs"
-      />
-
-      <Select
-        data={SCOPE_OPTIONS}
-        value={scope}
-        onChange={handleScope}
-        size="xs"
-        w={130}
-        checkIconPosition="right"
       />
     </Group>
   )

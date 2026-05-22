@@ -176,7 +176,7 @@ export default function MyHome() {
             />
           </Group>
 
-          <FeedZone feedContext={selectedContext} />
+          <FeedZone feedContext={selectedContext} reach={reach} />
         </Stack>
       }
 

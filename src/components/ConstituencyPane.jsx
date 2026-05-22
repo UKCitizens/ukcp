@@ -1,28 +1,28 @@
 /**
  * @file ConstituencyPane.jsx
- * @description Right-pane constituency browser — Option A two-panel layout.
+ * @description Right-pane constituency browser -- Option A two-panel layout.
  *
- * Panel 1 — A-Z strip + constituency list (scoped to nav depth).
- *   Click constituency → select('constituency', name) [explore mode in Locations.jsx]
+ * Panel 1 -- A-Z strip + constituency list (scoped to nav depth).
+ *   Click constituency -> select('constituency', name) [explore mode in Locations.jsx]
  *
- * Panel 2 — Ward list for the currently selected constituency (from path).
+ * Panel 2 -- Ward list for the currently selected constituency (from path).
  *   Shown only when a constituency is in path.
- *   Click ward → selectMany([constituency, ward])
+ *   Click ward -> selectMany([constituency, ward])
  *
  * No partial badges. No tree. No expand/collapse.
  *
  * Scope behaviour (constituency list):
- *   county  → constituencies containing that county (containment filter)
- *   region  → all constituencies in hierarchy region
- *   country → all constituencies in hierarchy country
- *   none    → all UK (~633)
+ *   county  -> constituencies containing that county (containment filter)
+ *   region  -> all constituencies in hierarchy region
+ *   country -> all constituencies in hierarchy country
+ *   none    -> all UK (~633)
  *
- * NOTE: Right-pane walker mode (All button, preview without path commit) is
- * deferred — planned for a dedicated navigation refactor session.
+ * Right-click any constituency or ward to open the GeoContextMenu (Follow/Unfollow).
  */
 
 import { useMemo, useState, useEffect } from 'react'
 import classes from './ConstituencyPane.module.css'
+import GeoContextMenu from './GeoContextMenu.jsx'
 
 const ALL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
@@ -87,6 +87,12 @@ export default function ConstituencyPane({
   filterText = '',
 }) {
   const [activeLetter, setActiveLetter] = useState(null)
+  const [menuState,    setMenuState]    = useState(null)  // { x, y, entityId, entityName }
+
+  function handleContextMenu(e, entityId, entityName) {
+    e.preventDefault()
+    setMenuState({ x: e.clientX, y: e.clientY, entityId, entityName })
+  }
 
   const country      = path?.find(p => p.level === 'country')?.value      ?? null
   const region       = path?.find(p => p.level === 'region')?.value       ?? null
@@ -97,11 +103,7 @@ export default function ConstituencyPane({
   const activeConstituency = pendingConstituency ?? constituency
   const activeWard         = pendingWard         ?? ward
 
-  // allConstituencies: full scoped list — deps are scope only (no pendingConstituency).
-  // useEffect watches this so activeLetter only resets on genuine scope change,
-  // not on every walker click (which was the bug: pendingConstituency in deps
-  // caused a new array ref each click → useEffect fired → activeLetter reset to
-  // first letter → user silently kicked out of All mode → list collapsed).
+  // allConstituencies: full scoped list -- deps are scope only (no pendingConstituency).
   const allConstituencies = useMemo(() => {
     return getConstituenciesForScope(containment, hierarchy, country, region, county)
   }, [containment, hierarchy, country, region, county])
@@ -121,7 +123,7 @@ export default function ConstituencyPane({
     return s
   }, [allConstituencies])
 
-  // Reset to All (null) when the scoped list itself changes — county nav change.
+  // Reset to All (null) when the scoped list itself changes -- county nav change.
   useEffect(() => {
     setActiveLetter(null)
   }, [allConstituencies]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -131,7 +133,6 @@ export default function ConstituencyPane({
     return constituencies.filter(c => c.name?.[0]?.toUpperCase() === activeLetter)
   }, [constituencies, activeLetter])
 
-  // Show ward panel only when user has explicitly selected a constituency
   const displayConstituency = activeConstituency ?? null
 
   const allWards = useMemo(
@@ -140,7 +141,7 @@ export default function ConstituencyPane({
   )
 
   // When a ward is in path, collapse the list to just that entry.
-  // In walker mode, always show all wards — path's ward must not collapse the preview list.
+  // In walker mode, always show all wards.
   const selectedWards = useMemo(
     () => (!walkerMode && activeWard) ? allWards.filter(w => w === activeWard) : allWards,
     [allWards, activeWard, walkerMode]
@@ -155,7 +156,7 @@ export default function ConstituencyPane({
     )
   }
 
-  // filterText search mode — bypass A-Z, show flat filtered list
+  // filterText search mode -- bypass A-Z, show flat filtered list
   const searchTerm = filterText.trim().toLowerCase()
   if (searchTerm) {
     const searchResults = allConstituencies.filter(c =>
@@ -173,6 +174,7 @@ export default function ConstituencyPane({
                     key={c.id}
                     className={[classes.constBtn, c.name === activeConstituency ? classes.constBtnActive : ''].join(' ')}
                     onClick={() => select('constituency', c.name)}
+                    onContextMenu={(e) => handleContextMenu(e, `constituency:${c.name.replace(/ /g, '_')}`, c.name)}
                   >
                     {c.name}
                   </button>
@@ -180,6 +182,13 @@ export default function ConstituencyPane({
             }
           </div>
         </div>
+        {menuState && (
+          <GeoContextMenu
+            x={menuState.x} y={menuState.y}
+            entityId={menuState.entityId} entityName={menuState.entityName}
+            onClose={() => setMenuState(null)}
+          />
+        )}
       </div>
     )
   }
@@ -194,7 +203,7 @@ export default function ConstituencyPane({
         <button
           className={[classes.alphaBtn, activeLetter === null ? classes.alphaBtnActive : ''].join(' ')}
           onClick={() => { setActiveLetter(null); onWalkerModeChange?.(true) }}
-          title="Show all — walker mode"
+          title="Show all -- walker mode"
         >All</button>
         {ALL_LETTERS.filter(l => availableLetters.has(l)).map(l => (
           <button
@@ -207,7 +216,7 @@ export default function ConstituencyPane({
         ))}
       </div>
 
-      {/* List area — constituency list and ward section coupled together */}
+      {/* List area -- constituency list and ward section coupled together */}
       <div className={classes.listArea}>
 
         <div className={[classes.constList, classes.constListSplit].join(' ')}>
@@ -218,6 +227,7 @@ export default function ConstituencyPane({
                   key={c.id}
                   className={[classes.constBtn, c.name === activeConstituency ? classes.constBtnActive : ''].join(' ')}
                   onClick={() => walkerMode ? onConstituencyPending?.(c.name) : select('constituency', c.name)}
+                  onContextMenu={(e) => handleContextMenu(e, `constituency:${c.name.replace(/ /g, '_')}`, c.name)}
                 >
                   {c.name}
                 </button>
@@ -225,10 +235,10 @@ export default function ConstituencyPane({
           }
         </div>
 
-        {/* Ward panel — always visible, previews first list item until user selects */}
+        {/* Ward panel */}
         {displayConstituency && (
           <div className={classes.wardSection}>
-            <div className={classes.wardHeader}>Wards — {displayConstituency}</div>
+            <div className={classes.wardHeader}>Wards -- {displayConstituency}</div>
             <div className={classes.wardList}>
               {selectedWards.length === 0
                 ? <p className={classes.empty}>No wards found.</p>
@@ -243,6 +253,7 @@ export default function ConstituencyPane({
                             { level: 'ward',         value: w },
                           ])
                       }
+                      onContextMenu={(e) => handleContextMenu(e, `ward:${w.replace(/ /g, '_')}`, w)}
                     >
                       {w}
                     </button>
@@ -254,6 +265,13 @@ export default function ConstituencyPane({
 
       </div>
 
+      {menuState && (
+        <GeoContextMenu
+          x={menuState.x} y={menuState.y}
+          entityId={menuState.entityId} entityName={menuState.entityName}
+          onClose={() => setMenuState(null)}
+        />
+      )}
 
     </div>
   )

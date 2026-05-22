@@ -27,6 +27,7 @@
  */
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useUserState } from '../context/UserStateContext.jsx'
 
@@ -72,6 +73,7 @@ import LocationSearch     from '../components/LocationSearch.jsx'
 import MapOverlayControls from '../components/Map/MapOverlayControls.jsx'
 
 export default function Locations() {
+  const routerLocation = useLocation()
   const { session, loading: authLoading } = useAuth()
   const { updateUserState } = useUserState()
   const { layers, toggleLayer, activateForTab } = useMapLayers()
@@ -175,6 +177,18 @@ export default function Locations() {
       setTimeout(() => setInvalidateTrigger(n => n + 1), 50)
     }
   }
+
+  // If navigated from MyHome PostFeedCard, open the tab indicated by location state.
+  // Fires once on mount via routerLocation.state. Clears state after consuming.
+  useEffect(() => {
+    const openTab = routerLocation.state?.openTab
+    if (openTab) {
+      handleTabChange(openTab)
+      // Clear consumed state so back-navigation doesn't re-trigger
+      window.history.replaceState({}, '')
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Map header click -- switches side panes back to location navigator.
   function handleMapHeaderClick() {
@@ -864,6 +878,7 @@ export default function Locations() {
               nearbyLat={nearbyEntityType === 'ward' ? (wardCoords?.lat ?? contextCoords?.lat ?? null) : (contextCoords?.lat ?? null)}
               nearbyLng={nearbyEntityType === 'ward' ? (wardCoords?.lng ?? contextCoords?.lng ?? null) : (contextCoords?.lng ?? null)}
               onPlaceSelect={handleNearbyPlaceSelect}
+              followEntityId={contentContext ? `${contentContext.type}:${contentContext.slug}` : null}
             />
           }
         />
