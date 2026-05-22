@@ -18,7 +18,7 @@ import { createPortal } from 'react-dom'
 import { usePlaceFollows } from '../hooks/usePlaceFollows.js'
 import classes from './GeoContextMenu.module.css'
 
-export default function GeoContextMenu({ x, y, entityId, entityName, onClose }) {
+export default function GeoContextMenu({ x, y, entityId, entityName, navPath = null, onClose }) {
   const { followedSet, follow, unfollow, isLoggedIn } = usePlaceFollows()
   const menuRef = useRef(null)
   const followed = followedSet.has(entityId)
@@ -46,7 +46,7 @@ export default function GeoContextMenu({ x, y, entityId, entityName, onClose }) 
       <button
         className={classes.item}
         onClick={() => {
-          followed ? unfollow(entityId) : follow(entityId, entityName)
+          followed ? unfollow(entityId) : follow(entityId, entityName, navPath)
           onClose()
         }}
       >

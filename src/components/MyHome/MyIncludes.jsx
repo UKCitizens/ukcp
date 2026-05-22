@@ -11,6 +11,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Stack, Text, Accordion, Group, Badge, UnstyledButton,
 } from '@mantine/core'
@@ -36,6 +37,7 @@ const TYPE_ORDER = Object.keys(TYPE_META)
  * @param {Function}      props.onSelect       - (origin) => void — item clicked
  */
 export default function MyIncludes({ session, selectedId, onSelect }) {
+  const navigate = useNavigate()
   const [follows, setFollows] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -147,6 +149,10 @@ export default function MyIncludes({ session, selectedId, onSelect }) {
                         entityId={id}
                         entityName={item.entity_name}
                         isFollowing={true}
+                        onOpen={item.entity_type === 'place'
+                          ? () => navigate('/locations', { state: { navPath: item.nav_path ?? null, geoEntityId: item.entity_id } })
+                          : null
+                        }
                         onUnfollow={() => handleUnfollow(item.entity_type, id)}
                       />
                     </Group>

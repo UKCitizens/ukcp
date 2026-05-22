@@ -54,7 +54,7 @@ router.get('/', requireAuth, asyncHandler(async (req, res) => {
 
 // POST /api/follows
 router.post('/', requireAuth, asyncHandler(async (req, res) => {
-  const { entity_type, entity_id, entity_name, scope_gss, followed_at } = req.body ?? {}
+  const { entity_type, entity_id, entity_name, scope_gss, followed_at, nav_path } = req.body ?? {}
   if (!entity_type || !entity_id) {
     return res.status(400).json({ error: 'entity_type and entity_id required' })
   }
@@ -69,7 +69,7 @@ router.post('/', requireAuth, asyncHandler(async (req, res) => {
   await col.updateOne(
     { user_id: req.user._id, entity_type, entity_id },
     {
-      $set:         { entity_name: entity_name ?? null, scope_gss: scope_gss ?? null },
+      $set:         { entity_name: entity_name ?? null, scope_gss: scope_gss ?? null, nav_path: nav_path ?? null },
       $setOnInsert: { user_id: req.user._id, entity_type, entity_id, followed_at: followedAt },
     },
     { upsert: true }

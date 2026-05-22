@@ -190,6 +190,70 @@ export default function Locations() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // If navigated from MyHome "Open" on a place follow, reconstruct the nav position.
+  // Captured on mount, applied once data is ready (loading = false).
+  // pendingNavPath shape: { navPath: Array|null, geoEntityId: string|null }
+  const [pendingNavPath, setPendingNavPath] = useState(null)
+
+  useEffect(() => {
+    const { navPath = null, geoEntityId = null } = routerLocation.state ?? {}
+    if (navPath?.length || geoEntityId) {
+      setPendingNavPath({ navPath, geoEntityId })
+      window.history.replaceState({}, '')
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (!pendingNavPath || loading) return
+    const { navPath, geoEntityId } = pendingNavPath
+
+    if (navPath?.length) {
+      // Stored path — full reconstruction.
+      const geoLevels = navPath.filter(p => ['country', 'region', 'county'].includes(p.level))
+      const conPair   = navPath.find(p => p.level === 'constituency')
+      const wardPair  = navPath.find(p => p.level === 'ward')
+      if (geoLevels.length) selectMany(geoLevels)
+      if (conPair)  setPendingConstituency(conPair.value)
+      if (wardPair) setPendingWard(wardPair.value)
+    } else if (geoEntityId) {
+      // No stored path — derive from entity_id prefix (e.g. 'constituency:Aberavon').
+      const colon = geoEntityId.indexOf(':')
+      if (colon === -1) { setPendingNavPath(null); return }
+      const levelRaw = geoEntityId.slice(0, colon)
+      const value    = geoEntityId.slice(colon + 1).replace(/_/g, ' ')
+      if (levelRaw === 'constituency') {
+        const countyPairs = resolveConstituencyAncestors(value)
+        if (countyPairs.length) selectMany(countyPairs)
+        setPendingConstituency(value)
+      } else if (levelRaw === 'ward') {
+        const { constituency: wardCon, countyPairs } = resolveWardAncestors(value)
+        if (countyPairs.length) selectMany(countyPairs)
+        if (wardCon) setPendingConstituency(wardCon)
+        setPendingWard(value)
+      } else if (['country', 'region', 'county'].includes(levelRaw)) {
+        select(levelRaw, value)
+      } else if (['city', 'town', 'village', 'hamlet'].includes(levelRaw)) {
+        // Look up the full place object so setPending fires the map zoom.
+        const match = places?.find(p =>
+          p.place_type?.toLowerCase() === levelRaw &&
+          p.name?.trim().toLowerCase() === value.toLowerCase()
+        )
+        if (match) {
+          const pairs = []
+          if (match.country)   pairs.push({ level: 'country', value: match.country })
+          if (match.region)    pairs.push({ level: 'region',  value: match.region })
+          if (match.ctyhistnm) pairs.push({ level: 'county',  value: match.ctyhistnm })
+          if (pairs.length) selectMany(pairs)
+          setPending(match)
+        }
+      }
+    }
+
+    setPendingNavPath(null)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingNavPath, loading])
+
   // Map header click -- switches side panes back to location navigator.
   function handleMapHeaderClick() {
     setPaneMode('nav')

@@ -89,9 +89,9 @@ export default function ConstituencyPane({
   const [activeLetter, setActiveLetter] = useState(null)
   const [menuState,    setMenuState]    = useState(null)  // { x, y, entityId, entityName }
 
-  function handleContextMenu(e, entityId, entityName) {
+  function handleContextMenu(e, entityId, entityName, navPath = null) {
     e.preventDefault()
-    setMenuState({ x: e.clientX, y: e.clientY, entityId, entityName })
+    setMenuState({ x: e.clientX, y: e.clientY, entityId, entityName, navPath })
   }
 
   const country      = path?.find(p => p.level === 'country')?.value      ?? null
@@ -174,7 +174,12 @@ export default function ConstituencyPane({
                     key={c.id}
                     className={[classes.constBtn, c.name === activeConstituency ? classes.constBtnActive : ''].join(' ')}
                     onClick={() => select('constituency', c.name)}
-                    onContextMenu={(e) => handleContextMenu(e, `constituency:${c.name.replace(/ /g, '_')}`, c.name)}
+                    onContextMenu={(e) => handleContextMenu(
+                      e,
+                      `constituency:${c.name.replace(/ /g, '_')}`,
+                      c.name,
+                      [...(path ?? []), { level: 'constituency', value: c.name }]
+                    )}
                   >
                     {c.name}
                   </button>
@@ -186,6 +191,7 @@ export default function ConstituencyPane({
           <GeoContextMenu
             x={menuState.x} y={menuState.y}
             entityId={menuState.entityId} entityName={menuState.entityName}
+            navPath={menuState.navPath ?? null}
             onClose={() => setMenuState(null)}
           />
         )}
@@ -227,7 +233,12 @@ export default function ConstituencyPane({
                   key={c.id}
                   className={[classes.constBtn, c.name === activeConstituency ? classes.constBtnActive : ''].join(' ')}
                   onClick={() => walkerMode ? onConstituencyPending?.(c.name) : select('constituency', c.name)}
-                  onContextMenu={(e) => handleContextMenu(e, `constituency:${c.name.replace(/ /g, '_')}`, c.name)}
+                  onContextMenu={(e) => handleContextMenu(
+                    e,
+                    `constituency:${c.name.replace(/ /g, '_')}`,
+                    c.name,
+                    [...(path ?? []), { level: 'constituency', value: c.name }]
+                  )}
                 >
                   {c.name}
                 </button>
@@ -253,7 +264,12 @@ export default function ConstituencyPane({
                             { level: 'ward',         value: w },
                           ])
                       }
-                      onContextMenu={(e) => handleContextMenu(e, `ward:${w.replace(/ /g, '_')}`, w)}
+                      onContextMenu={(e) => handleContextMenu(
+                        e,
+                        `ward:${w.replace(/ /g, '_')}`,
+                        w,
+                        [...(path ?? []), { level: 'constituency', value: displayConstituency }, { level: 'ward', value: w }]
+                      )}
                     >
                       {w}
                     </button>

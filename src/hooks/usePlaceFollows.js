@@ -54,7 +54,7 @@ export function usePlaceFollows() {
 
   const followedSet = _cache ?? new Set()
 
-  async function follow(entityId, entityName) {
+  async function follow(entityId, entityName, navPath = null) {
     if (!session?.access_token) return
     // Optimistic update
     _cache = new Set([...followedSet, entityId])
@@ -70,6 +70,7 @@ export function usePlaceFollows() {
           entity_type: 'place',
           entity_id:   entityId,
           entity_name: entityName,
+          nav_path:    navPath ?? null,
         }),
       })
     } catch (_) {
