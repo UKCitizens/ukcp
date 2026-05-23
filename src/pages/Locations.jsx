@@ -71,6 +71,8 @@ import SchoolsLeftNav     from '../components/SchoolGates/SchoolsLeftNav.jsx'
 import SchoolGatesMid     from '../components/SchoolGates/SchoolGatesMid.jsx'
 import LocationSearch     from '../components/LocationSearch.jsx'
 import MapOverlayControls from '../components/Map/MapOverlayControls.jsx'
+import PostsTab           from '../components/Posts/PostsTab.jsx'
+import { buildGeoOrigin } from '../lib/geoOrigin.js'
 
 export default function Locations() {
   const routerLocation = useLocation()
@@ -173,6 +175,9 @@ export default function Locations() {
     setMidTab(tab)
     setPaneMode('tab')
     activateForTab(tab)
+    if (tab === 'posts') {
+      setViewMode('explore')
+    }
     if (tab === 'map') {
       setTimeout(() => setInvalidateTrigger(n => n + 1), 50)
     }
@@ -476,6 +481,18 @@ export default function Locations() {
   const locationType = pendingPlace
     ? pendingPlace.place_type?.toLowerCase() ?? null
     : contentContext?.type ?? null
+
+  // geoOrigin — post origin for the current geo selection.
+  // Named places anchor to the place record itself (entity_id = place id string).
+  const geoOrigin = useMemo(() => {
+    if (pendingPlace) return {
+      entity_type: pendingPlace.place_type?.toLowerCase() ?? 'place',
+      entity_id:   String(pendingPlace.id),
+      entity_name: pendingPlace.name,
+      geo_scope:   null,
+    }
+    return buildGeoOrigin(contentContext?.type, contentContext?.slug, geoData)
+  }, [pendingPlace, contentContext?.type, contentContext?.slug, geoData])
 
   // If Government tab is active but context switches to a named place, reset to Info.
   const NAMED_PLACES_GUARD = ['city', 'town', 'village', 'hamlet']
@@ -890,6 +907,11 @@ export default function Locations() {
           onToggleExpand={handleToggleExpand}
           session={session}
           mapPane={mapPane}
+          postsPane={
+            geoOrigin
+              ? <PostsTab origin={geoOrigin} />
+              : <p style={{ padding: 16, fontSize: 13, color: '#868e96' }}>Select a location to view posts.</p>
+          }
           newsPane={
             <NewsTab
               locationType={contentContext?.type}

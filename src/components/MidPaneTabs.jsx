@@ -83,7 +83,7 @@ function MapPlaceholder() {
 }
 
 export default function MidPaneTabs({
-  infoPane, newsPane, groupsPane, tradersPane, civicPane, mapPane,
+  infoPane, newsPane, groupsPane, tradersPane, civicPane, mapPane, postsPane,
   activeTab, onTabChange, locationType, viewMode, onToggleExpand,
   session,
 }) {
@@ -91,6 +91,7 @@ export default function MidPaneTabs({
   const isNamedPlace = NAMED_PLACES.includes((locationType ?? '').toLowerCase())
 
   const tabs = [
+    { id: 'posts',   label: 'Posts'        },
     { id: 'groups',  label: 'Groups'       },
     { id: 'news',    label: 'News'         },
     { id: 'traders', label: 'Local Traders'},
@@ -169,6 +170,10 @@ export default function MidPaneTabs({
 
       {/* Content panels -- simple show/hide */}
       <div style={{ flex: 1, position: 'relative', minHeight: 0 }}>
+
+        <div style={{ position: 'absolute', inset: 0, background: '#fff', overflowY: 'auto', display: activeTab === 'posts' ? 'block' : 'none' }}>
+          {session ? postsPane : <LoginGate tabLabel="Posts" />}
+        </div>
 
         <div style={{ position: 'absolute', inset: 0, background: '#fff', overflowY: 'auto', display: activeTab === 'map'     ? 'block' : 'none' }}>
           {mapPane ?? <MapPlaceholder />}

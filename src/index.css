@@ -1,4 +1,4 @@
-/* UKCP base styles — keep minimal. Mantine handles component styling. */
+/* UKCP base styles -- keep minimal. Mantine handles component styling. */
 
 *,
 *::before,
@@ -15,4 +15,27 @@ body {
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* TipTap / ProseMirror editor resets */
+.ProseMirror {
+  outline: none;
+  min-height: inherit;
+}
+.ProseMirror p {
+  margin: 0 0 4px 0;
+}
+.ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+.ProseMirror a {
+  color: #1971c2;
+  text-decoration: underline;
+}
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #adb5bd;
+  pointer-events: none;
+  float: left;
+  height: 0;
 }

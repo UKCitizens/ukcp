@@ -88,7 +88,16 @@
       "Bash(netstat -ano)",
       "Bash(taskkill /PID 35024 /F)",
       "Bash(curl -s \"http://localhost:3000/api/forums?type=constituency&slug=Liverpool%2C_Riverside\")",
-      "Bash(curl -s \"https://localhost:3443/api/forums?type=constituency&slug=Liverpool%2C_Riverside\" -k)"
+      "Bash(curl -s \"https://localhost:3443/api/forums?type=constituency&slug=Liverpool%2C_Riverside\" -k)",
+      "Bash(node -e \"require\\('docx'\\); console.log\\('ok'\\)\")",
+      "Bash(node -e \"require\\('playwright'\\); console.log\\('ok'\\)\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\phild\\\\Desktop\\\\Projects\\\\Ali-Projects\\\\UKCP\\\\Ali\\\\manual-screenshots\")",
+      "Bash(node Ali/capture-manual.js)",
+      "Bash(node Ali/capture-manual.cjs)",
+      "Bash(node -e \"require\\('image-size'\\)\")",
+      "Bash(node Ali/build-manual.cjs)",
+      "Read(//mnt/c/Users/phild/Desktop/Projects/Ali-Projects/UKCP/Ali/**)",
+      "Bash(dir \"C:\\\\Users\\\\phild\\\\Desktop\\\\Projects\\\\Ali-Projects\\\\UKCP\\\\Ali\\\\ukcp-functional-manual.docx\")"
     ]
   }
 }

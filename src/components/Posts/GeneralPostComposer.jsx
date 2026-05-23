@@ -18,6 +18,7 @@ export default function GeneralPostComposer({ origin, onSuccess }) {
       postType="general_comment"
       origin={origin}
       onSuccess={onSuccess}
+      hideReach
     />
   )
 }

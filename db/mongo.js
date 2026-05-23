@@ -61,6 +61,8 @@ export async function connectMongo() {
     await db.collection('posts').createIndex({ status:                   1 })
     await db.collection('posts').createIndex({ national_feed_suppressed: 1 })
     await db.collection('post_type_config').createIndex({ post_type: 1 }, { unique: true })
+    await db.collection('veracity_votes').createIndex({ post_id: 1, user_id: 1 }, { unique: true })
+    await db.collection('post_reactions').createIndex({ post_id: 1, user_id: 1 }, { unique: true })
     await db.collection('user_session').createIndex({ user_id: 1 }, { unique: true })
     await db.collection('user_follows').createIndex({ user_id: 1, entity_type: 1 })
     await db.collection('user_follows').createIndex({ entity_type: 1, entity_id: 1 })
@@ -136,3 +138,9 @@ export function tradersCol()         { return db ? db.collection('traders')     
 
 /** Returns the user_notifications collection, or null if Mongo is unavailable. */
 export function notificationsCol()   { return db ? db.collection('user_notifications') : null }
+
+/** Returns the veracity_votes collection, or null if Mongo is unavailable. */
+export function veracityVotesCol()   { return db ? db.collection('veracity_votes')     : null }
+
+/** Returns the post_reactions collection, or null if Mongo is unavailable. */
+export function postReactionsCol()   { return db ? db.collection('post_reactions')     : null }

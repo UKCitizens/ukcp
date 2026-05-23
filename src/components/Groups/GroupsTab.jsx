@@ -10,14 +10,25 @@
 
 import { useState, useEffect }     from 'react'
 import { useAuth }                 from '../../context/AuthContext.jsx'
+import PostsTab                    from '../Posts/PostsTab.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
+function groupOrigin(g) {
+  return {
+    entity_type: g.kind,
+    entity_id:   String(g._id),
+    entity_name: g.name,
+    geo_scope:   null,
+  }
+}
+
 export default function GroupsTab({ locationType, locationSlug, filter = 'all' }) {
-  const { session }  = useAuth()
-  const [groups,  setGroups]  = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState(null)
+  const { session }      = useAuth()
+  const [groups,       setGroups]      = useState([])
+  const [loading,      setLoading]     = useState(false)
+  const [error,        setError]       = useState(null)
+  const [expandedId,   setExpandedId]  = useState(null)
 
   useEffect(() => {
     if (!locationType || !locationSlug) return
@@ -77,6 +88,8 @@ export default function GroupsTab({ locationType, locationSlug, filter = 'all' }
               showCategory
               session={session}
               onJoin={(id) => handleJoin('associations', id)}
+              expandedId={expandedId}
+              onExpand={(id) => setExpandedId(prev => prev === id ? null : id)}
             />
           )}
           {showSpaces && (
@@ -85,6 +98,8 @@ export default function GroupsTab({ locationType, locationSlug, filter = 'all' }
               items={spaces}
               session={session}
               onJoin={(id) => handleJoin('spaces', id)}
+              expandedId={expandedId}
+              onExpand={(id) => setExpandedId(prev => prev === id ? null : id)}
             />
           )}
 
@@ -94,7 +109,7 @@ export default function GroupsTab({ locationType, locationSlug, filter = 'all' }
   )
 }
 
-function Section({ title, items, showCategory, session, onJoin }) {
+function Section({ title, items, showCategory, session, onJoin, expandedId, onExpand }) {
   return (
     <div style={{ marginBottom: 4 }}>
       <p style={sectionHead}>{title}</p>
@@ -107,6 +122,8 @@ function Section({ title, items, showCategory, session, onJoin }) {
             showCategory={showCategory}
             session={session}
             onJoin={onJoin}
+            expanded={expandedId === String(item._id)}
+            onExpand={() => onExpand(String(item._id))}
           />
         ))
       }
@@ -114,7 +131,7 @@ function Section({ title, items, showCategory, session, onJoin }) {
   )
 }
 
-function GroupCard({ item, showCategory, session, onJoin }) {
+function GroupCard({ item, showCategory, session, onJoin, expanded, onExpand }) {
   const [joining, setJoining] = useState(false)
 
   async function handleClick() {
@@ -124,8 +141,11 @@ function GroupCard({ item, showCategory, session, onJoin }) {
   }
 
   return (
-    <div style={card}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+    <div style={{ ...card, padding: 0 }}>
+      <div
+        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, padding: 12, cursor: 'pointer' }}
+        onClick={onExpand}
+      >
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={cardName}>{item.name}</p>
           <p style={cardDesc}>{item.description}</p>
@@ -136,19 +156,25 @@ function GroupCard({ item, showCategory, session, onJoin }) {
           )}
           <p style={memberCount}>{item.member_count ?? 0} members</p>
         </div>
-        <div style={{ flexShrink: 0 }}>
+        <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
           {item.is_member
             ? <span style={joinedBadge}>Joined</span>
             : session
               ? (
-                <button style={joinBtn} onClick={handleClick} disabled={joining}>
+                <button style={joinBtn} onClick={e => { e.stopPropagation(); handleClick() }} disabled={joining}>
                   {joining ? 'Joining...' : 'Join'}
                 </button>
               )
-              : <a href="/auth" style={loginLink}>Log in to join</a>
+              : <a href="/auth" style={loginLink} onClick={e => e.stopPropagation()}>Log in to join</a>
           }
+          <span style={{ fontSize: 11, color: '#adb5bd' }}>{expanded ? '▲ Hide posts' : '▼ Posts'}</span>
         </div>
       </div>
+      {expanded && (
+        <div style={{ borderTop: '1px solid #f1f3f5' }}>
+          <PostsTab origin={groupOrigin(item)} />
+        </div>
+      )}
     </div>
   )
 }

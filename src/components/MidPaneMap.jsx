@@ -432,8 +432,11 @@ export default function MidPaneMap({
   }, [flyTo, headerMode])
 
   // ── invalidateTrigger — called after container resize (e.g. map-expand mode) ─
+  // Stop any in-progress flyTo animation first; an interrupted animation yields
+  // NaN projections when the container dimensions change mid-flight.
   useEffect(() => {
     if (invalidateTrigger == null || !mapRef.current) return
+    try { mapRef.current.stop() } catch (_) {}
     mapRef.current.invalidateSize()
   }, [invalidateTrigger])
 

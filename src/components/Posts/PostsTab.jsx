@@ -11,11 +11,31 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
+import { useAuth }         from '../../context/AuthContext.jsx'
 import GeneralPostComposer from './GeneralPostComposer.jsx'
 import PostCard            from './PostCard.jsx'
 
 const API_BASE   = import.meta.env.VITE_API_URL ?? ''
 const PAGE_LIMIT = 20
+
+// Color theme by entity_type. accent = border/highlight, bg = container fill.
+const ENTITY_THEME = {
+  county:         { accent: '#2f9e44', bg: '#f1faf4' },
+  region:         { accent: '#2f9e44', bg: '#f1faf4' },
+  country:        { accent: '#2f9e44', bg: '#f1faf4' },
+  constituency:   { accent: '#2f9e44', bg: '#f1faf4' },
+  ward:           { accent: '#2f9e44', bg: '#f1faf4' },
+  city:           { accent: '#2f9e44', bg: '#f1faf4' },
+  town:           { accent: '#2f9e44', bg: '#f1faf4' },
+  village:        { accent: '#2f9e44', bg: '#f1faf4' },
+  hamlet:         { accent: '#2f9e44', bg: '#f1faf4' },
+  committee:      { accent: '#1971c2', bg: '#f0f4ff' },
+  association:    { accent: '#7950f2', bg: '#f5f0ff' },
+  space:          { accent: '#e67700', bg: '#fff9f0' },
+  school:         { accent: '#f08c00', bg: '#fffdf0' },
+  network_chapter:{ accent: '#0c8599', bg: '#f0fafa' },
+}
+const DEFAULT_THEME = { accent: '#868e96', bg: '#f8f9fa' }
 
 /**
  * @param {{
@@ -29,6 +49,7 @@ export default function PostsTab({
   composerVariant: ComposerVariant = GeneralPostComposer,
   reach,
 }) {
+  const { session } = useAuth()
   const [posts,   setPosts]   = useState([])
   const [page,    setPage]    = useState(1)
   const [total,   setTotal]   = useState(0)
@@ -50,7 +71,10 @@ export default function PostsTab({
         limit:       String(PAGE_LIMIT),
       })
       if (reach) params.set('reach', reach)
-      const res = await fetch(`${API_BASE}/api/posts?${params}`)
+      const headers = session?.access_token
+        ? { Authorization: `Bearer ${session.access_token}` }
+        : {}
+      const res = await fetch(`${API_BASE}/api/posts?${params}`, { headers })
       if (!res.ok) throw new Error(`fetch ${res.status}`)
       const json = await res.json()
       setPosts(prev => p === 1 ? json.posts : [...prev, ...json.posts])
@@ -60,7 +84,7 @@ export default function PostsTab({
       setError('Failed to load posts')
     }
     setLoading(false)
-  }, [entityType, entityId, reach])
+  }, [entityType, entityId, reach, session])
 
   // Reset and reload when origin changes.
   useEffect(() => {
@@ -81,41 +105,60 @@ export default function PostsTab({
   }
 
   if (!entityType || !entityId) {
-    return <div style={wrap}><p style={dim}>Select a context to view posts.</p></div>
+    return <div style={{ padding: 16 }}><p style={dim}>Select a location to view posts.</p></div>
   }
 
+  const theme   = ENTITY_THEME[entityType] ?? DEFAULT_THEME
   const hasMore = posts.length < total
 
   return (
-    <div style={wrap}>
-      <ComposerVariant origin={origin} onSuccess={handleNew} />
+    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column' }}>
 
-      {loading && posts.length === 0 && <p style={dim}>Loading posts…</p>}
-      {error && <p style={errText}>{error}</p>}
+      {/* ── Composer -- sticky, neutral, separated ── */}
+      <div style={{
+        flexShrink:   0,
+        background:   '#fff',
+        borderBottom: `1px solid #e9ecef`,
+        borderLeft:   `3px solid ${theme.accent}`,
+        padding:      '10px 14px',
+        boxShadow:    '0 2px 6px rgba(0,0,0,0.06)',
+      }}>
+        <ComposerVariant origin={origin} onSuccess={handleNew} />
+      </div>
 
-      {!loading && !error && posts.length === 0 && (
-        <p style={dim}>No posts yet. Be the first.</p>
-      )}
+      {/* ── Feed -- scrolls independently beneath composer ── */}
+      <div style={{ flex: 1, overflowY: 'auto', background: theme.bg, padding: '10px 12px 16px' }}>
+        {loading && posts.length === 0 && <p style={dim}>Loading posts…</p>}
+        {error   && <p style={errText}>{error}</p>}
+        {!loading && !error && posts.length === 0 && (
+          <p style={dim}>No posts yet. Be the first.</p>
+        )}
 
-      {posts.map(post => (
-        <PostCard key={post._id} post={post} onDeleted={handleDeleted} />
-      ))}
+        {posts.map(post => (
+          <PostCard key={post._id} post={post} origin={origin} onDeleted={handleDeleted} />
+        ))}
 
-      {hasMore && (
-        <button
-          type="button"
-          onClick={() => loadPage(page + 1)}
-          disabled={loading}
-          style={loadMore}
-        >
-          {loading ? 'Loading…' : `Load more (${total - posts.length} remaining)`}
-        </button>
-      )}
+        {hasMore && (
+          <button
+            type="button"
+            onClick={() => loadPage(page + 1)}
+            disabled={loading}
+            style={loadMoreBtn(theme.accent)}
+          >
+            {loading ? 'Loading…' : `Load more (${total - posts.length} remaining)`}
+          </button>
+        )}
+      </div>
+
     </div>
   )
 }
 
-const wrap     = { padding: 16 }
-const dim      = { fontSize: 13, color: '#868e96', margin: 0 }
-const errText  = { fontSize: 12, color: '#c92a2a', margin: '4px 0 0 0' }
-const loadMore = { fontSize: 12, padding: '6px 12px', background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 4, cursor: 'pointer', marginTop: 12, display: 'block' }
+const noContext       = { padding: 16 }
+const dim             = { fontSize: 13, color: '#868e96', margin: 0 }
+const errText         = { fontSize: 12, color: '#c92a2a', margin: '4px 0 0 0' }
+const loadMoreBtn = (accent) => ({
+  fontSize: 12, padding: '6px 14px', background: '#fff',
+  border: `1px solid ${accent}50`, color: accent,
+  borderRadius: 4, cursor: 'pointer', marginTop: 4, display: 'block',
+})

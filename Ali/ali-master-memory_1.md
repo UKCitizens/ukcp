@@ -10,6 +10,156 @@
 
 ## ZONE: PRG -- Dynamic progress (purge and re-establish as needed)
 
+[PRG:141] NEXT      | Post features next sprint -- seed doc written.
+                     File: UKCP/Ali/ukcp-post-features-next-sprint.md
+                     Load this doc at session start alongside memory files.
+                     THREE FEATURES IN SEQUENCE:
+                       1. reply_control field on posts: 'open' | 'locked' | 'verified'.
+                          Server enforces on POST when reply_to set.
+                          Composer: control in expanded row (top-level posts only).
+                          PostCard: lock indicator, Reply button gating.
+                       2. Moderation toggle (moderated: bool) on posts.
+                          Layer 1: keyword blocklist in server/config/moderation.js (new file).
+                          Layer 2: AI scoring -- explicitly deferred.
+                          Composer: 'Moderate replies' toggle alongside reply_control.
+                          PostCard: shield icon when moderated.
+                       3. MyHome Posts/Replies tab.
+                          GET /api/posts/mine -- auth, sorted desc, paginated, post_kind field,
+                            parent_preview for replies (author + 120 char excerpt).
+                          New components: MyPostsTab.jsx + ReplyCard.jsx.
+                          ReplyCard: body + parent context block + timestamp. No veracity strip.
+                          MyHome: 'Posts & Replies' as first mid-pane tab.
+                     Do Features 1+2 in same PostComposer edit pass (share controls row).
+                     Feature 3 is largest scope, do last.
+
+[PRG:140] PROGRESS  | Session 23 May 2026 (session 3) -- Post composer rich media + infrastructure notes.
+                     POST COMPOSER -- COMPLETED THIS SESSION:
+                       Rich text editor: TipTap (StarterKit + Link + Placeholder). link: false in
+                         StarterKit to suppress duplicate extension. Toolbar: Bold, Italic, Link, Image, Emoji.
+                       Emoji picker: 8 categories, ~70 emoji each, floating panel, inserts at cursor.
+                       Image slot: file input (jpg/png/gif/webp), 3MB cap, base64 preview, meta.image in payload.
+                       URL embed: paste detection -> GET /api/posts/link-preview -> embed card rendered.
+                       Composer: expand-on-focus (36px collapsed -> 120px+ expanded), Cancel button clears all zones.
+                       Post = User Text + 1 Graphic + 1 URL Embed. Any combination.
+                       Express body limit raised to 10mb (base64 images blow default 100kb).
+                       Body char limit raised to 10000 (HTML content).
+                     EMBED CARD:
+                       Stacked layout: title -> 350px hero image -> description -> domain footer.
+                       Full card is a clickable link. Remove button in composer only.
+                     LINK PREVIEW ROUTE (routes/posts.js GET /api/posts/link-preview):
+                       Rewrote from regex to node-html-parser DOM selectors.
+                       Priority chain: JSON-LD article data > og: tags > twitter: tags > title.
+                       JSON-LD hits BBC article headline/photo, not generic brand assets.
+                       HTML entities decoded at extraction point (&#x27; -> ', &amp; -> &, etc.).
+                       User-agent updated to look like real browser (improves BBC response rate).
+                       Requires: npm install node-html-parser (on host machine).
+                     POSTS TAB:
+                       Clicking Posts tab auto-sets viewMode = 'explore' (mid-pane maximised).
+                       Leaflet NaN crash fixed: map.stop() before invalidateSize() kills in-flight animation.
+                     DATA SCALE NOTE:
+                       Base64 images in MongoDB is a short-term solution only. Each image post
+                       is a 2-4MB document. Pre-beta migration required.
+                     DEFERRED -- IMAGE STORAGE MIGRATION:
+                       Target: Cloudflare R2 (S3-compatible, zero egress fees).
+                       Free tier: 10GB storage, 1M writes/month, 10M reads/month.
+                       Docs: https://developers.cloudflare.com/r2/
+                       Pricing: https://developers.cloudflare.com/r2/pricing/
+                       Implementation: @aws-sdk/client-s3 pointed at R2 endpoint.
+                       Post upload route returns URL -> stored in meta.image (not base64).
+                       One sprint. Do before beta.
+                     STILL PENDING (carried forward):
+                       Supabase keep-alive (PRG:138).
+                       box-bot smoke test (PRG:134).
+                       MyHome FeedZone post surfacing.
+                       localStorage quota -> IndexedDB migration for hierarchy/places cache.
+                       UI polish pass (function-first agreed).
+
+[PRG:139] PROGRESS  | Session 23 May 2026 (session 2) -- Post system design + implementation plan.
+                     POST DESIGN NOTE:
+                       Full post ecosystem defined. Doc: UKCP/Ali/ukcp-post-design-note-v0.3.md
+                       Key decisions landed:
+                         Unified schema -- posts + responses same collection, parent_id null = top-level.
+                         Veracity always-on at every thread depth, non-disableable.
+                         Veracity: True | Plausible | Questionable | False (extensible, keyed not positional).
+                         Comments: threaded (forumesque). Same feedback_config + veracity at every depth.
+                         Proliferation weight: site_config tuneables, owner-controlled, committee-destined.
+                         Reaction types: config-driven, not hardcoded.
+                         Codification principle: every rule answers (1) what failure does this fix,
+                           (2) what latitude remains, (3) is civic value preserved.
+                         Edit/veracity resolution: versioned history. No responses = free edit, no snapshot.
+                           First response = subsequent edits snapshot current content + veracity before overwrite.
+                           first_viewed_at on document for analytics; edit logic uses counts.reply_count only.
+                           Version history permanently visible, append-only. "Show history" affordance, collapsed.
+                     IMPLEMENTATION PLAN:
+                       Doc: UKCP/Ali/ali-post-implementation-plan.md
+                       Codebase scan found: routes/posts.js, PostComposer, PostCard, PostsTab already built.
+                       PostsTab wired into: CommitteeTab, CommunityNetworksSection, SchoolGatesMid, FeedZone.
+                       post_type_config collection has no seed data -- composer fails silently without it.
+                       Gaps: no Posts tab in MidPaneTabs, no PostsTab in GroupsTab, no veracity system,
+                         no threading UI, no version history.
+                       Steps 1-3 scoped for next session (seeding, Posts tab, GroupsTab wiring).
+                       Steps 4-6 (veracity, threading, versioning) are subsequent sprint.
+                       KEY FINDING: server POST /api/posts requires GSS code but React state does not
+                         carry GSS for geo entities. Fix: relax geo_scope validation in routes/posts.js --
+                         entity_type + slug is sufficient anchor for v0.1. GSS population is deferred
+                         systemic sprint. Documented in plan Step 3b.
+                     NEXT SESSION:
+                       Load ali-post-implementation-plan.md at session start.
+                       Execute Steps 1-3 in sequence. Verify each before advancing.
+                       Do NOT start Steps 4-6 until 1-3 are verified live.
+
+[PRG:138] PROGRESS  | Session 23 May 2026 -- MyHome follow UX + nav-back + functional baseline.
+                     GEO CONTEXT MENU:
+                       GeoFollowButton inline icon on every list row replaced with
+                       GeoContextMenu -- right-click portal menu at cursor position.
+                       New files: src/components/GeoContextMenu.jsx + .module.css.
+                       Wired into: PlacesCard.jsx, ConstituencyPane.jsx (all 3 render
+                       sites incl. search), SiteHeaderRow3.jsx (walker options).
+                       LocationInfo keeps its inline follow button (different context).
+                       Menu shows Follow/Unfollow, dismisses on outside click or Escape.
+                     NAV-PATH SCHEMA PASS:
+                       Follow records now store nav_path: array of {level, value} pairs
+                       capturing the geographic hierarchy at follow time.
+                       ConstituencyPane passes full nav_path (including entity level)
+                       to GeoContextMenu -> usePlaceFollows.follow() -> POST /api/follows.
+                       routes/follows.js: nav_path accepted + stored in $set.
+                     MYHOME OPEN / NAV-BACK:
+                       MyIncludes: "Open" action wired for ALL place-type follows
+                       (not just those with nav_path). Navigates to /locations with
+                       state { navPath, geoEntityId }.
+                       Locations.jsx: pendingNavPath state captures router state on mount,
+                       deferred until loading=false, then resolves:
+                         - constituency: resolveConstituencyAncestors -> selectMany + setPendingConstituency
+                         - ward: resolveWardAncestors -> selectMany + setPendingConstituency + setPendingWard
+                         - country/region/county: select(level, value)
+                         - city/town/village/hamlet: places.find() -> selectMany + setPending(place)
+                           -> triggers existing flyTo useEffect -> map zooms to location.
+                       Phil confirmed: "it's quite lovely for constituency/ward."
+                       Place back-nav confirmed working with same map zoom effect.
+                     SCOPE NOTE:
+                       nav_path only captured from ConstituencyPane (has path prop).
+                       PlacesCard and SiteHeaderRow3 pass null -- geoEntityId fallback
+                       handles resolution. Full nav_path wiring for places deferred.
+                     FUNCTIONAL BASELINE:
+                       Dex ran ukcp-functional-manual.md brief via Playwright.
+                       Output: UKCP/Ali/ukcp-functional-manual.docx -- warts-and-all
+                       functional manual covering all 14 sections incl. gaps + summary.
+                       Key finding: infrastructure sound, civic layer emerging, content
+                       and onboarding layers are next priority.
+                       Methodology confirmed: month of hacking was the requirements phase.
+                       Service now has enough substance to define groups, feeds, etc. within
+                       real context, language, and construct.
+                     KNOWN ISSUES (noted, not urgent):
+                       MyMeta notification badge shows 2 but panel shows "Nothing yet." --
+                       counter mismatch, minor bug.
+                       "No Dup" test school entry persists in follows -- data debris, cleanup needed.
+                     NEXT SESSION:
+                       Groups definition -- what are they, how do they work, how they
+                         slot into the geo hierarchy. Baseline document now exists to anchor this.
+                       Supabase keep-alive still needed.
+                       box-bot smoke test still pending (PRG:134).
+                       "No Dup" test data cleanup (minor).
+
 [PRG:137] PROGRESS  | Session 21 May 2026 -- Auth resurrection + login UX overhaul.
                      CONTEXT: Supabase free-tier project had paused due to inactivity.
                        Password for phild@btltd.net was unknown. No in-app reset flow existed.
