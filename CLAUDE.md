@@ -221,6 +221,34 @@ Phil relies on :3000 as the stable review point. This step is not optional.
 
 [PRG:56] SPRINT-MOBILE-SIDE-DRAWER | Mobile side drawer. MobileDrawerWrapper.jsx + MobileDrawerWrapper.module.css created. PageLayout.jsx: mobilePanel prop removed, MobileDrawerWrapper wraps midCol content. PageLayout.module.css: mobilePanelSlot rules removed. Locations.jsx: mobilePanelEl block + MobileNavPanel import removed. MobileNavPanel.jsx + .module.css deleted. complete. 06 May 2026.
 
+[PRG:58] SPRINT-AUTH-RESURRECT | Auth resurrection + login UX overhaul. Supabase free-tier project had paused.
+                     AuthContext: 6s safety timeout on getSession, clears bad sessions gracefully.
+                     Login modal: dismissible (Escape / "Continue without signing in"), friendlyError()
+                     translation, window event ukcp:open-login reopens from any component.
+                     Public routes: / /locations /people /help. RequireAuth fires modal not blank screen.
+                     Forgot password flow + ResetPassword.jsx page (/reset-password). complete. 21 May 2026.
+
+[PRG:59] SPRINT-GEO-FOLLOWS | Geo-follows feature. GeoFollowButton.jsx + GeoContextMenu.jsx +
+                     GeoContextMenu.module.css + usePlaceFollows.js hook. Right-click context menu
+                     on places, constituencies, wards -- Follow option. Wired into LocationInfo.jsx,
+                     PlacesCard.jsx, ConstituencyPane.jsx, MyIncludes.jsx, Locations.jsx,
+                     follows.js route. complete. 23 May 2026.
+
+[PRG:60] SPRINT-POSTS-OVERHAUL | Posts system overhaul. Rich text editor (TipTap: StarterKit + Link +
+                     Placeholder). Emoji picker (8 categories, ~70 emoji). Image slot (3MB, base64 preview).
+                     URL embed: paste detection -> GET /api/posts/link-preview -> embed card.
+                     New components: PostEmbed.jsx, PostThread.jsx, RichEditor.jsx, VeracityBar.jsx.
+                     Veracity always-on (True/Plausible/Questionable/False). Threaded replies.
+                     routes/posts.js expanded: link-preview, threads, veracity. db/mongo.js new indexes.
+                     Express body limit 10mb. seed-post-type-config.mjs added. geoOrigin.js lib.
+                     PostsTab: clicking tab auto-sets viewMode=explore. Leaflet NaN crash fixed.
+                     NOTE: base64 image storage is short-term -- migrate to Cloudflare R2 pre-beta.
+                     complete. 23 May 2026.
+
+[PRG:61] FUNCTIONAL-MANUAL | UKCP functional manual produced. Playwright capture (36 screenshots,
+                     1280x900 headless) + docx build. 14 sections covering full app surface.
+                     Output: Ali/ukcp-functional-manual.docx (~12MB). complete. 23 May 2026.
+
 [PRG:46] SPRINT-PHONE-AUTH | Phone Second Factor. Status: DEFERRED. 02 May 2026.
                      Blocker: requires Twilio (or equivalent) SMS provider in Supabase first.
                      Scope when resumed: phone enrolment in Profile.jsx + OTP sign-in on Home.jsx.

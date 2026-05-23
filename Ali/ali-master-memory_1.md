@@ -10,6 +10,28 @@
 
 ## ZONE: PRG -- Dynamic progress (purge and re-establish as needed)
 
+[PRG:142] PROGRESS  | Session 23 May 2026 (session 4) -- Git catch-up + functional manual.
+                     THREE PUSHES this session:
+                       Push 1 (bb73a9b): geo-follows feature + auth UX overhaul (PRG:58+59).
+                         GeoContextMenu, GeoFollowButton, usePlaceFollows, LocationInfo/PlacesCard/
+                         ConstituencyPane wired. Auth modal dismissible, public routes, reset flow.
+                       Push 2 (1cec3c2): geo-follows wiring continuation -- follows route,
+                         ConstituencyPane, MyIncludes, Locations.jsx, usePlaceFollows refinements.
+                       Push 3 (bb90e77): Posts overhaul (PRG:60) -- RichEditor/PostEmbed/PostThread/
+                         VeracityBar, seed script, geoOrigin lib, routes/posts.js expanded, db indexes.
+                     FUNCTIONAL MANUAL (PRG:61):
+                       14-section manual produced via Playwright headless capture (36 screenshots,
+                       1280x900) + docx-js build. Output: Ali/ukcp-functional-manual.docx (~12MB).
+                       Screenshots in Ali/manual-screenshots/ (retained).
+                     GIT NOTE: GitHub PAT had dropped from remote URL -- re-embedded token to fix.
+                       Push auth failed on first attempt, succeeded on second. No commits lost.
+                     PENDING (carried from PRG:140+141):
+                       Supabase keep-alive (PRG:138) -- still not implemented.
+                       R2 image storage migration -- pre-beta priority.
+                       MyHome FeedZone post surfacing.
+                       Post features sprint: reply_control, moderation, MyHome Posts/Replies tab.
+                       box-bot smoke test (PRG:134).
+
 [PRG:141] NEXT      | Post features next sprint -- seed doc written.
                      File: UKCP/Ali/ukcp-post-features-next-sprint.md
                      Load this doc at session start alongside memory files.
