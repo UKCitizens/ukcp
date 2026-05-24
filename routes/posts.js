@@ -247,6 +247,10 @@ async function platformPreview(url) {
   try { parsed = new URL(url) } catch { return null }
   const host = parsed.hostname.replace(/^www\./, '')
   if (host === 'bsky.app') return bskyPreview(url, parsed)
+  if (host === 'youtube.com' || host === 'youtu.be' || host === 'm.youtube.com')
+    return youtubePreview(url, parsed)
+  if (host === 'vimeo.com' || host === 'player.vimeo.com')
+    return vimeoPreview(url, parsed)
   return null
 }
 
@@ -263,7 +267,7 @@ async function bskyPreview(url, parsed) {
   // Resolve handle -> DID. DIDs (did:plc:..., did:web:...) pass straight through.
   let did = actor
   if (!actor.startsWith('did:')) {
-    const resolved = await bskyApiGet(
+    const resolved = await apiGetJson(
       `${API}/com.atproto.identity.resolveHandle?handle=${encodeURIComponent(actor)}`
     )
     if (!resolved || !resolved.did) return null
@@ -271,7 +275,7 @@ async function bskyPreview(url, parsed) {
   }
 
   const atUri = `at://${did}/app.bsky.feed.post/${rkey}`
-  const data  = await bskyApiGet(
+  const data  = await apiGetJson(
     `${API}/app.bsky.feed.getPostThread?depth=0&parentHeight=0&uri=${encodeURIComponent(atUri)}`
   )
   // A deleted / blocked / not-found post yields a thread node with no .post.
@@ -283,32 +287,44 @@ async function bskyPreview(url, parsed) {
   const handle      = author.handle ? `@${author.handle}` : ''
   const text        = String(post.record.text || '').trim()
 
-  // Image: ONLY a genuine media embed -- never the author avatar. This is the
-  // whole point of using the API: the generic scraper cannot make this call.
-  let image = null
-  const embed = post.embed || {}
-  const type  = embed.$type || ''
-  if (type.indexOf('app.bsky.embed.images') === 0) {
-    image = firstBskyImage(embed.images)
-  } else if (type.indexOf('app.bsky.embed.recordWithMedia') === 0) {
-    const media = embed.media || {}
-    const mtype = media.$type || ''
-    if (mtype.indexOf('app.bsky.embed.images') === 0) {
-      image = firstBskyImage(media.images)
-    } else if (mtype.indexOf('app.bsky.embed.external') === 0) {
-      image = (media.external && media.external.thumb) || null
-    }
-  } else if (type.indexOf('app.bsky.embed.external') === 0) {
-    image = (embed.external && embed.external.thumb) || null
-  } else if (type.indexOf('app.bsky.embed.video') === 0) {
-    image = embed.thumbnail || null
-  }
-
   // Card semantics: the post text is the headline; the author is the byline.
   const title = text
     ? (text.length > 280 ? text.slice(0, 277) + '...' : text)
     : `${displayName} on Bluesky`
   const description = handle ? `${displayName} (${handle})` : displayName
+
+  // The media object is the embed itself, or embed.media for recordWithMedia.
+  const embed = post.embed || {}
+  const media = (embed.$type || '').indexOf('app.bsky.embed.recordWithMedia') === 0
+    ? (embed.media || {})
+    : embed
+  const mtype = media.$type || ''
+
+  // A native Bluesky video is an HLS stream. Return a video-typed payload so
+  // the frontend renders an inline player (hls.js) instead of a static card.
+  if (mtype.indexOf('app.bsky.embed.video') === 0 && media.playlist) {
+    return {
+      type:        'video',
+      provider:    'bluesky',
+      video_id:    null,
+      stream_url:  media.playlist,
+      url,
+      title,
+      description,
+      image:       media.thumbnail || null,
+      domain:      'bsky.app',
+    }
+  }
+
+  // Otherwise a card. Image: ONLY a genuine media embed -- never the avatar.
+  let image = null
+  if (mtype.indexOf('app.bsky.embed.images') === 0) {
+    image = firstBskyImage(media.images)
+  } else if (mtype.indexOf('app.bsky.embed.external') === 0) {
+    image = (media.external && media.external.thumb) || null
+  } else if (mtype.indexOf('app.bsky.embed.video') === 0) {
+    image = media.thumbnail || null
+  }
 
   return { url, title, description, image, domain: 'bsky.app' }
 }
@@ -319,8 +335,68 @@ function firstBskyImage(images) {
   return images[0].fullsize || images[0].thumb || null
 }
 
+// YouTube. Watch URLs come in many shapes; the player only needs the 11-char
+// video id. Returns a video-typed payload -- a superset of the card shape.
+async function youtubePreview(url, parsed) {
+  const host = parsed.hostname.replace(/^www\./, '')
+  let id = null
+  if (host === 'youtu.be') {
+    id = parsed.pathname.split('/')[1] || null
+  } else if (parsed.pathname === '/watch') {
+    id = parsed.searchParams.get('v')
+  } else {
+    const m = parsed.pathname.match(/^\/(?:shorts|live|embed)\/([^/]+)/)
+    if (m) id = m[1]
+  }
+  if (!id || !/^[A-Za-z0-9_-]{11}$/.test(id)) return null
+
+  // oEmbed is keyless and public. Playback never depends on it succeeding.
+  const watchUrl = `https://www.youtube.com/watch?v=${id}`
+  const oembed   = await apiGetJson(
+    `https://www.youtube.com/oembed?url=${encodeURIComponent(watchUrl)}&format=json`
+  )
+  return {
+    type:        'video',
+    provider:    'youtube',
+    video_id:    id,
+    url,
+    title:       (oembed && oembed.title)         || 'YouTube video',
+    description: (oembed && oembed.author_name)   || null,
+    image:       (oembed && oembed.thumbnail_url) || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+    domain:      'youtube.com',
+  }
+}
+
+// Vimeo. vimeo.com/{id} or player.vimeo.com/video/{id}.
+async function vimeoPreview(url, parsed) {
+  const host = parsed.hostname.replace(/^www\./, '')
+  let id = null
+  if (host === 'player.vimeo.com') {
+    const m = parsed.pathname.match(/^\/video\/(\d+)/)
+    if (m) id = m[1]
+  } else {
+    const m = parsed.pathname.match(/^\/(\d+)/)
+    if (m) id = m[1]
+  }
+  if (!id || !/^[0-9]+$/.test(id)) return null
+
+  const oembed = await apiGetJson(
+    `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`
+  )
+  return {
+    type:        'video',
+    provider:    'vimeo',
+    video_id:    id,
+    url,
+    title:       (oembed && oembed.title)         || 'Vimeo video',
+    description: (oembed && oembed.author_name)   || null,
+    image:       (oembed && oembed.thumbnail_url) || null,
+    domain:      'vimeo.com',
+  }
+}
+
 // JSON GET with an 8s abort timeout. Returns parsed JSON, or null on any error.
-async function bskyApiGet(endpoint) {
+async function apiGetJson(endpoint) {
   const controller = new AbortController()
   const timeout    = setTimeout(() => controller.abort(), 8000)
   try {

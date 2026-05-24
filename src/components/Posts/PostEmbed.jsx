@@ -8,8 +8,16 @@
  *   onRemove -- function(), optional -- show x if provided (composer use only)
  */
 
+import PostVideoEmbed, { isPlayableVideo } from './PostVideoEmbed.jsx'
+
 export default function PostEmbed({ embed, onRemove }) {
   if (!embed?.url) return null
+
+  // A video embed renders an inline player instead of the static card.
+  // isPlayableVideo sends a malformed video payload back to the card path.
+  if (embed.type === 'video' && isPlayableVideo(embed)) {
+    return <PostVideoEmbed embed={embed} onRemove={onRemove} />
+  }
 
   return (
     <a href={embed.url} target="_blank" rel="noopener noreferrer" style={card}>
