@@ -136,6 +136,12 @@ router.get('/link-preview', asyncHandler(async (req, res) => {
     return res.status(400).json({ error: 'Invalid URL' })
   }
   try {
+    // Platform-aware handlers run first. They call the platform's own API,
+    // which knows true page semantics -- post text vs author vs avatar.
+    // Generic OG scraping (below) cannot make that distinction.
+    const platform = await platformPreview(url)
+    if (platform) return res.json(platform)
+
     const controller = new AbortController()
     const timeout    = setTimeout(() => controller.abort(), 8000)
     const r = await fetch(url, {
@@ -224,6 +230,112 @@ router.get('/link-preview', asyncHandler(async (req, res) => {
     return res.status(422).json({ error: 'Fetch failed' })
   }
 }))
+
+// --- Platform-aware link preview handlers --------------------------------
+// Generic OG scraping treats every page as an article: title = headline,
+// image = hero photo, description = summary. Social platforms break that
+// model -- the page is "a person said a thing", so og:title is the author
+// and og:image is often an avatar, not content. OG is untyped and self-
+// declared, so a generic scraper cannot tell an avatar from a photo.
+// These handlers call the platform's own API to recover real semantics.
+// To add a platform: write a fooPreview() and route to it in platformPreview.
+
+// Dispatch by hostname. Returns a preview object, or null to fall through
+// to the generic OG scraper.
+async function platformPreview(url) {
+  let parsed
+  try { parsed = new URL(url) } catch { return null }
+  const host = parsed.hostname.replace(/^www\./, '')
+  if (host === 'bsky.app') return bskyPreview(url, parsed)
+  return null
+}
+
+// Bluesky (AT Protocol). Post URL form: /profile/{handle-or-did}/post/{rkey}.
+// Uses the public, unauthenticated API. Returns null on any miss so the
+// caller falls back to the generic scraper rather than failing outright.
+async function bskyPreview(url, parsed) {
+  const m = parsed.pathname.match(/^\/profile\/([^/]+)\/post\/([^/]+)\/?$/)
+  if (!m) return null
+  const actor = decodeURIComponent(m[1])
+  const rkey  = m[2]
+  const API   = 'https://public.api.bsky.app/xrpc'
+
+  // Resolve handle -> DID. DIDs (did:plc:..., did:web:...) pass straight through.
+  let did = actor
+  if (!actor.startsWith('did:')) {
+    const resolved = await bskyApiGet(
+      `${API}/com.atproto.identity.resolveHandle?handle=${encodeURIComponent(actor)}`
+    )
+    if (!resolved || !resolved.did) return null
+    did = resolved.did
+  }
+
+  const atUri = `at://${did}/app.bsky.feed.post/${rkey}`
+  const data  = await bskyApiGet(
+    `${API}/app.bsky.feed.getPostThread?depth=0&parentHeight=0&uri=${encodeURIComponent(atUri)}`
+  )
+  // A deleted / blocked / not-found post yields a thread node with no .post.
+  const post = data && data.thread && data.thread.post
+  if (!post || !post.record) return null
+
+  const author      = post.author || {}
+  const displayName = author.displayName || author.handle || 'Unknown'
+  const handle      = author.handle ? `@${author.handle}` : ''
+  const text        = String(post.record.text || '').trim()
+
+  // Image: ONLY a genuine media embed -- never the author avatar. This is the
+  // whole point of using the API: the generic scraper cannot make this call.
+  let image = null
+  const embed = post.embed || {}
+  const type  = embed.$type || ''
+  if (type.indexOf('app.bsky.embed.images') === 0) {
+    image = firstBskyImage(embed.images)
+  } else if (type.indexOf('app.bsky.embed.recordWithMedia') === 0) {
+    const media = embed.media || {}
+    const mtype = media.$type || ''
+    if (mtype.indexOf('app.bsky.embed.images') === 0) {
+      image = firstBskyImage(media.images)
+    } else if (mtype.indexOf('app.bsky.embed.external') === 0) {
+      image = (media.external && media.external.thumb) || null
+    }
+  } else if (type.indexOf('app.bsky.embed.external') === 0) {
+    image = (embed.external && embed.external.thumb) || null
+  } else if (type.indexOf('app.bsky.embed.video') === 0) {
+    image = embed.thumbnail || null
+  }
+
+  // Card semantics: the post text is the headline; the author is the byline.
+  const title = text
+    ? (text.length > 280 ? text.slice(0, 277) + '...' : text)
+    : `${displayName} on Bluesky`
+  const description = handle ? `${displayName} (${handle})` : displayName
+
+  return { url, title, description, image, domain: 'bsky.app' }
+}
+
+// First usable URL from a Bluesky images embed array.
+function firstBskyImage(images) {
+  if (!Array.isArray(images) || images.length === 0) return null
+  return images[0].fullsize || images[0].thumb || null
+}
+
+// JSON GET with an 8s abort timeout. Returns parsed JSON, or null on any error.
+async function bskyApiGet(endpoint) {
+  const controller = new AbortController()
+  const timeout    = setTimeout(() => controller.abort(), 8000)
+  try {
+    const r = await fetch(endpoint, {
+      signal:  controller.signal,
+      headers: { 'Accept': 'application/json', 'User-Agent': 'UKCPBot/1.0' },
+    })
+    if (!r.ok) return null
+    return await r.json()
+  } catch {
+    return null
+  } finally {
+    clearTimeout(timeout)
+  }
+}
 
 // GET /api/posts/config -- Tier 0
 router.get('/config', asyncHandler(async (req, res) => {
