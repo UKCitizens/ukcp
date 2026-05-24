@@ -10,6 +10,84 @@
 
 ## ZONE: PRG -- Dynamic progress (purge and re-establish as needed)
 
+[PRG:146] PROGRESS  | Session 24 May 2026 (session 3) -- Registration Phase 2+3 complete.
+                     ROOT CAUSE FIX (took most of session):
+                       package.json was corrupt -- truncated mid-object, missing closing braces.
+                       Node.js could not read "type":"module" -> ES module binding failed ->
+                       ReferenceError: ensureGeoMemberships is not defined.
+                       Fixed with Python write (1234 bytes, valid JSON). PRG:143 tooling
+                       lesson: ALWAYS use Python for file writes. Edit/Write tools truncate.
+                     MONGODB INDEX FIX:
+                       group_memberships had stale unique index
+                       { collection_type, collective_id, user_id } WITHOUT partialFilter-
+                       Expression. Geo records (collective_id absent) all indexed as null
+                       -> dup-key on second insert. Sparse:true does NOT fix compound
+                       indexes where other fields are present.
+                       Fix: dropIndex (idempotent try/catch) + recreate with
+                       partialFilterExpression: { collective_id: { $exists:true, $type:'objectId' } }
+                       in connectMongo() -- self-healing on every startup.
+                       Second index: { user_id, collection_type, group_key } unique sparse
+                       for geo membership uniqueness.
+                     PHASE 2 CONFIRMED LIVE:
+                       7 geo_group membership records writing correctly on PATCH /api/profile/geography.
+                       Tiers: ward, constituency, place, county, region, country, nation:uk.
+                       44,095 geo_group entity records seeded (from previous sub-session).
+                     PHASE 3 -- GROUP MANAGEMENT SURFACE:
+                       Moved from Profile.jsx to MyHome.jsx (left pane, below MyIncludes).
+                       New GeoGroups component in MyHome.jsx -- fetches /api/profile/groups,
+                       renders civic + place groups, Member/Viewer/None controls.
+                       None button replaced with X icon (IconX from @tabler/icons-react),
+                       red when active.
+                       Profile mid pane cleaned: Civic footprint Paper removed, only
+                       Contributions + Roles remain.
+                       Unused state/functions/imports removed from Profile.jsx.
+                     FILES CHANGED THIS SESSION:
+                       package.json -- corrupt -> valid (Python rewrite)
+                       db/mongo.js -- partialFilterExpression index migration in connectMongo()
+                       src/pages/Profile.jsx -- civic footprint removed, groups management
+                         removed, unused state/funcs cleaned (~514 lines)
+                       src/pages/MyHome.jsx -- GeoGroups component added, left pane wired
+                         (~282 lines)
+                     BUILD STATUS: build failed at end of session (List import missing
+                       in Profile.jsx after cleanup -- fixed but not confirmed rebuilt).
+                       NEXT SESSION: verify build clean first.
+                     UNCOMMITTED: all changes above + PRG:145 files still uncommitted.
+                       git index.lock still present (see PRG:143). Delete before committing:
+                       C:\Users\phild\Desktop\Projects\Ali-Projects\UKCP\.git\index.lock
+
+[PRG:145] PROGRESS  | Session 24 May 2026 (session 2) -- Registration Phase 1 complete.
+                     FILES CHANGED:
+                       services/postcodes.js -- fixed pre-existing field name bug
+                         (r.ward -> r.admin_ward, r.codes.ward -> r.codes.admin_ward);
+                         added county, region, country, latitude, longitude to return.
+                       services/nearestPlace.js (new) -- haversine snap to nearest
+                         city/town/village/hamlet in MongoDB places collection.
+                         lat/lng stored as strings in Mongo (build.py never casts) --
+                         fixed with $expr/$toDouble bounding-box query. BOX=1.0 deg.
+                       routes/profile.js -- two new routes:
+                         GET /api/profile/postcode/resolve?postcode= -- resolves full
+                           chain + nearest_town, read-only, no storage.
+                         PATCH /api/profile/geography -- stores confirmed chain:
+                           home_postcode, home_ward, home_ward_gss, home_constituency,
+                           home_constituency_gss, home_county, home_region, home_country,
+                           home_lat, home_lng, home_place_name, home_place_id.
+                       Profile.jsx -- postcode input + Look up in isNewUser path;
+                         geography saved before navigate on Complete registration.
+                         Existing users: Your location section below identity, pre-
+                         populated from home_postcode, Save location button.
+                     CONFIRMED LIVE:
+                       Ward: confirmed working (admin_ward fix).
+                       Nearest town: confirmed working, broader test still needed.
+                       Email registration: was transient -- multi-account/OS issue,
+                         not a code problem. Resolved.
+                     UNCOMMITTED -- add to next commit alongside video embed files.
+                     NEXT SESSION: Registration Phase 2.
+                       Load ukcp-registration-sprint-brief.md (section 5, Phase 2).
+                       Build: geo_group_state collection + schema, the "my groups"
+                       resolver (derive systemic groups from user geography minus
+                       exceptions), and the management surface (list groups, set
+                       Member/Viewer/None). Confirm Ali vs Dex split before starting.
+
 [PRG:143] PROGRESS  | Session 24 May 2026 -- Link preview overhaul, video
                      embeds, Association model definition, registration sprint brief.
                      LINK PREVIEW / BLUESKY (committed, 1dda546):
@@ -552,7 +630,8 @@
                      it is started.
                      - hls.js video embeds: build, smoke test, commit (steps in PRG:143).
                      - Model doc section 4: absorb the belong/view/none membership state.
-                     - Registration sprint phases 2-4 (after Phase 1).
+                     - Registration sprint Phase 1: DONE (PRG:145).
+                     - Registration sprint Phase 4: feed surfacing in MyHome (Phases 2+3 done).
                      - Supabase keep-alive -- still not implemented; free-tier pause risk.
                      - R2 image storage migration -- base64 images in Mongo; pre-beta
                        priority. @aws-sdk/client-s3 pointed at the R2 endpoint. One sprint.

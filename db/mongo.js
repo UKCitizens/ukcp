@@ -78,6 +78,35 @@ export async function connectMongo() {
     await db.collection('traders').createIndex({ category: 1 })
     await db.collection('user_notifications').createIndex({ user_id: 1, category: 1, read: 1, created_at: -1 })
     await db.collection('user_notifications').createIndex({ user_id: 1, resolved: 1 })
+    await db.collection('geo_group_state').createIndex({ user_id: 1, group_key: 1 }, { unique: true })
+    await db.collection('geo_groups').createIndex({ group_key: 1 }, { unique: true })
+    await db.collection('geo_groups').createIndex({ tier: 1 })
+    await db.collection('geo_groups').createIndex({ gss: 1 }, { sparse: true })
+
+    // group_memberships has two distinct schemas sharing one collection:
+    //   voluntary joins: { collection_type, collective_id (ObjectId), user_id }
+    //   geo constituted: { collection_type, group_key (string), user_id }
+    //
+    // The old index { collection_type, collective_id, user_id } unique WITHOUT
+    // partialFilterExpression indexes geo records (collective_id absent) as null,
+    // causing dup-key on the second geo record per user. Drop it and recreate
+    // with partialFilterExpression so only real collective_id documents are covered.
+    try {
+      await db.collection('group_memberships').dropIndex('collection_type_1_collective_id_1_user_id_1')
+    } catch (_) {}
+    // Voluntary-join uniqueness: only index where collective_id is a real value.
+    await db.collection('group_memberships').createIndex(
+      { collection_type: 1, collective_id: 1, user_id: 1 },
+      {
+        unique: true,
+        partialFilterExpression: { collective_id: { $exists: true, $type: 'objectId' } },
+      }
+    )
+    // Geo-membership uniqueness: keyed by group_key string.
+    await db.collection('group_memberships').createIndex(
+      { user_id: 1, collection_type: 1, group_key: 1 },
+      { unique: true, sparse: true }
+    )
     console.log('MongoDB connected')
   } catch (err) {
     console.error('[mongo] connection failed -- continuing without MongoDB:', err.message)
@@ -138,6 +167,8 @@ export function tradersCol()         { return db ? db.collection('traders')     
 
 /** Returns the user_notifications collection, or null if Mongo is unavailable. */
 export function notificationsCol()   { return db ? db.collection('user_notifications') : null }
+export function geoGroupStateCol()   { return db ? db.collection('geo_group_state')   : null }
+export function geoGroupsCol()       { return db ? db.collection('geo_groups')         : null }
 
 /** Returns the veracity_votes collection, or null if Mongo is unavailable. */
 export function veracityVotesCol()   { return db ? db.collection('veracity_votes')     : null }

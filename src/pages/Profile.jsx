@@ -2,11 +2,9 @@
  * @file Profile.jsx
  * @description Citizen profile page. Five panels:
  *   1. Identity        -- display_name (editable), email, member-since, role badges
- *   2. Civic footprint -- followed schools, joined groups, committee/network forums,
- *                          confirmed location
- *   3. Contributions   -- post count + recent posts (anon posts not attributable)
- *   4. Roles           -- platform_role, affiliated_roles
- *   5. Preferences     -- default_load_page, default_tab, default_posting_mode
+ *   2. Contributions   -- post count + recent posts (anon posts not attributable)
+ *   3. Roles           -- platform_role, affiliated_roles
+ *   4. Preferences     -- default_load_page, default_tab, default_posting_mode
  *
  * Data source: AuthContext.profile (loaded at sign-in by AuthProvider).
  * Identity edits write via PATCH /api/profile.
@@ -60,7 +58,6 @@ export default function Profile() {
 
   const user           = profile?.user           ?? null
   const follows        = profile?.follows        ?? []
-  const joinedGroups   = profile?.joined_groups  ?? []
   const recentPosts    = profile?.recent_posts   ?? []
   const postCount      = profile?.post_count     ?? 0
 
@@ -86,6 +83,14 @@ export default function Profile() {
 
   const isNewUser = !claims?.registration_complete
 
+  // Postcode capture state (registration path only)
+  const [postcode,        setPostcode]        = useState('')
+  const [postcodeLoading, setPostcodeLoading] = useState(false)
+  const [resolvedGeo,     setResolvedGeo]     = useState(null)
+  const [postcodeError,   setPostcodeError]   = useState(null)
+  const [savingGeo,       setSavingGeo]       = useState(false)
+  const [geoMsg,          setGeoMsg]          = useState(null)
+
   // Hydrate form state from profile.
   useEffect(() => {
     if (!user) return
@@ -94,6 +99,7 @@ export default function Profile() {
     setDefaultLoadPage(prefs.default_load_page ?? 'locations')
     setDefaultTab(prefs.default_tab ?? 'map')
     setDefaultPostingMode(prefs.default_posting_mode ?? user.default_post_visibility ?? 'anonymous')
+    if (user.home_postcode) setPostcode(user.home_postcode)
   }, [user])
 
   async function saveIdentity() {
@@ -114,6 +120,30 @@ export default function Profile() {
       // JWT picks up registration_complete=true (may already be set server-side),
       // then navigate out regardless of whether the server set it this call.
       if (isNewUser) {
+        if (resolvedGeo) {
+          const geoPayload = {
+            home_postcode:         resolvedGeo.postcode,
+            home_ward:             resolvedGeo.ward ?? null,
+            home_ward_gss:         resolvedGeo.ward_gss ?? null,
+            home_constituency:     resolvedGeo.constituency ?? null,
+            home_constituency_gss: resolvedGeo.con_gss ?? null,
+            home_county:           resolvedGeo.county ?? null,
+            home_region:           resolvedGeo.region ?? null,
+            home_country:          resolvedGeo.country ?? null,
+            home_lat:              resolvedGeo.latitude ?? null,
+            home_lng:              resolvedGeo.longitude ?? null,
+            home_place_name:       resolvedGeo.nearest_town?.name ?? null,
+            home_place_id:         resolvedGeo.nearest_town?.id ?? null,
+          }
+          await fetch(`${API_BASE}/api/profile/geography`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.access_token}`,
+            },
+            body: JSON.stringify(geoPayload),
+          }).catch(e => console.warn('[profile] geography save failed:', e.message))
+        }
         await supabase.auth.refreshSession()
         navigate('/locations', { replace: true })
         return
@@ -123,6 +153,61 @@ export default function Profile() {
       setIdentityMsg({ type: 'err', text: e.message })
     } finally {
       setSavingIdentity(false)
+    }
+  }
+
+  async function lookupPostcodeHandler() {
+    if (!postcode.trim() || !session?.access_token) return
+    setPostcodeLoading(true)
+    setPostcodeError(null)
+    setResolvedGeo(null)
+    try {
+      const params = new URLSearchParams({ postcode: postcode.trim() })
+      const res = await fetch(`${API_BASE}/api/profile/postcode/resolve?${params}`, {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      })
+      if (!res.ok) throw new Error((await res.json()).error ?? 'Lookup failed')
+      setResolvedGeo(await res.json())
+    } catch (e) {
+      setPostcodeError(e.message)
+    } finally {
+      setPostcodeLoading(false)
+    }
+  }
+
+  async function saveGeography() {
+    if (!resolvedGeo || !session?.access_token) return
+    setSavingGeo(true)
+    setGeoMsg(null)
+    try {
+      const geoPayload = {
+        home_postcode:         resolvedGeo.postcode,
+        home_ward:             resolvedGeo.ward ?? null,
+        home_ward_gss:         resolvedGeo.ward_gss ?? null,
+        home_constituency:     resolvedGeo.constituency ?? null,
+        home_constituency_gss: resolvedGeo.con_gss ?? null,
+        home_county:           resolvedGeo.county ?? null,
+        home_region:           resolvedGeo.region ?? null,
+        home_country:          resolvedGeo.country ?? null,
+        home_lat:              resolvedGeo.latitude ?? null,
+        home_lng:              resolvedGeo.longitude ?? null,
+        home_place_name:       resolvedGeo.nearest_town?.name ?? null,
+        home_place_id:         resolvedGeo.nearest_town?.id ?? null,
+      }
+      const res = await fetch(`${API_BASE}/api/profile/geography`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(geoPayload),
+      })
+      if (!res.ok) throw new Error((await res.json()).error ?? 'Save failed')
+      setGeoMsg({ type: 'ok', text: 'Location saved.' })
+    } catch (e) {
+      setGeoMsg({ type: 'err', text: e.message })
+    } finally {
+      setSavingGeo(false)
     }
   }
 
@@ -185,15 +270,6 @@ export default function Profile() {
     null
   )
 
-  const followedSchools = follows.filter(f => f.entity_type === 'school')
-  const followedOther   = follows.filter(f => f.entity_type !== 'school')
-
-  const groupKindLabel = (k) => ({
-    associations:     'Association',
-    spaces:           'Space',
-    committee_forums: 'Committee forum',
-    network_chapters: 'Network chapter',
-  }[k] ?? k)
 
   return shell(
 
@@ -234,62 +310,10 @@ export default function Profile() {
       </Button>
     </Stack>,
 
-    /* ── Mid: Footprint + Contributions + Roles (content) ──────────── */
+    /* ── Mid: Contributions + Roles (content) ─────────────────────── */
     <Stack gap="md">
       <Title order={4}>Your profile</Title>
 
-      {/* Civic footprint */}
-      <Paper p="md" withBorder>
-        <Stack gap="sm">
-          <Title order={5}>Civic footprint</Title>
-          {user.confirmed_location?.constituency ? (
-            <Text size="sm">
-              Location: <strong>{user.confirmed_location.ward ?? '--'}</strong>
-              {' / '}
-              <strong>{user.confirmed_location.constituency}</strong>
-            </Text>
-          ) : (
-            <Text size="sm" c="dimmed">No confirmed location -- join a forum to set one.</Text>
-          )}
-          <Divider label="Followed schools" labelPosition="left" />
-          {followedSchools.length === 0
-            ? <Text size="sm" c="dimmed">None followed yet.</Text>
-            : <List size="sm" spacing={2}>
-                {followedSchools.map(f => (
-                  <List.Item key={f._id ?? f.entity_id}>{f.entity_name ?? f.entity_id}</List.Item>
-                ))}
-              </List>
-          }
-          <Divider label="Joined groups + forums" labelPosition="left" />
-          {joinedGroups.length === 0
-            ? <Text size="sm" c="dimmed">No memberships yet.</Text>
-            : <List size="sm" spacing={2}>
-                {joinedGroups.map(m => (
-                  <List.Item key={String(m._id)}>
-                    <Text size="sm" component="span">
-                      {groupKindLabel(m.collection_type)}{' '}
-                      <Text span c="dimmed" size="xs">
-                        ({m.membership_role ?? 'member'} since {formatDate(m.joined_at)})
-                      </Text>
-                    </Text>
-                  </List.Item>
-                ))}
-              </List>
-          }
-          {followedOther.length > 0 && (
-            <>
-              <Divider label="Other follows" labelPosition="left" />
-              <List size="sm" spacing={2}>
-                {followedOther.map(f => (
-                  <List.Item key={f._id ?? `${f.entity_type}:${f.entity_id}`}>
-                    {f.entity_type}: {f.entity_name ?? f.entity_id}
-                  </List.Item>
-                ))}
-              </List>
-            </>
-          )}
-        </Stack>
-      </Paper>
 
       {/* Contributions */}
       <Paper p="md" withBorder>
@@ -367,6 +391,47 @@ export default function Profile() {
         onChange={e => setDisplayName(e.target.value)}
         size="xs"
       />
+      {isNewUser && (
+        <Stack gap={4} mt={4}>
+          <Text size="xs" fw={500} c="dimmed">Your location (optional)</Text>
+          <Group gap="xs" align="flex-end" wrap="nowrap">
+            <TextInput
+              placeholder="Postcode e.g. FY8 1AA"
+              value={postcode}
+              onChange={e => setPostcode(e.target.value.toUpperCase())}
+              onKeyDown={e => e.key === 'Enter' && lookupPostcodeHandler()}
+              size="xs"
+              style={{ flex: 1 }}
+            />
+            <Button
+              size="xs"
+              variant="default"
+              loading={postcodeLoading}
+              onClick={lookupPostcodeHandler}
+              disabled={!postcode.trim()}
+            >
+              Look up
+            </Button>
+          </Group>
+          {postcodeError && (
+            <Text size="xs" c="red">{postcodeError}</Text>
+          )}
+          {resolvedGeo && (
+            <Stack gap={2} mt={2}>
+              {resolvedGeo.nearest_town && (
+                <Text size="xs" c="dimmed">Town: <strong>{resolvedGeo.nearest_town.name}</strong></Text>
+              )}
+              <Text size="xs" c="dimmed">Ward: <strong>{resolvedGeo.ward ?? '--'}</strong></Text>
+              <Text size="xs" c="dimmed">Constituency: <strong>{resolvedGeo.constituency ?? '--'}</strong></Text>
+              {resolvedGeo.county && (
+                <Text size="xs" c="dimmed">County: <strong>{resolvedGeo.county}</strong></Text>
+              )}
+              <Text size="xs" c="dimmed">Region: <strong>{resolvedGeo.region ?? '--'}</strong></Text>
+              <Text size="xs" c="dimmed">Country: <strong>{resolvedGeo.country ?? '--'}</strong></Text>
+            </Stack>
+          )}
+        </Stack>
+      )}
       <Text size="xs" c="dimmed">{user.email}</Text>
       <Text size="xs" c="dimmed">Member since {formatDate(user.created_at)}</Text>
       {identityMsg && (
@@ -383,6 +448,63 @@ export default function Profile() {
       >
         {isNewUser ? 'Complete registration' : 'Save'}
       </Button>
+      <Divider mt="xs" />
+      {!isNewUser && (
+        <Stack gap={4}>
+          <Text size="xs" fw={500} c="dimmed">Your location</Text>
+          {user.home_postcode && !resolvedGeo && (
+            <Text size="xs" c="dimmed">
+              {[user.home_place_name, user.home_county, user.home_country].filter(Boolean).join(', ') || user.home_postcode}
+            </Text>
+          )}
+          <Group gap="xs" align="flex-end" wrap="nowrap">
+            <TextInput
+              placeholder="Postcode e.g. FY8 1AA"
+              value={postcode}
+              onChange={e => setPostcode(e.target.value.toUpperCase())}
+              onKeyDown={e => e.key === 'Enter' && lookupPostcodeHandler()}
+              size="xs"
+              style={{ flex: 1 }}
+            />
+            <Button
+              size="xs"
+              variant="default"
+              loading={postcodeLoading}
+              onClick={lookupPostcodeHandler}
+              disabled={!postcode.trim()}
+            >
+              Look up
+            </Button>
+          </Group>
+          {postcodeError && (
+            <Text size="xs" c="red">{postcodeError}</Text>
+          )}
+          {resolvedGeo && (
+            <Stack gap={2} mt={2}>
+              {resolvedGeo.nearest_town && (
+                <Text size="xs" c="dimmed">Town: <strong>{resolvedGeo.nearest_town.name}</strong></Text>
+              )}
+              <Text size="xs" c="dimmed">Ward: <strong>{resolvedGeo.ward ?? '--'}</strong></Text>
+              <Text size="xs" c="dimmed">Constituency: <strong>{resolvedGeo.constituency ?? '--'}</strong></Text>
+              {resolvedGeo.county && (
+                <Text size="xs" c="dimmed">County: <strong>{resolvedGeo.county}</strong></Text>
+              )}
+              <Text size="xs" c="dimmed">Region: <strong>{resolvedGeo.region ?? '--'}</strong></Text>
+              <Text size="xs" c="dimmed">Country: <strong>{resolvedGeo.country ?? '--'}</strong></Text>
+            </Stack>
+          )}
+          {geoMsg && (
+            <Alert color={geoMsg.type === 'ok' ? 'green' : 'red'} py={6} px={8}>
+              {geoMsg.text}
+            </Alert>
+          )}
+          {resolvedGeo && (
+            <Button size="xs" loading={savingGeo} onClick={saveGeography} fullWidth>
+              Save location
+            </Button>
+          )}
+        </Stack>
+      )}
       <Divider mt="xs" />
       <Button size="xs" variant="subtle" color="red" onClick={signOut} fullWidth>
         Sign out

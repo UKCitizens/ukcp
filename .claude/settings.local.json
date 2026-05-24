@@ -97,7 +97,11 @@
       "Bash(node -e \"require\\('image-size'\\)\")",
       "Bash(node Ali/build-manual.cjs)",
       "Read(//mnt/c/Users/phild/Desktop/Projects/Ali-Projects/UKCP/Ali/**)",
-      "Bash(dir \"C:\\\\Users\\\\phild\\\\Desktop\\\\Projects\\\\Ali-Projects\\\\UKCP\\\\Ali\\\\ukcp-functional-manual.docx\")"
+      "Bash(dir \"C:\\\\Users\\\\phild\\\\Desktop\\\\Projects\\\\Ali-Projects\\\\UKCP\\\\Ali\\\\ukcp-functional-manual.docx\")",
+      "Bash(git remote *)",
+      "Bash(git status *)",
+      "Bash(python -c \"import json; d=json.load\\(open\\('package.json'\\)\\); print\\('deps:', 'hls.js' in d.get\\('dependencies',{}\\)\\); print\\('devDeps:', 'hls.js' in d.get\\('devDependencies',{}\\)\\)\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('scripts:', JSON.stringify\\(p.scripts, null, 2\\)\\); console.log\\('node:', p.engines\\)\")"
     ]
   }
 }

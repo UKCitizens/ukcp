@@ -2,16 +2,17 @@
  * @file services/postcodes.js
  * @description Wraps the postcodes.io public API for UK postcode lookups.
  * No auth required by postcodes.io. AbortSignal.timeout(8000) guards against hangs.
+ *
+ * Field name reference (postcodes.io):
+ *   r.admin_ward                      -- ward name
+ *   r.codes.admin_ward                -- ward GSS code
+ *   r.parliamentary_constituency      -- constituency name
+ *   r.codes.parliamentary_constituency -- constituency GSS code
+ *   r.admin_county                    -- county name
+ *   r.region                          -- region name
+ *   r.country                         -- country name
  */
 
-/**
- * Looks up a UK postcode via postcodes.io.
- * Returns constituency name, con_gss, ward, ward_gss.
- * Throws on invalid postcode or network failure.
- *
- * @param {string} postcode
- * @returns {Promise<{ postcode: string, constituency: string, con_gss: string|null, ward: string, ward_gss: string|null }>}
- */
 export async function lookupPostcode(postcode) {
   const normalised = postcode.replace(/\s+/g, '').toUpperCase()
   const url = `https://api.postcodes.io/postcodes/${encodeURIComponent(normalised)}`
@@ -32,9 +33,14 @@ export async function lookupPostcode(postcode) {
   const r = data.result
   return {
     postcode:     r.postcode,
-    constituency: r.parliamentary_constituency,
+    constituency: r.parliamentary_constituency ?? null,
     con_gss:      r.codes?.parliamentary_constituency ?? null,
-    ward:         r.ward,
-    ward_gss:     r.codes?.ward ?? null,
+    ward:         r.admin_ward ?? null,
+    ward_gss:     r.codes?.admin_ward ?? null,
+    county:       r.admin_county ?? null,
+    region:       r.region ?? null,
+    country:      r.country ?? null,
+    latitude:     r.latitude ?? null,
+    longitude:    r.longitude ?? null,
   }
 }

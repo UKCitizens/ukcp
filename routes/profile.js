@@ -18,6 +18,11 @@ import {
   groupMembershipsCol,
 } from '../db/mongo.js'
 import { asyncHandler } from '../middleware/asyncHandler.js'
+import { lookupPostcode }      from '../services/postcodes.js'
+import { resolveUserGroups, ensureGeoMemberships } from '../services/groupResolver.js'
+import { geoGroupStateCol, geoGroupsCol } from '../db/mongo.js'
+import { findNearestPlace }  from '../services/nearestPlace.js'
+
 
 const router = Router()
 
@@ -185,6 +190,124 @@ router.patch('/profile/preferences', requireAuth, asyncHandler(async (req, res) 
   if (!col) return res.status(503).json({ error: 'Database unavailable' })
   await col.updateOne({ _id: req.user._id }, { $set })
   res.json({ ok: true })
+}))
+
+
+// GET /api/profile/postcode/resolve
+// Resolves a UK postcode to the full geographic chain (ward, constituency,
+// county, region, country, lat/lng) plus the nearest vernacular settlement.
+// Read-only: does not write to the user record. Use PATCH /api/profile/geography
+// to store the confirmed result.
+router.get('/profile/postcode/resolve', requireAuth, asyncHandler(async (req, res) => {
+  const rawPostcode = (req.query.postcode ?? '').trim()
+  if (!rawPostcode) {
+    return res.status(400).json({ error: 'postcode query param required' })
+  }
+  const geo = await lookupPostcode(rawPostcode)
+  const nearest_town = (geo.latitude != null && geo.longitude != null)
+    ? await findNearestPlace(geo.latitude, geo.longitude)
+    : null
+  // Lazy-create the ward geo_group if we have ward data and it doesn't exist yet
+  if (geo.ward_gss && geo.ward) {
+    const ggCol = geoGroupsCol()
+    if (ggCol) {
+      ggCol.updateOne(
+        { group_key: `ward:${geo.ward_gss}` },
+        {
+          $set: {
+            group_key:       `ward:${geo.ward_gss}`,
+            tier:            'ward',
+            label:           geo.ward,
+            geo_type:        'civic',
+            gss:             geo.ward_gss,
+            geo_content_key: null,
+            committee_id:    null,
+            place_id:        null,
+            origin:          'systemic',
+          },
+          $setOnInsert: { created_at: new Date() },
+        },
+        { upsert: true }
+      ).catch(e => console.warn('[postcode/resolve] ward geo_group upsert failed:', e.message))
+    }
+  }
+
+  res.json({ ...geo, nearest_town })
+}))
+
+// PATCH /api/profile/geography
+// Stores the confirmed geographic chain on the user record.
+// Called after the client has shown the resolved data and the user confirms.
+const GEO_FIELDS = [
+  'home_postcode', 'home_ward', 'home_ward_gss',
+  'home_constituency', 'home_constituency_gss',
+  'home_county', 'home_region', 'home_country',
+  'home_lat', 'home_lng',
+  'home_place_name', 'home_place_id',
+]
+
+router.patch('/profile/geography', requireAuth, asyncHandler(async (req, res) => {
+  const $set = {}
+  for (const f of GEO_FIELDS) {
+    if (req.body[f] !== undefined) $set[f] = req.body[f]
+  }
+  if (Object.keys($set).length === 0) {
+    return res.status(400).json({ error: 'No geography fields provided' })
+  }
+  $set.updated_at = new Date()
+  const col = usersCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+  await col.updateOne({ _id: req.user._id }, { $set })
+
+  // Write constituted membership records for all derived geo groups.
+  // Fire-and-forget -- non-fatal for the geography save.
+  ensureGeoMemberships(req.user._id, req.body)
+    .catch(e => console.error('[profile/geography] ensureGeoMemberships failed:', e.message))
+
+  res.json({ ok: true })
+}))
+
+
+const VALID_STATES = new Set(['Member', 'Viewer', 'None'])
+
+// GET /api/profile/groups
+// Returns the user's systemic civic and place groups with their current state.
+// Requires home geography to be set; returns empty arrays otherwise.
+router.get('/profile/groups', requireAuth, asyncHandler(async (req, res) => {
+  const col = usersCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+  const user = await col.findOne({ _id: req.user._id })
+  const groups = await resolveUserGroups(user)
+  res.json(groups)
+}))
+
+// PATCH /api/profile/groups/:groupKey
+// Set the user's state for a systemic group.
+// state='Member' deletes the exception row (restores default).
+// state='Viewer'|'None' upserts an exception row.
+router.patch('/profile/groups/:groupKey', requireAuth, asyncHandler(async (req, res) => {
+  const { groupKey } = req.params
+  const { state } = req.body
+
+  if (!state || !VALID_STATES.has(state)) {
+    return res.status(400).json({ error: 'state must be Member, Viewer, or None' })
+  }
+
+  const col = geoGroupStateCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+
+  if (state === 'Member') {
+    // Member is the default -- remove the exception row if it exists.
+    await col.deleteOne({ user_id: req.user._id, group_key: groupKey })
+  } else {
+    await col.updateOne(
+      { user_id: req.user._id, group_key: groupKey },
+      { $set: { user_id: req.user._id, group_key: groupKey, state, updated_at: new Date() } },
+      { upsert: true }
+    )
+  }
+
+  res.json({ ok: true, group_key: groupKey, state })
 }))
 
 export default router
