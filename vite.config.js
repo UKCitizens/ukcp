@@ -14,6 +14,9 @@ export default defineConfig({
       '/api': 'http://localhost:3000',
     },
   },
+  optimizeDeps: {
+    include: ['hls.js'],
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
