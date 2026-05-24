@@ -310,4 +310,22 @@ router.patch('/profile/groups/:groupKey', requireAuth, asyncHandler(async (req, 
   res.json({ ok: true, group_key: groupKey, state })
 }))
 
+// DELETE /api/profile/groups/:groupKey
+// Marks a geo group as removed by writing state='Removed' to geoGroupState.
+// resolveUserGroups filters out Removed entries -- persists across sessions.
+// group_memberships record is retained (membership is constitutional, not display).
+router.delete('/profile/groups/:groupKey', requireAuth, asyncHandler(async (req, res) => {
+  const { groupKey } = req.params
+  const col = geoGroupStateCol()
+  if (!col) return res.status(503).json({ error: 'Database unavailable' })
+
+  await col.updateOne(
+    { user_id: req.user._id, group_key: groupKey },
+    { $set: { user_id: req.user._id, group_key: groupKey, state: 'Removed', updated_at: new Date() } },
+    { upsert: true }
+  )
+
+  res.json({ ok: true, group_key: groupKey })
+}))
+
 export default router

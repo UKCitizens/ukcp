@@ -98,6 +98,17 @@ function GeoGroups({ session }) {
   const [groups,       setGroups]       = useState(null)
   const [loading,      setLoading]      = useState(false)
   const [stateMsg,     setStateMsg]     = useState({})
+  const navigate = useNavigate()
+
+  function handleGroupClick(g) {
+    const label = g.label?.replace(/ /g, '_') ?? ''
+    // nation:uk has no geo selection -- just open groups tab at current location
+    if (g.tier === 'nation') {
+      navigate('/locations', { state: { openTab: 'groups' } })
+      return
+    }
+    navigate('/locations', { state: { openTab: 'groups', geoEntityId: `${g.tier}:${label}` } })
+  }
 
   const fetchGroups = useCallback(async () => {
     if (!session?.access_token) return
@@ -112,6 +123,22 @@ function GeoGroups({ session }) {
   }, [session])
 
   useEffect(() => { fetchGroups() }, [fetchGroups])
+
+  async function removeGroup(groupKey) {
+    if (!session?.access_token) return
+    try {
+      const res = await fetch(`${API_BASE}/api/profile/groups/${encodeURIComponent(groupKey)}`, {
+        method:  'DELETE',
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      })
+      if (!res.ok) return
+      setGroups(prev => {
+        if (!prev) return prev
+        const rm = arr => arr.filter(g => g.group_key !== groupKey)
+        return { civic: rm(prev.civic), place: rm(prev.place) }
+      })
+    } catch (_) { /* non-fatal */ }
+  }
 
   async function setGroupState(groupKey, state) {
     if (!session?.access_token) return
@@ -141,7 +168,7 @@ function GeoGroups({ session }) {
 
   const GroupRow = ({ g }) => (
     <Group key={g.group_key} justify="space-between" wrap="nowrap" gap="xs">
-      <Stack gap={0} style={{ minWidth: 0 }}>
+      <Stack gap={0} style={{ minWidth: 0, cursor: 'pointer' }} onClick={() => handleGroupClick(g)}>
         <Text size="xs" c="dimmed" tt="capitalize">{g.tier}</Text>
         <Text size="xs" fw={500} truncate>{g.label}</Text>
       </Stack>
@@ -156,11 +183,11 @@ function GeoGroups({ session }) {
         ))}
         <Button
           size="compact-xs"
-          variant={g.state === 'None' ? 'filled' : 'default'}
-          color={g.state === 'None' ? 'red' : undefined}
-          onClick={() => setGroupState(g.group_key, 'None')}
+          variant="default"
+          color="red"
+          onClick={() => removeGroup(g.group_key)}
           px={6}
-          title="None -- hide from feed"
+          title="Remove this group"
         >
           <IconX size={10} />
         </Button>

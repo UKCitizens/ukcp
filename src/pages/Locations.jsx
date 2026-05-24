@@ -238,10 +238,11 @@ export default function Locations() {
         setPendingWard(value)
       } else if (['country', 'region', 'county'].includes(levelRaw)) {
         select(levelRaw, value)
-      } else if (['city', 'town', 'village', 'hamlet'].includes(levelRaw)) {
-        // Look up the full place object so setPending fires the map zoom.
+      } else if (levelRaw === 'place' || ['city', 'town', 'village', 'hamlet'].includes(levelRaw)) {
+        // 'place' tier from GeoGroups -- match by name only (place_type unknown).
+        // Standard place-type nav matches both type and name.
         const match = places?.find(p =>
-          p.place_type?.toLowerCase() === levelRaw &&
+          (levelRaw === 'place' || p.place_type?.toLowerCase() === levelRaw) &&
           p.name?.trim().toLowerCase() === value.toLowerCase()
         )
         if (match) {
@@ -907,11 +908,6 @@ export default function Locations() {
           onToggleExpand={handleToggleExpand}
           session={session}
           mapPane={mapPane}
-          postsPane={
-            geoOrigin
-              ? <PostsTab origin={geoOrigin} />
-              : <p style={{ padding: 16, fontSize: 13, color: '#868e96' }}>Select a location to view posts.</p>
-          }
           newsPane={
             <NewsTab
               locationType={contentContext?.type}

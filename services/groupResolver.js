@@ -115,9 +115,10 @@ export async function resolveUserGroups(user) {
     state: exMap.get(g.group_key) ?? 'Member',
   }))
 
+  const visible = withState.filter(g => g.state !== 'Removed')
   return {
-    civic: withState.filter(g => g.register === 'civic'),
-    place: withState.filter(g => g.register === 'place'),
+    civic: visible.filter(g => g.register === 'civic'),
+    place: visible.filter(g => g.register === 'place'),
   }
 }
 
@@ -193,5 +194,13 @@ export async function ensureGeoMemberships(userId, geo) {
       },
       { upsert: true }
     )
+  }
+
+  // Clear any 'Removed' exceptions for re-established tiers so they
+  // reappear in GeoGroups after the user re-saves their geography.
+  const stateCol = geoGroupStateCol()
+  if (stateCol && targets.length) {
+    const keys = targets.map(t => t.group_key)
+    await stateCol.deleteMany({ user_id: userId, group_key: { $in: keys }, state: 'Removed' })
   }
 }

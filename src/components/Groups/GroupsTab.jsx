@@ -11,6 +11,7 @@
 import { useState, useEffect }     from 'react'
 import { useAuth }                 from '../../context/AuthContext.jsx'
 import PostsTab                    from '../Posts/PostsTab.jsx'
+import PostComposer                from '../Posts/PostComposer.jsx'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -74,8 +75,22 @@ export default function GroupsTab({ locationType, locationSlug, filter = 'all' }
     return <div style={wrap}><p style={dim}>Select a location to view groups.</p></div>
   }
 
+  const geoOrigin = locationType && locationSlug
+    ? { entity_type: locationType, entity_id: locationSlug, entity_name: locationSlug.replace(/_/g, ' '), geo_scope: null }
+    : null
+
   return (
     <div style={{ padding: 0 }}>
+      {geoOrigin && session && (
+        <div style={{ borderBottom: '1px solid #f1f3f5', padding: '10px 16px' }}>
+          <PostComposer origin={geoOrigin} hideReach />
+        </div>
+      )}
+      {geoOrigin && !session && (
+        <div style={{ borderBottom: '1px solid #f1f3f5', padding: '10px 16px' }}>
+          <p style={{ ...dim, fontStyle: 'italic' }}>Sign in to post to this location.</p>
+        </div>
+      )}
       {loading && <div style={wrap}><p style={dim}>Loading groups...</p></div>}
       {error   && <div style={wrap}><p style={dim}>{error}</p></div>}
 
