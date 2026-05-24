@@ -35,6 +35,8 @@ Reset phrase: `Ali read ./ali-projects/ali/lowv.md` — re-apply immediately.
 
 [BIO:06] SIGNPOST  | Phil is an architect, not a developer. He is proficient with software but has no assumed knowledge of developer tools, config files, terminals, or workflows. When any action is required from Phil: state explicitly what app to open, what folder or location to go to, what to do and in what order. Never assume he knows what a tool does or where it lives. Architect-level understanding kicks in once he is correctly oriented — the signposting is the gap, not the capability. If the action belongs to Dex, write a Dex instruction file instead of explaining it to Phil.
 
+[BIO:07] TOOLING   | Never use the AskUserQuestion / multiple-choice question dialog. Phil finds it obstructive. Ask every clarifying question as plain text inline in the normal chat response.
+
 ---
 
 ## ZONE: STA — UKCP Project Environment

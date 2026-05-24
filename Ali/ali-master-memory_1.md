@@ -10,6 +10,80 @@
 
 ## ZONE: PRG -- Dynamic progress (purge and re-establish as needed)
 
+[PRG:143] PROGRESS  | Session 24 May 2026 -- Link preview overhaul, video
+                     embeds, Association model definition, registration sprint brief.
+                     LINK PREVIEW / BLUESKY (committed, 1dda546):
+                       routes/posts.js link-preview route -- added a hostname-keyed
+                       platform handler registry (platformPreview dispatch). bskyPreview
+                       uses the AT Protocol public API (resolveHandle -> getPostThread):
+                       a Bluesky post renders post text as title + post media as hero,
+                       never the author avatar. Generic OG scrape unchanged as fallback.
+                       Phil confirmed live: working.
+                     VIDEO EMBEDS (UNCOMMITTED -- awaiting build + smoke test):
+                       Spec: UKCP/Ali/ukcp-video-embed-sprint.md.
+                       routes/posts.js -- youtubePreview + vimeoPreview added to the
+                         registry (keyless oEmbed); bskyApiGet renamed apiGetJson;
+                         bskyPreview extended so native Bluesky video
+                         (app.bsky.embed.video, incl. recordWithMedia) returns a
+                         video-typed payload: provider 'bluesky' + stream_url (HLS).
+                       NEW src/components/Posts/PostVideoEmbed.jsx -- lite-embed facade
+                         (thumbnail + play button, real player swapped in on click).
+                         youtube/vimeo -> iframe (youtube-nocookie); bluesky -> HLS via
+                         hls.js, dynamically imported on first play.
+                       src/components/Posts/PostEmbed.jsx -- branches to PostVideoEmbed
+                         when embed.type === 'video'. Both call sites untouched.
+                       Payload is a superset of the card shape. POST handler stores meta
+                         verbatim -- no server change needed. No CSP exists.
+                     VIDEO -- NEXT-SESSION ACTIONS before/with the reg sprint:
+                       1. Delete C:\Users\phild\Desktop\Projects\Ali-Projects\UKCP\.git\index.lock
+                          (stale lock, blocks any commit).
+                       2. npm install hls.js  (required before the build).
+                       3. npm run build ; node server.js.
+                       4. Smoke test: youtube watch/youtu.be/shorts, a vimeo URL, a
+                          Bluesky video post -- each should facade then play inline.
+                       5. Commit ONLY: routes/posts.js src/components/Posts/PostEmbed.jsx
+                          src/components/Posts/PostVideoEmbed.jsx package.json
+                          package-lock.json. NOT git add . -- working tree has ~27 files
+                          of unrelated line-ending churn.
+                     TOOLING LESSON (important): the Write and Edit tools truncated
+                       posts.js mid-write twice this session (STA:20 failure mode -- the
+                       write path is flaky, not only on multibyte). Recovered via git
+                       restore + re-apply. RULE for Ali: create/modify files via bash
+                       heredoc (cat > f <<'EOF') or Python with encoding='utf-8'. Do not
+                       trust Write/Edit for non-trivial files. Verify every write with
+                       wc -l + tail + node --check.
+                     ASSOCIATION MODEL (definition produced):
+                       UKCP/Ali/ukcp-association-model-v0.1.md -- canonical model
+                       resolving the posts/groups/locations/networks fog. Two primitives
+                       (Place, Association) + content layer (Post). Association =
+                       register x origin x enrolment x anchor x parent. 9 principles.
+                       Place groups elevated to first-class, equal to civic groups
+                       (Phil's correction: groups are cheap, absence is not). Draft, for
+                       Sage to absorb as canonical.
+                     REGISTRATION SPRINT BRIEF (produced):
+                       UKCP/Ali/ukcp-registration-sprint-brief.md -- postcode at
+                       registration -> derive civic + place groups; belong/view/none
+                       membership state; derive-don't-provision design; 4 phases. Phase 1
+                       (postcode capture + resolution) is Ali-sized; phases 2-3 (derived
+                       membership + exception store + management UI) may go to Dex; phase
+                       4 (surfacing) is follow-on. Existing assets found:
+                       services/postcodes.js, memberships collection, follows
+                       collection, user home_ward_gss / home_constituency_gss.
+                     SMALL FOLLOW-ON: model doc section 4 should absorb the
+                       belong/view/none membership-state concept (not yet done).
+                     BIO:07 added to ali-master-memory.md: never use the AskUserQuestion
+                       dialog -- ask clarifying questions in plain chat.
+                     DISCUSSION (no code): crawler control (a real gate must be enforced
+                       API-side, not in the SPA; the Railway API URL is independently
+                       reachable); LinkedIn has no usable API (unfixable tier); Phil
+                       plans to swap his real-name UKCP account for a pseudonymous one --
+                       that account is the admin account, so the replacement must be made
+                       admin BEFORE the old one is deleted.
+                     NEXT SESSION: registration sprint. Load ukcp-association-model-
+                       v0.1.md and ukcp-registration-sprint-brief.md at session start.
+                       Do Phase 1 first; one phase at a time; make the call on
+                       continuing. New session agreed before the code run.
+
 [PRG:142] PROGRESS  | Session 23 May 2026 (session 4) -- Git catch-up + functional manual.
                      THREE PUSHES this session:
                        Push 1 (bb73a9b): geo-follows feature + auth UX overhaul (PRG:58+59).
@@ -472,3 +546,24 @@
                      MidPaneMap flyTo: header caps zoom at Math.min(zoom,7). centerOn NaN guard.
                      LocationSearch: createPortal to document.body, position:fixed.
                      Login.jsx: plain HTML inputs (autofill attempt, superseded by modal approach).
+
+[PRG:144] DEFERRED  | Stacked deferred work -- carried across sessions, parked
+                     at the end of the list. Pull an item up into a live PRG entry when
+                     it is started.
+                     - hls.js video embeds: build, smoke test, commit (steps in PRG:143).
+                     - Model doc section 4: absorb the belong/view/none membership state.
+                     - Registration sprint phases 2-4 (after Phase 1).
+                     - Supabase keep-alive -- still not implemented; free-tier pause risk.
+                     - R2 image storage migration -- base64 images in Mongo; pre-beta
+                       priority. @aws-sdk/client-s3 pointed at the R2 endpoint. One sprint.
+                     - Post features sprint (seed doc UKCP/Ali/ukcp-post-features-next-
+                       sprint.md): reply_control field, moderation toggle, MyHome
+                       Posts/Replies tab.
+                     - MyHome FeedZone post surfacing.
+                     - box-bot smoke test (agent folder, PRG:134): single-entry f10
+                       county run, then the full batch.
+                     - localStorage quota -> IndexedDB migration for hierarchy/places
+                       cache.
+                     - UI polish pass (function-first agreed).
+                     - Minor: MyMeta notification badge counter mismatch; "No Dup" test
+                       school data cleanup.
